@@ -251,7 +251,7 @@ function triggerPrompt(prompt)
 if not prompt or not prompt:IsA(_S({117,151,148,157,142,146,142,153,158,117,151,148,146,149,153},37)) then return end
 pcall(function()
 prompt.RequiresLineOfSight = false
-prompt.MaxActivationDistance = 60
+prompt.MaxActivationDistance = 80
 if fireproximityprompt then
 fireproximityprompt(prompt, 0)
 fireproximityprompt(prompt, 1, true)
@@ -260,6 +260,14 @@ prompt.HoldDuration = 0
 prompt:InputHoldBegin()
 task.wait(0.05)
 prompt:InputHoldEnd()
+end
+end)
+end
+function triggerClick(clickDetector)
+if not clickDetector or not clickDetector:IsA(_S({104,145,142,136,144,105,138,153,138,136,153,148,151},37)) then return end
+pcall(function()
+if fireclickdetector then
+fireclickdetector(clickDetector)
 end
 end)
 end
@@ -274,26 +282,53 @@ pcall(function()
 ActivateRemote:FireServer(target.Item)
 end)
 end
+if target.ClickDetector then
+triggerClick(target.ClickDetector)
+end
 if target.Prompt then
 triggerPrompt(target.Prompt)
+end
 if target.IsContainer then
 for _ = 1, 3 do
 task.wait(0.08)
 if target.Prompt and target.Prompt:IsDescendantOf(Workspace) then
 triggerPrompt(target.Prompt)
 end
+if target.ClickDetector and target.ClickDetector:IsDescendantOf(Workspace) then
+triggerClick(target.ClickDetector)
+end
+end
+task.wait(0.3)
+local dropped = scanBonds(targetPart.Position, 25)
+for _, drop in ipairs(dropped) do
+if not drop.IsContainer and drop.Part and drop.Part:IsDescendantOf(Workspace) then
+teleportTo(drop.Part.CFrame + Vector3.new(0, 1.5, 0))
+if drop.Prompt then triggerPrompt(drop.Prompt) end
+if drop.ClickDetector then triggerClick(drop.ClickDetector) end
+State.BondsCollected = State.BondsCollected + 1
+if BondsLabel and BondsLabel.Parent then
+BondsLabel.Text = string.format(_S({97,139,148,147,153,69,136,148,145,148,151,98,71,72,134,134,134,134,134,134,71,99,103,148,147,137,152,95,69,97,84,139,148,147,153,99,97,139,148,147,153,69,136,148,145,148,151,98,71,72,139,139,136,136,85,85,71,99,74,137,97,84,139,148,147,153,99},37), State.BondsCollected)
+end
+task.wait(0.05)
 end
 end
 end
 end
 local BOND_KEYWORDS = {
-_S({135,148,147,137},37), _S({153,151,138,134,152,154,151,158},37), _S({136,134,152,141},37), _S({146,148,147,138,158},37), _S({137,148,145,145,134,151},37), _S({135,142,145,145},37), _S({140,148,145,137},37), _S({152,153,134,136,144},37), _S({151,148,145,145},37), _S({135,134,140},37)
+_S({135,148,147,137},37), _S({153,151,138,134,152,154,151,158},37), _S({156,134,151,69,135,148,147,137},37), _S({136,134,152,141},37), _S({146,148,147,138,158},37), _S({137,148,145,145,134,151},37), _S({135,142,145,145},37), _S({140,148,145,137},37), _S({152,153,134,136,144},37), _S({151,148,145,145},37), _S({135,134,140},37), _S({145,148,148,153},37)
 }
 local CONTAINER_KEYWORDS = {
-_S({152,134,139,138},37), _S({155,134,154,145,153},37), _S({151,138,140,142,152,153,138,151},37), _S({136,134,152,141,151,138,140,142,152,153,138,151},37), _S({145,148,136,144,135,148,157},37), _S({136,141,138,152,153},37), _S({136,151,134,153,138},37), _S({135,134,147,144},37)
+_S({152,134,139,138},37), _S({135,151,154,153,138,69,152,134,139,138},37), _S({142,151,148,147,69,152,134,139,138},37), _S({135,134,147,144,69,152,134,139,138},37), _S({155,134,154,145,153},37), _S({151,138,140,142,152,153,138,151},37), _S({136,134,152,141,151,138,140,142,152,153,138,151},37), _S({145,148,136,144,135,148,157},37), _S({136,141,138,152,153},37), _S({136,151,134,153,138},37), _S({135,134,147,144},37), _S({137,151,134,156,138,151},37), _S({137,138,152,144},37), _S({153,151,138,134,152,154,151,158},37)
 }
 local ACTION_KEYWORDS = {
-_S({153,134,144,138},37), _S({140,151,134,135},37), _S({152,153,138,134,145},37), _S({136,148,145,145,138,136,153},37), _S({149,142,136,144,69,154,149},37), _S({149,142,136,144,154,149},37), _S({148,149,138,147},37), _S({136,151,134,136,144},37), _S({154,147,145,148,136,144},37), _S({152,138,134,151,136,141},37), _S({151,148,135},37), _S({145,148,148,153},37)
+_S({153,134,144,138},37), _S({140,151,134,135},37), _S({152,153,138,134,145},37), _S({136,148,145,145,138,136,153},37), _S({149,142,136,144,69,154,149},37), _S({149,142,136,144,154,149},37), _S({148,149,138,147},37), _S({136,151,134,136,144},37), _S({154,147,145,148,136,144},37), _S({152,138,134,151,136,141},37), _S({151,148,135},37), _S({145,148,148,153},37), _S({142,147,153,138,151,134,136,153},37), _S({142,147,152,149,138,136,153},37)
+}
+local POI_KEYWORDS = {
+_S({153,148,156,147},37), _S({155,142,145,145,134,140,138},37), _S({152,153,138,151,145,142,147,140},37), _S({148,154,153,145,134,156},37), _S({135,134,147,144},37), _S({152,134,145,148,148,147},37), _S({152,153,148,151,138},37), _S({141,148,154,152,138},37), _S({152,153,134,153,142,148,147},37),
+_S({136,134,152,153,145,138},37), _S({155,134,146,149,142,151,138},37), _S({139,148,151,153,151,138,152,152},37), _S({136,151,158,149,153},37),
+_S({153,138,152,145,134},37), _S({145,134,135},37), _S({145,134,135,148,151,134,153,148,151,158},37), _S({140,138,147,138,151,134,153,148,151},37),
+_S({136,134,155,138},37), _S({146,142,147,138},37), _S({152,153,138,151,145,142,147,140,146,142,147,138},37), _S({153,154,147,147,138,145},37),
+_S({138,147,137},37), _S({139,148,151,153},37), _S({136,148,147,152,153,142,153,154,153,142,148,147},37), _S({148,154,153,149,148,152,153},37), _S({135,148,151,137,138,151},37), _S({139,142,147,142,152,141},37)
 }
 local function matchesKeywords(str, keywords)
 if not str or str == "" then return false end
@@ -312,17 +347,23 @@ Workspace:RequestStreamAroundAsync(position)
 end
 end)
 end
-function scanBonds()
+function scanBonds(centerPos, radius)
 local targets = {}
 local seen = {}
-local function addTarget(item, part, prompt, isContainer, name)
+local function addTarget(item, part, prompt, clickDetector, isContainer, name)
 if not part or not part:IsA(_S({103,134,152,138,117,134,151,153},37)) or seen[part] then return end
 if not part:IsDescendantOf(Workspace) then return end
+if centerPos and radius then
+if (part.Position - centerPos).Magnitude > radius then
+return
+end
+end
 seen[part] = true
 table.insert(targets, {
 Item = item or part,
 Part = part,
 Prompt = prompt,
+ClickDetector = clickDetector,
 IsContainer = isContainer or false,
 Name = name or (item and item.Name) or part.Name
 })
@@ -352,13 +393,26 @@ matchesKeywords(gpName, CONTAINER_KEYWORDS) or
 matchesKeywords(pText, CONTAINER_KEYWORDS) or
 matchesKeywords(attrName, CONTAINER_KEYWORDS)
 local isActionValid = matchesKeywords(pText, ACTION_KEYWORDS) or prompt.Enabled
-if (isBond or isContainer) and isActionValid then
+if (isBond or isContainer) or isActionValid then
 local part = (parent and parent:IsA(_S({103,134,152,138,117,134,151,153},37)) and parent) or
 (parent and parent:FindFirstChildWhichIsA(_S({103,134,152,138,117,134,151,153},37), true)) or
 (grandParent and grandParent:IsA(_S({103,134,152,138,117,134,151,153},37)) and grandParent) or
 (grandParent and grandParent:FindFirstChildWhichIsA(_S({103,134,152,138,117,134,151,153},37), true))
 if part then
-addTarget(grandParent or parent, part, prompt, isContainer, parent.Name)
+addTarget(grandParent or parent, part, prompt, nil, isContainer, parent and parent.Name)
+end
+end
+end
+end
+for _, cd in ipairs(Workspace:GetDescendants()) do
+if cd:IsA(_S({104,145,142,136,144,105,138,153,138,136,153,148,151},37)) then
+local parent = cd.Parent
+local pName = parent and parent.Name:lower() or ""
+if matchesKeywords(pName, BOND_KEYWORDS) or matchesKeywords(pName, CONTAINER_KEYWORDS) then
+local part = parent:IsA(_S({103,134,152,138,117,134,151,153},37)) and parent or parent:FindFirstChildWhichIsA(_S({103,134,152,138,117,134,151,153},37), true)
+if part then
+local isContainer = matchesKeywords(pName, CONTAINER_KEYWORDS)
+addTarget(parent, part, nil, cd, isContainer, parent.Name)
 end
 end
 end
@@ -383,9 +437,10 @@ if matchesKeywords(iName, BOND_KEYWORDS) or matchesKeywords(attr, BOND_KEYWORDS)
 matchesKeywords(iName, CONTAINER_KEYWORDS) or matchesKeywords(attr, CONTAINER_KEYWORDS) then
 local part = item:IsA(_S({103,134,152,138,117,134,151,153},37)) and item or item:FindFirstChildWhichIsA(_S({103,134,152,138,117,134,151,153},37), true)
 local prompt = item:FindFirstChildWhichIsA(_S({117,151,148,157,142,146,142,153,158,117,151,148,146,149,153},37), true)
+local cd = item:FindFirstChildWhichIsA(_S({104,145,142,136,144,105,138,153,138,136,153,148,151},37), true)
 if part then
 local isContainer = matchesKeywords(iName, CONTAINER_KEYWORDS) or matchesKeywords(attr, CONTAINER_KEYWORDS)
-addTarget(item, part, prompt, isContainer, item.Name)
+addTarget(item, part, prompt, cd, isContainer, item.Name)
 end
 end
 end
@@ -393,59 +448,77 @@ end
 end
 return targets
 end
-function getMapWaypoints()
-local waypoints = {}
+function getPOILocations()
+local pois = {}
 local seenPos = {}
-local function addPoint(pos)
+local function addPOI(name, pos)
 if not pos then return end
-for _, existing in ipairs(waypoints) do
-if (existing - pos).Magnitude < 120 then
+for _, existing in ipairs(pois) do
+if (existing.Position - pos).Magnitude < 80 then
 return
 end
 end
-table.insert(waypoints, pos)
+table.insert(pois, { Name = name, Position = pos })
 end
-local railFolders = {
-Workspace:FindFirstChild(_S({119,134,142,145,120,138,140,146,138,147,153,152},37)),
-Workspace:FindFirstChild(_S({121,151,134,136,144,152},37)),
-Workspace:FindFirstChild(_S({119,134,142,145,152},37)),
-Workspace:FindFirstChild(_S({114,134,149},37)),
-Workspace:FindFirstChild(_S({121,148,156,147,152},37)),
-Workspace:FindFirstChild(_S({120,153,134,153,142,148,147,152},37)),
-Workspace:FindFirstChild(_S({103,154,142,145,137,142,147,140,152},37))
-}
-for _, folder in ipairs(railFolders) do
-if folder then
-for _, obj in ipairs(folder:GetChildren()) do
-local part = obj:IsA(_S({103,134,152,138,117,134,151,153},37)) and obj or obj:FindFirstChildWhichIsA(_S({103,134,152,138,117,134,151,153},37), true)
-if part then
-addPoint(part.Position)
-end
-end
-end
-end
-if #waypoints == 0 then
-for _, obj in ipairs(Workspace:GetChildren()) do
-if obj:IsA(_S({114,148,137,138,145},37)) and not Players:GetPlayerFromCharacter(obj) and obj.Name ~= _S({121,138,151,151,134,142,147},37) then
-local primary = obj.PrimaryPart or obj:FindFirstChildWhichIsA(_S({103,134,152,138,117,134,151,153},37))
+for _, obj in ipairs(Workspace:GetDescendants()) do
+if obj:IsA(_S({114,148,137,138,145},37)) or obj:IsA(_S({107,148,145,137,138,151},37)) then
+local name = obj.Name:lower()
+if matchesKeywords(name, POI_KEYWORDS) or matchesKeywords(name, CONTAINER_KEYWORDS) then
+local primary = (obj:IsA(_S({114,148,137,138,145},37)) and obj.PrimaryPart) or obj:FindFirstChildWhichIsA(_S({103,134,152,138,117,134,151,153},37), true)
 if primary and primary.Position.Magnitude > 10 then
-addPoint(primary.Position)
+addPOI(obj.Name, primary.Position)
 end
 end
 end
+end
+return pois
+end
+function getTrackTraversalPath()
+local waypoints = {}
+local startPos = Vector3.new(0, 5, 0)
+local trackDirection = Vector3.new(0, 0, -1)
+pcall(function()
+local train = Workspace:FindFirstChild(_S({121,151,134,142,147},37)) or Workspace:FindFirstChild(_S({106,147,140,142,147,138},37))
+if train then
+local part = train:FindFirstChildWhichIsA(_S({103,134,152,138,117,134,151,153},37), true)
+if part then
+startPos = part.Position
+trackDirection = part.CFrame.LookVector
+end
+end
+local trackFolder = Workspace:FindFirstChild(_S({119,134,142,145,120,138,140,146,138,147,153,152},37)) or Workspace:FindFirstChild(_S({121,151,134,136,144,152},37)) or Workspace:FindFirstChild(_S({119,134,142,145,152},37))
+if trackFolder then
+local pieces = trackFolder:GetChildren()
+if #pieces >= 2 then
+local p1 = pieces[1]:IsA(_S({103,134,152,138,117,134,151,153},37)) and pieces[1] or pieces[1]:FindFirstChildWhichIsA(_S({103,134,152,138,117,134,151,153},37), true)
+local p2 = pieces[#pieces]:IsA(_S({103,134,152,138,117,134,151,153},37)) and pieces[#pieces] or pieces[#pieces]:FindFirstChildWhichIsA(_S({103,134,152,138,117,134,151,153},37), true)
+if p1 and p2 and (p2.Position - p1.Position).Magnitude > 20 then
+trackDirection = (p2.Position - p1.Position).Unit
+startPos = p1.Position
+end
+end
+end
+end)
+local stepSize = 350
+local totalDistance = 55000
+local steps = math.floor(totalDistance / stepSize)
+for i = 0, steps do
+local wpPos = startPos + (trackDirection * (i * stepSize))
+table.insert(waypoints, wpPos)
 end
 return waypoints
 end
 local function processTargets(targets)
 if not targets or #targets == 0 then return 0 end
 local collectedCount = 0
-updateStatus(string.format(_S({104,148,145,145,138,136,153,142,147,140,69,74,137,69,153,134,151,140,138,153,152,69,77,103,148,147,137,152,84,120,134,139,138,152,78,83,83,83},37), #targets))
+updateStatus(string.format(_S({117,151,148,136,138,152,152,142,147,140,69,74,137,69,153,134,151,140,138,153,152,69,77,103,148,147,137,152,84,120,134,139,138,152,78,83,83,83},37), #targets))
 for idx, target in ipairs(targets) do
 if not State.Running then break end
 if not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild(_S({109,154,146,134,147,148,142,137,119,148,148,153,117,134,151,153},37)) then break end
 local targetPart = target.Part
 if targetPart and targetPart:IsDescendantOf(Workspace) then
-updateStatus(string.format(_S({104,148,145,145,138,136,153,142,147,140,69,128,74,137,84,74,137,130,95,69,74,152},37), idx, #targets, target.Name or _S({121,134,151,140,138,153},37)))
+local label = target.IsContainer and (_S({104,151,134,136,144,142,147,140,69},37) .. (target.Name or _S({120,134,139,138},37))) or (_S({113,148,148,153,142,147,140,69},37) .. (target.Name or _S({103,148,147,137},37)))
+updateStatus(string.format(_S({128,74,137,84,74,137,130,69,74,152},37), idx, #targets, label))
 collectTarget(target)
 if not target.IsContainer then
 State.BondsCollected = State.BondsCollected + 1
@@ -459,21 +532,49 @@ end
 end
 return collectedCount
 end
-local function performMapSweep()
-local waypoints = getMapWaypoints()
-if #waypoints == 0 then return 0 end
-updateStatus(string.format(_S({120,156,138,138,149,142,147,140,69,74,137,69,146,134,149,69,136,141,154,147,144,152,69,139,148,151,69,135,148,147,137,152,84,152,134,139,138,152,83,83,83},37), #waypoints))
+local function performFullRunSweep()
 local totalFound = 0
-for i, wp in ipairs(waypoints) do
+local pois = getPOILocations()
+if #pois > 0 then
+updateStatus(string.format(_S({120,156,138,138,149,142,147,140,69,74,137,69,117,116,110,152,69,77,105,138,152,134,81,69,112,134,152,153,142,145,81,69,121,138,152,145,134,81,69,108,154,134,81,69,106,147,137,78,83,83,83},37), #pois))
+for _, poi in ipairs(pois) do
 if not State.Running then break end
 if not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild(_S({109,154,146,134,147,148,142,137,119,148,148,153,117,134,151,153},37)) then break end
-teleportTo(CFrame.new(wp + Vector3.new(0, 8, 0)))
-requestStream(wp)
+updateStatus(string.format(_S({123,142,152,142,153,142,147,140,69,117,116,110,95,69,74,152},37), poi.Name))
+teleportTo(CFrame.new(poi.Position + Vector3.new(0, 6, 0)))
+requestStream(poi.Position)
 task.wait(0.25)
-local localTargets = scanBonds()
+local poiTargets = scanBonds(poi.Position, 250)
+if #poiTargets > 0 then
+processTargets(poiTargets)
+totalFound = totalFound + #poiTargets
+end
+end
+end
+local trackPath = getTrackTraversalPath()
+updateStatus(_S({121,151,134,155,138,151,152,142,147,140,69,90,90,144,146,69,119,134,142,145,156,134,158,69,145,142,147,138,69,139,148,151,69,134,145,145,69,145,148,136,134,153,142,148,147,152,83,83,83},37))
+for stepIdx, pos in ipairs(trackPath) do
+if not State.Running then break end
+if not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild(_S({109,154,146,134,147,148,142,137,119,148,148,153,117,134,151,153},37)) then break end
+teleportTo(CFrame.new(pos + Vector3.new(0, 8, 0)))
+requestStream(pos)
+task.wait(0.12)
+local localTargets = scanBonds(pos, 380)
 if #localTargets > 0 then
 processTargets(localTargets)
 totalFound = totalFound + #localTargets
+end
+if stepIdx % 10 == 0 then
+local newlyDiscoveredPOIs = getPOILocations()
+for _, newPOI in ipairs(newlyDiscoveredPOIs) do
+if (newPOI.Position - pos).Magnitude < 400 then
+local newTargets = scanBonds(newPOI.Position, 200)
+if #newTargets > 0 then
+processTargets(newTargets)
+totalFound = totalFound + #newTargets
+end
+end
+end
 end
 end
 return totalFound
@@ -482,41 +583,38 @@ task.spawn(function()
 updateStatus(_S({124,134,142,153,142,147,140,69,139,148,151,69,146,134,149,69,134,147,137,69,136,141,134,151,134,136,153,138,151,83,83,83},37))
 waitForCharacter(10)
 task.wait(2)
-local emptyScanCount = 0
-local MAX_EMPTY_RETRIES = 5
+local emptyRuns = 0
+local MAX_EMPTY_RUNS = 3
 while State.Running do
 task.wait(0.1)
 local char = LocalPlayer.Character
 local hrp = char and char:FindFirstChild(_S({109,154,146,134,147,148,142,137,119,148,148,153,117,134,151,153},37))
 local hum = char and char:FindFirstChildOfClass(_S({109,154,146,134,147,148,142,137},37))
 if char and hrp and hum and hum.Health > 0 then
-local targets = scanBonds()
-if #targets > 0 then
-emptyScanCount = 0
-processTargets(targets)
+local immediateTargets = scanBonds()
+if #immediateTargets > 0 then
+processTargets(immediateTargets)
+end
+updateStatus(_S({120,153,134,151,153,142,147,140,69,139,154,145,145,69,151,154,147,69,152,156,138,138,149,69,77,105,138,152,134,69,82,99,69,112,134,152,153,142,145,69,82,99,69,121,138,152,145,134,69,82,99,69,108,154,134,69,82,99,69,106,147,137,78,83,83,83},37))
+local collectedInSweep = performFullRunSweep()
+if collectedInSweep > 0 then
+emptyRuns = 0
+updateStatus(string.format(_S({120,156,138,138,149,69,139,142,147,142,152,141,138,137,70,69,107,134,151,146,138,137,69,74,137,69,142,153,138,146,152,83},37), collectedInSweep))
+task.wait(1)
 else
-updateStatus(_S({115,148,69,147,138,134,151,135,158,69,135,148,147,137,152,83,69,120,156,138,138,149,142,147,140,69,153,151,134,136,144,69,75,69,153,148,156,147,152,83,83,83},37))
-local foundInSweep = performMapSweep()
-if foundInSweep > 0 then
-emptyScanCount = 0
-else
-emptyScanCount = emptyScanCount + 1
-if emptyScanCount <= MAX_EMPTY_RETRIES then
-updateStatus(string.format(_S({120,138,134,151,136,141,142,147,140,69,146,134,149,69,136,141,154,147,144,152,83,83,83,69,77,74,137,84,74,137,78},37), emptyScanCount, MAX_EMPTY_RETRIES))
+emptyRuns = emptyRuns + 1
+if emptyRuns < MAX_EMPTY_RUNS then
+updateStatus(string.format(_S({115,148,69,146,148,151,138,69,135,148,147,137,152,69,139,148,154,147,137,83,69,119,138,153,151,158,142,147,140,69,77,74,137,84,74,137,78,83,83,83},37), emptyRuns, MAX_EMPTY_RUNS))
 task.wait(2)
 else
 State.TotalResets = State.TotalResets + 1
-updateStatus(_S({114,134,149,69,136,145,138,134,151,138,137,83,69,119,138,152,138,153,153,142,147,140,69,136,141,134,151,134,136,153,138,151,83,83,83},37))
-emptyScanCount = 0
+updateStatus(_S({102,145,145,69,145,148,136,134,153,142,148,147,152,69,145,148,148,153,138,137,83,69,120,138,151,155,138,151,69,141,148,149,149,142,147,140,83,83,83},37))
+emptyRuns = 0
 resetCharacter()
 LocalPlayer.CharacterAdded:Wait()
 task.wait(3)
-local checkAgain = scanBonds()
-if #checkAgain == 0 and performMapSweep() == 0 then
 hopServer()
 task.wait(5)
-end
-end
 end
 end
 else
