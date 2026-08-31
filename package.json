@@ -1,14 +1,18 @@
 {
   "name": "crackbanana",
   "version": "1.0.0",
-  "description": "Banana Crack Hub - Blox Fruits Modular Script",
-  "main": "dist/banana.lua",
+  "description": "Banana Hub - Multi-Game Modular Roblox Scripting Hub",
+  "main": "dist/blox_fruits/banana.lua",
   "scripts": {
-    "build": "node scripts/build.js"
+    "build": "node scripts/build.js all",
+    "build:all": "node scripts/build.js all",
+    "build:blox": "node scripts/build.js blox",
+    "build:deadrails": "node scripts/build.js deadrails"
   },
   "keywords": [
     "roblox",
     "blox-fruits",
+    "dead-rails",
     "lua"
   ],
   "author": "wh1tehourse",
