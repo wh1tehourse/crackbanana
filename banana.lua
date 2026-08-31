@@ -1,8 +1,19 @@
--- ts file was generated at discord.gg/25ms
+--[[
+    Banana Crack Hub - Blox Fruits [ Freemium ]
+    Author: wh1tehourse
+    Compiled: 2026-08-31T06:00:29.288Z
+    Source: Modular Architecture (src/)
+]]
 
 
-local vu1 = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-local v2 = vu1:CreateWindow({
+-- ==========================================
+-- MODULE: src/ui/window.lua
+-- ==========================================
+
+-- Fluent UI Window & Tab Initialization
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+
+local Window = Fluent:CreateWindow({
     ["Title"] = "Banana Crack Hub-Blox Fruit [ Freemium ]",
     ["SubTitle"] = "By wh1tehourse",
     ["TabWidth"] = 160,
@@ -11,80 +22,66 @@ local v2 = vu1:CreateWindow({
     ["Size"] = UDim2.fromOffset(500, 320),
     ["MinimizeKey"] = Enum.KeyCode.End
 })
-local v3 = {
-    ["Home"] = v2:AddTab({
-        ["Title"] = "Information"
-    }),
-    ["Main"] = v2:AddTab({
-        ["Title"] = "Main Farm"
-    }),
-    ["Sea"] = v2:AddTab({
-        ["Title"] = "Sea Events"
-    }),
-    ["ITM"] = v2:AddTab({
-        ["Title"] = "Item Farm"
-    }),
-    ["Setting"] = v2:AddTab({
-        ["Title"] = "Farm Settings"
-    }),
-    ["Status"] = v2:AddTab({
-        ["Title"] = "Status & Server"
-    }),
-    ["Stats"] = v2:AddTab({
-        ["Title"] = "Stats"
-    }),
-    ["Player"] = v2:AddTab({
-        ["Title"] = "Player"
-    }),
-    ["Teleport"] = v2:AddTab({
-        ["Title"] = "Teleport"
-    }),
-    ["Visual"] = v2:AddTab({
-        ["Title"] = "Visuals"
-    }),
-    ["Fruit"] = v2:AddTab({
-        ["Title"] = "Fruit & ESP"
-    }),
-    ["Raid"] = v2:AddTab({
-        ["Title"] = "Raid & Dungeon"
-    }),
-    ["Race"] = v2:AddTab({
-        ["Title"] = "Race V4"
-    }),
-    ["Shop"] = v2:AddTab({
-        ["Title"] = "Shop"
-    }),
-    ["Misc"] = v2:AddTab({
-        ["Title"] = "Misc"
-    })
+
+local Tabs = {
+    ["Home"] = Window:AddTab({ ["Title"] = "Information" }),
+    ["Main"] = Window:AddTab({ ["Title"] = "Main Farm" }),
+    ["Sea"] = Window:AddTab({ ["Title"] = "Sea Events" }),
+    ["ITM"] = Window:AddTab({ ["Title"] = "Item Farm" }),
+    ["Setting"] = Window:AddTab({ ["Title"] = "Farm Settings" }),
+    ["Status"] = Window:AddTab({ ["Title"] = "Status & Server" }),
+    ["Stats"] = Window:AddTab({ ["Title"] = "Stats" }),
+    ["Player"] = Window:AddTab({ ["Title"] = "Player" }),
+    ["Teleport"] = Window:AddTab({ ["Title"] = "Teleport" }),
+    ["Visual"] = Window:AddTab({ ["Title"] = "Visuals" }),
+    ["Fruit"] = Window:AddTab({ ["Title"] = "Fruit & ESP" }),
+    ["Raid"] = Window:AddTab({ ["Title"] = "Raid & Dungeon" }),
+    ["Race"] = Window:AddTab({ ["Title"] = "Race V4" }),
+    ["Shop"] = Window:AddTab({ ["Title"] = "Shop" }),
+    ["Misc"] = Window:AddTab({ ["Title"] = "Misc" })
 }
-pcall(function() v2:SelectTab(1) end)
-local v4 = vu1.Options
-local v5 = game.PlaceId
-if v5 == 2753915549 then
-    Sea1 = true
-elseif v5 == 4442272183 then
-    Sea2 = true
-elseif v5 == 7449423635 then
-    Sea3 = true
-else
-    game:Shutdown()
-end
-game:GetService("Players").LocalPlayer.Idled:connect(function()
-    game:GetService("VirtualUser"):Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
-    task.wait()
-    game:GetService("VirtualUser"):Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
-end)
+
+pcall(function() Window:SelectTab(1) end)
+
+local Options = Fluent.Options
+
+-- ==========================================
+-- MODULE: src/core/services.lua
+-- ==========================================
+
+-- Core Services & Game Setup
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TweenService = game:GetService("TweenService")
+local VirtualUser = game:GetService("VirtualUser")
+local HttpService = game:GetService("HttpService")
+
+-- Sea PlaceId Detection
 Sea1 = false
 Sea2 = false
 Sea3 = false
-local v6 = game.PlaceId
-if v6 == 2753915549 then
+local placeId = game.PlaceId
+if placeId == 2753915549 then
     Sea1 = true
-elseif v6 == 4442272183 then
+elseif placeId == 4442272183 then
     Sea2 = true
-elseif v6 == 7449423635 then
+elseif placeId == 7449423635 then
     Sea3 = true
+end
+
+-- Anti-Idle Handler
+Players.LocalPlayer.Idled:Connect(function()
+    VirtualUser:Button2Down(Vector2.new(0, 0), Workspace.CurrentCamera.CFrame)
+    task.wait()
+    VirtualUser:Button2Up(Vector2.new(0, 0), Workspace.CurrentCamera.CFrame)
+end)
+
+-- ==========================================
+-- MODULE: src/core/quests.lua
+-- ==========================================
+
+-- Level & Quest Database
 end
 function CheckLevel()
     local v7 = game:GetService("Players").LocalPlayer.Data.Level.Value
@@ -1898,6 +1895,12 @@ function UpdateRealFruitChams()
             elseif v95.Handle:FindFirstChild("NameEsp" .. Number) then
                 v95.Handle:FindFirstChild("NameEsp" .. Number):Destroy()
             end
+
+-- ==========================================
+-- MODULE: src/core/esp.lua
+-- ==========================================
+
+-- ESP Visuals & Tracers
         end
     end
     local v98, v99, v100 = pairs(game.Workspace.PineappleSpawner:GetChildren())
@@ -2338,6 +2341,12 @@ function EquipTool(p182)
         game.Players.LocalPlayer.Character.Humanoid:EquipTool(v183)
     end
 end
+
+-- ==========================================
+-- MODULE: src/core/utils.lua
+-- ==========================================
+
+-- Movement, Combat & FastAttack Utilities
 task.spawn(function()
     local v184 = getrawmetatable(game)
     local vu185 = v184.__namecall
@@ -2621,6 +2630,12 @@ function to(pu230)
             end
         end
     end)
+
+-- ==========================================
+-- MODULE: src/ui/toggle_button.lua
+-- ==========================================
+
+-- Floating Banana Toggle Button
 end
 local v231 = Instance.new("ScreenGui")
 local vu232 = Instance.new("ImageButton")
@@ -2753,6 +2768,12 @@ end)
 
 vu232.InputEnded:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+
+-- ==========================================
+-- MODULE: src/tabs/home.lua
+-- ==========================================
+
+-- Tab: Information & Socials
         if not isDragging then
             toggleMenu()
         end
@@ -2786,6 +2807,12 @@ v3.Home:AddButton({
     ["Callback"] = function()
         setclipboard("https://www.tiktok.com/@hng.royal2?_t=ZS-8ywjDgNQ1ah&_r=1")
     end
+
+-- ==========================================
+-- MODULE: src/tabs/main_farm.lua
+-- ==========================================
+
+-- Tab: Main Farm (Level, Mob Aura, Castle Raid, Mastery, Bones, Cake Prince, Boss, Material)
 })
 _G.FastAttackStrix_Mode = "Super Fast Attack"
 task.spawn(function()
@@ -3816,6 +3843,174 @@ task.spawn(function()
     end
 end)
 if Sea3 then
+    v3.Main:AddSection("Elite")
+    local vu578 = v3.Main:AddParagraph({
+        ["Title"] = "Elite Hunter Status",
+        ["Content"] = ""
+    })
+    task.spawn(function()
+		-- upvalues: (ref) vu578
+        while task.task.wait(2) do
+            pcall(function()
+                if game:GetService("ReplicatedStorage"):FindFirstChild("Diablo") or (game:GetService("ReplicatedStorage"):FindFirstChild("Deandre") or (game:GetService("ReplicatedStorage"):FindFirstChild("Urban") or (game:GetService("Workspace").Enemies:FindFirstChild("Diablo") or (game:GetService("Workspace").Enemies:FindFirstChild("Deandre") or game:GetService("Workspace").Enemies:FindFirstChild("Urban"))))) then
+                    vu578:SetDesc("Elite Boss: ✅ | Killed:  " .. game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter", "Progress"))
+                else
+                    vu578:SetDesc("Elite Boss: ❌ | Killed: " .. game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter", "Progress"))
+                end
+            end)
+        end
+    end)
+    v3.Main:AddToggle("ToggleElite", {
+        ["Title"] = "Auto Elite Hunter",
+        ["Description"] = "",
+        ["Default"] = false
+    }):OnChanged(function(p579)
+        _G.AutoElite = p579
+    end)
+    v4.ToggleElite:SetValue(false)
+    task.spawn(function()
+        while task.task.wait() do
+            if _G.AutoElite then
+                pcall(function()
+                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter")
+                    if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible ~= true then
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter")
+                    elseif string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, "Diablo") or (string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, "Deandre") or string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, "Urban")) then
+                        if game:GetService("Workspace").Enemies:FindFirstChild("Diablo") or (game:GetService("Workspace").Enemies:FindFirstChild("Deandre") or game:GetService("Workspace").Enemies:FindFirstChild("Urban")) then
+                            local v580, v581, v582 = pairs(game:GetService("Workspace").Enemies:GetChildren())
+                            while true do
+                                local v583
+                                v582, v583 = v580(v581, v582)
+                                if v582 == nil then
+                                    break
+                                end
+                                if v583:FindFirstChild("Humanoid") and (v583:FindFirstChild("HumanoidRootPart") and (v583.Humanoid.Health > 0 and (v583.Name == "Diablo" or (v583.Name == "Deandre" or v583.Name == "Urban")))) then
+                                    repeat
+                                        task.wait(_G.Fast_Delay)
+                                        AttackNoCoolDown()
+                                        EquipTool(SelectWeapon)
+                                        AutoHaki()
+                                        Tween2(v583.HumanoidRootPart.CFrame * Pos)
+                                        v583.Humanoid.WalkSpeed = 0
+                                        v583.HumanoidRootPart.CanCollide = false
+                                        v583.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
+                                    until _G.AutoElite == false or (v583.Humanoid.Health <= 0 or not v583.Parent)
+                                end
+                            end
+                        elseif game:GetService("ReplicatedStorage"):FindFirstChild("Diablo") then
+                            Tween2(game:GetService("ReplicatedStorage"):FindFirstChild("Diablo").HumanoidRootPart.CFrame * CFrame.new(2, 20, 2))
+                        elseif game:GetService("ReplicatedStorage"):FindFirstChild("Deandre") then
+                            Tween2(game:GetService("ReplicatedStorage"):FindFirstChild("Deandre").HumanoidRootPart.CFrame * CFrame.new(2, 20, 2))
+                        elseif game:GetService("ReplicatedStorage"):FindFirstChild("Urban") then
+                            Tween2(game:GetService("ReplicatedStorage"):FindFirstChild("Urban").HumanoidRootPart.CFrame * CFrame.new(2, 20, 2))
+                        end
+                    end
+                end)
+            end
+        end
+    end)
+end
+if Sea3 then
+    v3.Main:AddToggle("ToggleSwordLengend", {
+        ["Title"] = "Auto Buy Legendary Sword",
+        ["Description"] = "",
+        ["Default"] = false
+    }):OnChanged(function(p759)
+        _G.BuyLengendSword = p759
+    end)
+    v4.ToggleSwordLengend:SetValue(false)
+    task.spawn(function()
+        while task.task.wait() do
+            pcall(function()
+                if _G.BuyLengendSword or Triple_A then
+                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack({
+                        "LegendarySwordDealer",
+                        "2"
+                    }))
+                else
+                    task.wait()
+                end
+            end)
+        end
+    end)
+end
+if Sea2 then
+    v3.Main:AddToggle("ToggleEvoRace", {
+        ["Title"] = "Auto Upgrade Race V2",
+        ["Description"] = "",
+        ["Default"] = false
+    }):OnChanged(function(p760)
+        _G.AutoEvoRace = p760
+    end)
+    v4.ToggleEvoRace:SetValue(false)
+    task.spawn(function()
+        pcall(function()
+            while task.wait(0.1) do
+                if _G.AutoEvoRace and not game:GetService("Players").LocalPlayer.Data.Race:FindFirstChild("Evolved") then
+                    if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Alchemist", "1") ~= 0 then
+                        if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Alchemist", "1") ~= 1 then
+                            if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Alchemist", "1") == 2 then
+                                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Alchemist", "3")
+                            end
+                        else
+                            pcall(function()
+                                if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Flower 1") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("Flower 1") then
+                                    if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Flower 2") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("Flower 2") then
+                                        if not (game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Flower 3") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("Flower 3")) then
+                                            if game:GetService("Workspace").Enemies:FindFirstChild("Zombie") then
+                                                local v761, v762, v763 = pairs(game:GetService("Workspace").Enemies:GetChildren())
+                                                while true do
+                                                    local v764
+                                                    v763, v764 = v761(v762, v763)
+                                                    if v763 == nil then
+                                                        break
+                                                    end
+                                                    if v764.Name == "Zombie" then
+                                                        repeat
+                                                            task.task.wait(_G.Fast_Delay)
+                                                            AutoHaki()
+                                                            EquipTool(SelectWeapon)
+                                                            Tween(v764.HumanoidRootPart.CFrame * Pos)
+                                                            v764.HumanoidRootPart.CanCollide = false
+                                                            v764.HumanoidRootPart.Size = Vector3.new(50, 50, 50)
+                                                            AttackNoCoolDown()
+                                                            FarmPos = v764.HumanoidRootPart.CFrame
+                                                            MonFarm = v764.Name
+                                                            bringmob = true
+                                                        until game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Flower 3") or (not v764.Parent or (v764.Humanoid.Health <= 0 or _G.AutoEvoRace == false))
+                                                        bringmob = false
+                                                    end
+                                                end
+                                            else
+                                                Tween(CFrame.new(- 5685.9233398438, 48.480125427246, - 853.23724365234))
+                                            end
+                                        end
+                                    else
+                                        Tween(game:GetService("Workspace").Flower2.CFrame)
+                                    end
+                                else
+                                    Tween(game:GetService("Workspace").Flower1.CFrame)
+                                end
+                            end)
+                        end
+                    else
+                        Tween(CFrame.new(- 2779.83521, 72.9661407, - 3574.02002, - 0.730484903, 6.390141e-8, - 0.68292886, 3.5996322e-8, 1, 5.5066703e-8, 0.68292886, 1.5642467e-8, - 0.730484903))
+                        if (Vector3.new(- 2779.83521, 72.9661407, - 3574.02002) - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 4 then
+                            task.wait(1.3)
+                            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Alchemist", "2")
+                        end
+                    end
+                end
+            end
+        end)
+    end)
+end
+
+-- ==========================================
+-- MODULE: src/tabs/sea_events.lua
+-- ==========================================
+
+-- Tab: Sea Events (Kitsune, Boats, Terrorshark, Shark, Piranha, Ghost Ship, Mirage, Leviathan, Draco)
     v3.Sea:AddSection("Kitsune Island Status")
     local vu365 = v3.Sea:AddParagraph({
         ["Title"] = "",
@@ -4893,74 +5088,6 @@ if Sea3 then
             end
         end
     end)
-    v3.Main:AddSection("Elite")
-    local vu578 = v3.Main:AddParagraph({
-        ["Title"] = "Elite Hunter Status",
-        ["Content"] = ""
-    })
-    task.spawn(function()
-		-- upvalues: (ref) vu578
-        while task.task.wait(2) do
-            pcall(function()
-                if game:GetService("ReplicatedStorage"):FindFirstChild("Diablo") or (game:GetService("ReplicatedStorage"):FindFirstChild("Deandre") or (game:GetService("ReplicatedStorage"):FindFirstChild("Urban") or (game:GetService("Workspace").Enemies:FindFirstChild("Diablo") or (game:GetService("Workspace").Enemies:FindFirstChild("Deandre") or game:GetService("Workspace").Enemies:FindFirstChild("Urban"))))) then
-                    vu578:SetDesc("Elite Boss: ✅ | Killed:  " .. game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter", "Progress"))
-                else
-                    vu578:SetDesc("Elite Boss: ❌ | Killed: " .. game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter", "Progress"))
-                end
-            end)
-        end
-    end)
-    v3.Main:AddToggle("ToggleElite", {
-        ["Title"] = "Auto Elite Hunter",
-        ["Description"] = "",
-        ["Default"] = false
-    }):OnChanged(function(p579)
-        _G.AutoElite = p579
-    end)
-    v4.ToggleElite:SetValue(false)
-    task.spawn(function()
-        while task.task.wait() do
-            if _G.AutoElite then
-                pcall(function()
-                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter")
-                    if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible ~= true then
-                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter")
-                    elseif string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, "Diablo") or (string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, "Deandre") or string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, "Urban")) then
-                        if game:GetService("Workspace").Enemies:FindFirstChild("Diablo") or (game:GetService("Workspace").Enemies:FindFirstChild("Deandre") or game:GetService("Workspace").Enemies:FindFirstChild("Urban")) then
-                            local v580, v581, v582 = pairs(game:GetService("Workspace").Enemies:GetChildren())
-                            while true do
-                                local v583
-                                v582, v583 = v580(v581, v582)
-                                if v582 == nil then
-                                    break
-                                end
-                                if v583:FindFirstChild("Humanoid") and (v583:FindFirstChild("HumanoidRootPart") and (v583.Humanoid.Health > 0 and (v583.Name == "Diablo" or (v583.Name == "Deandre" or v583.Name == "Urban")))) then
-                                    repeat
-                                        task.wait(_G.Fast_Delay)
-                                        AttackNoCoolDown()
-                                        EquipTool(SelectWeapon)
-                                        AutoHaki()
-                                        Tween2(v583.HumanoidRootPart.CFrame * Pos)
-                                        v583.Humanoid.WalkSpeed = 0
-                                        v583.HumanoidRootPart.CanCollide = false
-                                        v583.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
-                                    until _G.AutoElite == false or (v583.Humanoid.Health <= 0 or not v583.Parent)
-                                end
-                            end
-                        elseif game:GetService("ReplicatedStorage"):FindFirstChild("Diablo") then
-                            Tween2(game:GetService("ReplicatedStorage"):FindFirstChild("Diablo").HumanoidRootPart.CFrame * CFrame.new(2, 20, 2))
-                        elseif game:GetService("ReplicatedStorage"):FindFirstChild("Deandre") then
-                            Tween2(game:GetService("ReplicatedStorage"):FindFirstChild("Deandre").HumanoidRootPart.CFrame * CFrame.new(2, 20, 2))
-                        elseif game:GetService("ReplicatedStorage"):FindFirstChild("Urban") then
-                            Tween2(game:GetService("ReplicatedStorage"):FindFirstChild("Urban").HumanoidRootPart.CFrame * CFrame.new(2, 20, 2))
-                        end
-                    end
-                end)
-            end
-        end
-    end)
-end
-if Sea3 then
     v3.Sea:AddSection("Mirage Island")
     local vu584 = v3.Sea:AddParagraph({
         ["Title"] = "Status",
@@ -5114,6 +5241,608 @@ task.spawn(function()
         end)
     end
 end)
+v3.Sea:AddSection("Leviathan")
+v3.Sea:AddButton({
+    ["Title"] = "Buy Leviathan Spy / Chip",
+    ["Description"] = "",
+    ["Callback"] = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "2")
+    end
+})
+local v1013 = v3.Sea:AddToggle("ToggleTPFrozenDimension", {
+    ["Title"] = "Teleport to Frozen Dimension",
+    ["Description"] = "",
+    ["Default"] = false
+})
+v1013:OnChanged(function(p1014)
+    _G.TweenToFrozenDimension = p1014
+end)
+v1013:SetValue(false)
+task.spawn(function()
+    local v1015 = nil
+    while not v1015 do
+        v1015 = game:GetService("Workspace").Map:FindFirstChild("FrozenDimension")
+        task.wait()
+    end
+    while task.task.wait() do
+        if _G.TweenToFrozenDimension and v1015 then
+            Tween(v1015.CFrame)
+        end
+    end
+end)
+if Sea3 then
+    local vu1016 = v3.Sea:AddParagraph({
+        ["Title"] = "Leviathan Chip Status",
+        ["Content"] = ""
+    })
+    task.spawn(function()
+		-- upvalues: (ref) vu1016
+        pcall(function()
+			-- upvalues: (ref) vu1016
+            while task.task.wait(3) do
+                local v1017 = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "1")
+                if v1017 == 5 then
+                    vu1016:SetDesc("Leviathan Is Out There")
+                elseif v1017 == 0 then
+                    vu1016:SetDesc("I Don\'t Know")
+                else
+                    vu1016:SetDesc("Mua: " .. tostring(v1017))
+                end
+            end
+        end)
+    end)
+end
+local v1018 = v3.Sea:AddSection("Draco")
+v3.Sea:AddToggle("ToggleBlazeEmber", {
+    ["Title"] = "Auto Blaze Ember",
+    ["Description"] = "",
+    ["Default"] = false
+}):OnChanged(function(p1019)
+    _G.AutoBlazeEmber = p1019
+end)
+task.spawn(function()
+    while task.task.wait() do
+        if _G.AutoBlazeEmber then
+            pcall(function()
+                game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Net"):WaitForChild("RE/DragonDojoEmber"):FireServer()
+            end)
+        end
+    end
+end)
+v3.Sea:AddToggle("ToggleReceiveQuest", {
+    ["Title"] = "Get Blaze Ember Quest",
+    ["Description"] = "",
+    ["Default"] = false
+}):OnChanged(function(p1020)
+    _G.AutoReceiveQuest = p1020
+    if _G.AutoReceiveQuest then
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(5661.5322265625, 1013.0907592773438, - 334.9649963378906))
+        Tween2(CFrame.new(5814.42724609375, 1208.3267822265625, 884.5785522460938))
+        task.spawn(function()
+            pcall(function()
+                while task.task.wait() do
+                    game:GetService("ReplicatedStorage").Modules.Net:FindFirstChild("RF/DragonHunter"):InvokeServer(unpack({
+                        {
+                            ["Context"] = "RequestQuest"
+                        }
+                    }))
+                    game:GetService("ReplicatedStorage").Modules.Net:FindFirstChild("RF/DragonHunter"):InvokeServer(unpack({
+                        {
+                            ["Context"] = "Check"
+                        }
+                    }))
+                end
+            end)
+        end)
+    end
+end)
+local vu1021 = v3.Sea:AddParagraph({
+    ["Title"] = "Blaze Ember Quest Status",
+    ["Content"] = ""
+})
+task.spawn(function()
+	-- upvalues: (ref) vu1021
+    pcall(function()
+		-- upvalues: (ref) vu1021
+        while task.task.wait(2.5) do
+            local v1022 = game:GetService("ReplicatedStorage").Modules.Net:FindFirstChild("RF/DragonHunter"):InvokeServer(unpack({
+                {
+                    ["Context"] = "Check"
+                }
+            }))
+            if typeof(v1022) ~= "table" then
+                print(v1022)
+            else
+                local v1023, v1024, v1025 = pairs(v1022)
+                while true do
+                    local v1026
+                    v1025, v1026 = v1023(v1024, v1025)
+                    if v1025 == nil then
+                        break
+                    end
+                    if v1026 == "Defeat 3 Venomous Assailants on Hydra Island." then
+                        vu1021:SetDesc("Defeat 3 Venomous Assailants on Hydra Island.")
+                    elseif v1026 == "Defeat 3 Hydra Enforcers on Hydra Island." then
+                        vu1021:SetDesc("Defeat 3 Hydra Enforcers on Hydra Island.")
+                    elseif v1026 == "Destroy 10 trees on Hydra Island." then
+                        vu1021:SetDesc("Destroy 10 trees on Hydra Island.")
+                    end
+                end
+            end
+        end
+    end)
+end)
+v3.Sea:AddToggle("ToggleHydraTree", {
+    ["Title"] = "Destroy Trees at Hydra Island",
+    ["Description"] = "",
+    ["Default"] = false
+}):OnChanged(function(p1027)
+    _G.AutoHydraTree = p1027
+end)
+local function vu1030(p1028)
+    local v1029 = game:GetService("VirtualInputManager")
+    v1029:SendKeyEvent(true, p1028, false, game)
+    v1029:SendKeyEvent(false, p1028, false, game)
+end
+local function vu1042(p1031)
+	-- upvalues: (ref) vu1030
+    local v1032 = game.Players.LocalPlayer
+    local v1033 = v1032.Backpack
+    local v1034, v1035, v1036 = pairs(v1033:GetChildren())
+    while true do
+        local v1037
+        v1036, v1037 = v1034(v1035, v1036)
+        if v1036 == nil then
+            break
+        end
+        if v1037:IsA("Tool") and v1037.ToolTip == p1031 then
+            v1037.Parent = v1032.Character
+            local v1038, v1039, v1040 = ipairs({
+                "Z",
+                "X",
+                "C",
+                "V",
+                "F"
+            })
+            while true do
+                local vu1041
+                v1040, vu1041 = v1038(v1039, v1040)
+                if v1040 == nil then
+                    break
+                end
+                task.wait()
+                pcall(function()
+					-- upvalues: (ref) vu1030, (ref) vu1041
+                    vu1030(vu1041)
+                end)
+            end
+            v1037.Parent = v1033
+            break
+        end
+    end
+end
+local vu1043 = {
+    CFrame.new(5288.61962890625, 1005.4000244140625, 392.43011474609375),
+    CFrame.new(5343.39453125, 1004.1998901367188, 361.0687561035156),
+    CFrame.new(5235.78564453125, 1004.1998901367188, 431.4530944824219),
+    CFrame.new(5321.30615234375, 1004.1998901367188, 440.8951416015625),
+    CFrame.new(5258.96484375, 1004.1998901367188, 345.5052490234375)
+}
+task.spawn(function()
+	-- upvalues: (ref) vu1043, (ref) vu1042
+    while task.task.wait() do
+        if _G.AutoHydraTree then
+            AutoHaki()
+            local v1044, v1045, v1046 = ipairs(vu1043)
+            while true do
+                local v1047
+                v1046, v1047 = v1044(v1045, v1046)
+                if v1046 == nil or not _G.AutoHydraTree then
+                    break
+                end
+                Tween2(v1047)
+                task.wait()
+                local v1048 = game.Players.LocalPlayer.Character
+                if v1048 and (v1048:FindFirstChild("HumanoidRootPart") and (v1048.HumanoidRootPart.Position - v1047.Position).Magnitude <= 1) then
+                    vu1042("Melee")
+                    vu1042("Sword")
+                    vu1042("Gun")
+                end
+            end
+        end
+    end
+end)
+v1018:AddButton({
+    ["Title"] = "Teleport to Dragon Dojo",
+    ["Description"] = "",
+    ["Callback"] = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(5661.5322265625, 1013.0907592773438, - 334.9649963378906))
+        Tween2(CFrame.new(5814.42724609375, 1208.3267822265625, 884.5785522460938))
+    end
+})
+v1018:AddButton({
+    ["Title"] = "Buy Volcano Magnet",
+    ["Description"] = "",
+    ["Callback"] = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack({
+            "CraftItem",
+            "Craft",
+            "Volcanic Magnet"
+        }))
+    end
+})
+v3.Sea:AddToggle("ToggleCollectFireFlowers", {
+    ["Title"] = "Auto Collect Fire Flower",
+    ["Description"] = "",
+    ["Default"] = false
+}):OnChanged(function(p1049)
+    _G.AutoCollectFireFlowers = p1049
+end)
+task.spawn(function()
+    while task.task.wait() do
+        local v1050 = _G.AutoCollectFireFlowers and workspace:FindFirstChild("FireFlowers")
+        if v1050 then
+            local v1051, v1052, v1053 = pairs(v1050:GetChildren())
+            while true do
+                local v1054
+                v1053, v1054 = v1051(v1052, v1053)
+                if v1053 == nil then
+                    break
+                end
+                if v1054:IsA("Model") and v1054.PrimaryPart then
+                    local v1055 = v1054.PrimaryPart.Position
+                    if (v1055 - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 1 then
+                        Tween2(CFrame.new(v1055))
+                    else
+                        game:GetService("VirtualInputManager"):SendKeyEvent(true, "E", false, game)
+                        task.wait(1.5)
+                        game:GetService("VirtualInputManager"):SendKeyEvent(false, "E", false, game)
+                    end
+                end
+            end
+        end
+    end
+end)
+v3.Sea:AddToggle("ToggleWhiteBelt", {
+    ["Title"] = "Auto Craft White Belt",
+    ["Description"] = "",
+    ["Default"] = false
+}):OnChanged(function(p1056)
+    _G.AutoLevel = p1056
+    if p1056 then
+        game:GetService("ReplicatedStorage").Modules.Net:FindFirstChild("RF/InteractDragonQuest"):InvokeServer(unpack({
+            {
+                ["NPC"] = "Dojo Trainer",
+                ["Command"] = "RequestQuest"
+            }
+        }))
+        task.spawn(function()
+            while _G.AutoLevel do
+                game:GetService("ReplicatedStorage").Modules.Net:FindFirstChild("RF/InteractDragonQuest"):InvokeServer(unpack({
+                    {
+                        ["NPC"] = "Dojo Trainer",
+                        ["Command"] = "ClaimQuest"
+                    }
+                }))
+                task.wait()
+            end
+        end)
+    end
+end)
+v3.Sea:AddParagraph({
+    ["Title"] = "Dragon Race",
+    ["Content"] = ""
+})
+v3.Sea:AddToggle("ToggleTrialTeleport", {
+    ["Title"] = "Teleport to Dragon Trial Door",
+    ["Description"] = "",
+    ["Default"] = false
+}):OnChanged(function(p1057)
+    _G.AutoTrialTeleport = p1057
+end)
+task.spawn(function()
+    while task.task.wait() do
+        if _G.AutoTrialTeleport then
+            local v1058 = workspace.Map.PrehistoricIsland:FindFirstChild("TrialTeleport")
+            if v1058 and v1058:IsA("Part") then
+                Tween2(CFrame.new(v1058.Position))
+            end
+        end
+    end
+end)
+v3.Sea:AddSection("Prehistoric Island")
+local vu1059 = v3.Sea:AddParagraph({
+    ["Title"] = "Volcano / Prehistoric Island Status",
+    ["Content"] = ""
+})
+task.spawn(function()
+	-- upvalues: (ref) vu1059
+    pcall(function()
+		-- upvalues: (ref) vu1059
+        while task.task.wait(2) do
+            if game:GetService("Workspace").Map:FindFirstChild("PrehistoricIsland") then
+                vu1059:SetDesc("Prehistoric Island: ✅")
+            else
+                vu1059:SetDesc("Prehistoric Island: ❌")
+            end
+        end
+    end)
+end)
+v3.Sea:AddToggle("ToggleTPVolcano", {
+    ["Title"] = "Teleport to Prehistoric Island",
+    ["Description"] = "",
+    ["Default"] = false
+}):OnChanged(function(p1060)
+    _G.TweenToPrehistoric = p1060
+end)
+v4.ToggleTPVolcano:SetValue(false)
+task.spawn(function()
+    local v1061 = nil
+    while not v1061 do
+        v1061 = game:GetService("Workspace").Map:FindFirstChild("PrehistoricIsland")
+        task.wait()
+    end
+    while task.task.wait() do
+        local v1062 = _G.TweenToPrehistoric and game:GetService("Workspace").Map:FindFirstChild("PrehistoricIsland")
+        if v1062 then
+            local v1063 = v1062:FindFirstChild("Core")
+            if v1063 then
+                v1063 = v1062.Core:FindFirstChild("PrehistoricRelic")
+            end
+            if v1063 then
+                v1063 = v1063:FindFirstChild("Skull")
+            end
+            if v1063 then
+                Tween2(CFrame.new(v1063.Position))
+                _G.TweenToPrehistoric = false
+            end
+        end
+    end
+end)
+v3.Sea:AddToggle("ToggleDefendVolcano", {
+    ["Title"] = "Safe Mode",
+    ["Description"] = "",
+    ["Default"] = false
+}):OnChanged(function(p1064)
+    _G.AutoDefendVolcano = p1064
+end)
+v3.Sea:AddToggle("ToggleMelee", {
+    ["Title"] = "Use Melee",
+    ["Description"] = "",
+    ["Default"] = false
+}):OnChanged(function(p1065)
+    _G.UseMelee = p1065
+end)
+v3.Sea:AddToggle("ToggleSword", {
+    ["Title"] = "Use Sword",
+    ["Description"] = "",
+    ["Default"] = false
+}):OnChanged(function(p1066)
+    _G.UseSword = p1066
+end)
+v3.Sea:AddToggle("ToggleGun", {
+    ["Title"] = "Use Gun",
+    ["Description"] = "",
+    ["Default"] = false
+}):OnChanged(function(p1067)
+    _G.UseGun = p1067
+end)
+local function vu1069(p1068)
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, p1068, false, game)
+    game:GetService("VirtualInputManager"):SendKeyEvent(false, p1068, false, game)
+end
+local function vu1085()
+    local v1070 = game.Workspace.Map.PrehistoricIsland.Core:FindFirstChild("InteriorLava")
+    if v1070 and v1070:IsA("Model") then
+        v1070:Destroy()
+    end
+    local v1071 = game.Workspace.Map:FindFirstChild("PrehistoricIsland")
+    if v1071 then
+        local v1072, v1073, v1074 = pairs(v1071:GetDescendants())
+        while true do
+            local v1075
+            v1074, v1075 = v1072(v1073, v1074)
+            if v1074 == nil then
+                break
+            end
+            if v1075:IsA("Part") and v1075.Name:lower():find("lava") then
+                v1075:Destroy()
+            end
+        end
+    end
+    local v1076 = game.Workspace.Map:FindFirstChild("PrehistoricIsland")
+    if v1076 then
+        local v1077, v1078, v1079 = pairs(v1076:GetDescendants())
+        while true do
+            local v1080
+            v1079, v1080 = v1077(v1078, v1079)
+            if v1079 == nil then
+                break
+            end
+            if v1080:IsA("Model") then
+                local v1081, v1082, v1083 = pairs(v1080:GetDescendants())
+                while true do
+                    local v1084
+                    v1083, v1084 = v1081(v1082, v1083)
+                    if v1083 == nil then
+                        break
+                    end
+                    if v1084:IsA("MeshPart") and v1084.Name:lower():find("lava") then
+                        v1084:Destroy()
+                    end
+                end
+            end
+        end
+    end
+end
+local function vu1093()
+    local v1086 = game.Workspace.Map.PrehistoricIsland.Core.VolcanoRocks
+    local v1087, v1088, v1089 = pairs(v1086:GetChildren())
+    while true do
+        local v1090
+        v1089, v1090 = v1087(v1088, v1089)
+        if v1089 == nil then
+            break
+        end
+        if v1090:IsA("Model") then
+            local v1091 = v1090:FindFirstChild("volcanorock")
+            if v1091 and v1091:IsA("MeshPart") then
+                local v1092 = v1091.Color
+                if v1092 == Color3.fromRGB(185, 53, 56) or v1092 == Color3.fromRGB(185, 53, 57) then
+                    return v1091
+                end
+            end
+        end
+    end
+    return nil
+end
+local function vu1105(p1094)
+	-- upvalues: (ref) vu1069
+    local v1095 = game.Players.LocalPlayer
+    local v1096 = v1095.Backpack
+    local v1097, v1098, v1099 = pairs(v1096:GetChildren())
+    while true do
+        local v1100
+        v1099, v1100 = v1097(v1098, v1099)
+        if v1099 == nil then
+            break
+        end
+        if v1100:IsA("Tool") and v1100.ToolTip == p1094 then
+            v1100.Parent = v1095.Character
+            local v1101, v1102, v1103 = ipairs({
+                "Z",
+                "X",
+                "C",
+                "V",
+                "F"
+            })
+            while true do
+                local vu1104
+                v1103, vu1104 = v1101(v1102, v1103)
+                if v1103 == nil then
+                    break
+                end
+                task.wait()
+                pcall(function()
+					-- upvalues: (ref) vu1069, (ref) vu1104
+                    vu1069(vu1104)
+                end)
+            end
+            v1100.Parent = v1096
+            break
+        end
+    end
+end
+task.spawn(function()
+	-- upvalues: (ref) vu1085, (ref) vu1093, (ref) vu1105
+    while task.task.wait() do
+        if _G.AutoDefendVolcano then
+            AutoHaki()
+            pcall(vu1085)
+            local v1106 = vu1093()
+            if v1106 then
+                local v1107 = CFrame.new(v1106.Position + Vector3.new(0, 0, 0))
+                Tween2(v1107)
+                local v1108 = v1106.Color
+                if v1108 == Color3.fromRGB(185, 53, 56) or v1108 == Color3.fromRGB(185, 53, 57) then
+                    if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v1106.Position - Vector3.new(0, 0, 0)).Magnitude <= 1 then
+                        if _G.UseMelee then
+                            vu1105("Melee")
+                        end
+                        if _G.UseSword then
+                            vu1105("Sword")
+                        end
+                        if _G.UseGun then
+                            vu1105("Gun")
+                        end
+                    end
+                    _G.TweenToPrehistoric = false
+                else
+                    vu1093()
+                end
+            else
+                _G.TweenToPrehistoric = true
+            end
+        end
+    end
+end)
+v3.Sea:AddToggle("ToggleKillAura", {
+    ["Title"] = "Attack Golems (Kill Aura)",
+    ["Description"] = "",
+    ["Default"] = false
+}):OnChanged(function(p1109)
+    KillAura = p1109
+end)
+v4.ToggleKillAura:SetValue(false)
+task.spawn(function()
+    while task.task.wait() do
+        if KillAura then
+            pcall(function()
+                local v1110, v1111, v1112 = pairs(game.Workspace.Enemies:GetDescendants())
+                while true do
+                    local v1113
+                    v1112, v1113 = v1110(v1111, v1112)
+                    if v1112 == nil then
+                        break
+                    end
+                    if v1113:FindFirstChild("Humanoid") and (v1113:FindFirstChild("HumanoidRootPart") and v1113.Humanoid.Health > 0) then
+                        repeat
+                            task.task.wait()
+                            sethiddenproperty(game:GetService("Players").LocalPlayer, "SimulationRadius", math.huge)
+                            v1113.Humanoid.Health = 0
+                            v1113.HumanoidRootPart.CanCollide = false
+                        until not KillAura or (not v1113.Parent or v1113.Humanoid.Health <= 0)
+                    end
+                end
+            end)
+        end
+    end
+end)
+v3.Sea:AddToggle("ToggleCollectBone", {
+    ["Title"] = "Collect Bones",
+    ["Description"] = "",
+    ["Default"] = false
+}):OnChanged(function(p1114)
+    _G.AutoCollectBone = p1114
+end)
+task.spawn(function()
+    while task.task.wait() do
+        if _G.AutoCollectBone then
+            local v1115, v1116, v1117 = pairs(workspace:GetDescendants())
+            while true do
+                local v1118
+                v1117, v1118 = v1115(v1116, v1117)
+                if v1117 == nil then
+                    break
+                end
+                if v1118:IsA("BasePart") and v1118.Name == "DinoBone" then
+                    Tween2(CFrame.new(v1118.Position))
+                end
+            end
+        end
+    end
+end)
+v3.Sea:AddToggle("ToggleCollectEgg", {
+    ["Title"] = "Collect Dragon Eggs",
+    ["Description"] = "",
+    ["Default"] = false
+}):OnChanged(function(p1119)
+    _G.AutoCollectEgg = p1119
+end)
+task.spawn(function()
+    while task.task.wait() do
+        if _G.AutoCollectEgg then
+            local v1120 = workspace.Map.PrehistoricIsland.Core.SpawnedDragonEggs:GetChildren()
+            if # v1120 > 0 then
+                local v1121 = v1120[math.random(1, # v1120)]
+                if v1121:IsA("Model") and v1121.PrimaryPart then
+                    Tween2(v1121.PrimaryPart.CFrame)
+
+-- ==========================================
+-- MODULE: src/tabs/item_farm.lua
+-- ==========================================
+
+-- Tab: Item Farm (Saber, Pole, Shark Saw, Warden, Hallow Scythe, Yama, Tushita, Torches, CDK, Soul Guitar)
 v3.ITM:AddToggle("ToggleAutoSaber", {
     ["Title"] = "Auto Get Saber",
     ["Description"] = "",
@@ -6819,100 +7548,12 @@ if Sea2 or Sea3 then
     end)
 end
 if Sea2 then
-    v3.Main:AddToggle("ToggleSwordLengend", {
-        ["Title"] = "Auto Buy Legendary Sword",
-        ["Description"] = "",
-        ["Default"] = false
-    }):OnChanged(function(p759)
-        _G.BuyLengendSword = p759
-    end)
-    v4.ToggleSwordLengend:SetValue(false)
-    task.spawn(function()
-        while task.task.wait() do
-            pcall(function()
-                if _G.BuyLengendSword or Triple_A then
-                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack({
-                        "LegendarySwordDealer",
-                        "2"
-                    }))
-                else
-                    task.wait()
-                end
-            end)
-        end
-    end)
-end
-if Sea2 then
-    v3.Main:AddToggle("ToggleEvoRace", {
-        ["Title"] = "Auto Upgrade Race V2",
-        ["Description"] = "",
-        ["Default"] = false
-    }):OnChanged(function(p760)
-        _G.AutoEvoRace = p760
-    end)
-    v4.ToggleEvoRace:SetValue(false)
-    task.spawn(function()
-        pcall(function()
-            while task.wait(0.1) do
-                if _G.AutoEvoRace and not game:GetService("Players").LocalPlayer.Data.Race:FindFirstChild("Evolved") then
-                    if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Alchemist", "1") ~= 0 then
-                        if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Alchemist", "1") ~= 1 then
-                            if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Alchemist", "1") == 2 then
-                                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Alchemist", "3")
-                            end
-                        else
-                            pcall(function()
-                                if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Flower 1") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("Flower 1") then
-                                    if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Flower 2") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("Flower 2") then
-                                        if not (game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Flower 3") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("Flower 3")) then
-                                            if game:GetService("Workspace").Enemies:FindFirstChild("Zombie") then
-                                                local v761, v762, v763 = pairs(game:GetService("Workspace").Enemies:GetChildren())
-                                                while true do
-                                                    local v764
-                                                    v763, v764 = v761(v762, v763)
-                                                    if v763 == nil then
-                                                        break
-                                                    end
-                                                    if v764.Name == "Zombie" then
-                                                        repeat
-                                                            task.task.wait(_G.Fast_Delay)
-                                                            AutoHaki()
-                                                            EquipTool(SelectWeapon)
-                                                            Tween(v764.HumanoidRootPart.CFrame * Pos)
-                                                            v764.HumanoidRootPart.CanCollide = false
-                                                            v764.HumanoidRootPart.Size = Vector3.new(50, 50, 50)
-                                                            AttackNoCoolDown()
-                                                            FarmPos = v764.HumanoidRootPart.CFrame
-                                                            MonFarm = v764.Name
-                                                            bringmob = true
-                                                        until game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Flower 3") or (not v764.Parent or (v764.Humanoid.Health <= 0 or _G.AutoEvoRace == false))
-                                                        bringmob = false
-                                                    end
-                                                end
-                                            else
-                                                Tween(CFrame.new(- 5685.9233398438, 48.480125427246, - 853.23724365234))
-                                            end
-                                        end
-                                    else
-                                        Tween(game:GetService("Workspace").Flower2.CFrame)
-                                    end
-                                else
-                                    Tween(game:GetService("Workspace").Flower1.CFrame)
-                                end
-                            end)
-                        end
-                    else
-                        Tween(CFrame.new(- 2779.83521, 72.9661407, - 3574.02002, - 0.730484903, 6.390141e-8, - 0.68292886, 3.5996322e-8, 1, 5.5066703e-8, 0.68292886, 1.5642467e-8, - 0.730484903))
-                        if (Vector3.new(- 2779.83521, 72.9661407, - 3574.02002) - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 4 then
-                            task.wait(1.3)
-                            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Alchemist", "2")
-                        end
-                    end
-                end
-            end
-        end)
-    end)
-end
+
+-- ==========================================
+-- MODULE: src/tabs/settings.lua
+-- ==========================================
+
+-- Tab: Farm Settings (Auto Ken, Spawn Point, Bring Mob, White Screen, Skill Keybinds)
 v3.Setting:AddToggle("ToggleAutoT", {
     ["Title"] = "Auto Upgrade Race V3",
     ["Description"] = "",
@@ -7127,6 +7768,12 @@ local v784 = {
     ["Content"] = "━━━━━━━━━━━━━━━━━━━━━\n" .. "Name : " .. game.Players.LocalPlayer.DisplayName .. " (@" .. game.Players.LocalPlayer.Name .. ")\n" .. "Level : " .. game:GetService("Players").LocalPlayer.Data.Level.Value .. "\n" .. "Beli : " .. game:GetService("Players").LocalPlayer.Data.Beli.Value .. "\n" .. "Fragments : " .. game:GetService("Players").LocalPlayer.Data.Fragments.Value .. "\n" .. "Bounty/Honor : " .. game:GetService("Players").LocalPlayer.leaderstats["Bounty/Honor"].Value .. "\n" .. "HP: " .. game.Players.LocalPlayer.Character.Humanoid.Health .. "/" .. game.Players.LocalPlayer.Character.Humanoid.MaxHealth .. "\n" .. "Energy : " .. game.Players.LocalPlayer.Character.Energy.Value .. "/" .. game.Players.LocalPlayer.Character.Energy.MaxValue .. "\n" .. "Race : " .. game:GetService("Players").LocalPlayer.Data.Race.Value .. "\n" .. "Fruit : " .. game:GetService("Players").LocalPlayer.Data.DevilFruit.Value .. "\n━━━━━━━━━━━━━━━━━━━━━"
 }
 v783(v782, v784)
+
+-- ==========================================
+-- MODULE: src/tabs/status.lua
+-- ==========================================
+
+-- Tab: Status & Server (Player Card, Server Time, JobId, Join Server)
 local vu785 = v3.Status:AddParagraph({
     ["Title"] = "Time",
     ["Content"] = ""
@@ -7226,6 +7873,12 @@ task.spawn(function()
         end
     end
 end)
+
+-- ==========================================
+-- MODULE: src/tabs/stats.lua
+-- ==========================================
+
+-- Tab: Stats Auto-Allocation
 v3.Stats:AddToggle("ToggleMelee", {
     ["Title"] = "Melee",
     ["Description"] = "",
@@ -7332,6 +7985,12 @@ while true do
     end
     table.insert(vu814, v815.Name)
 end
+
+-- ==========================================
+-- MODULE: src/tabs/player.lua
+-- ==========================================
+
+-- Tab: Player (TP to Player, NoClip, Walk on Water, PvP)
 local v816 = v3.Player:AddDropdown("SelectedPly", {
     ["Title"] = "Select Player",
     ["Description"] = "",
@@ -7449,6 +8108,12 @@ task.spawn(function()
         end
     end)
 end)
+
+-- ==========================================
+-- MODULE: src/tabs/teleport.lua
+-- ==========================================
+
+-- Tab: Island Teleportation
 local vu830 = v3.Teleport:AddSection("Sea")
 v3.Teleport:AddToggle("ToggleAutoSea2", {
     ["Title"] = "Auto Sea 2 Quest",
@@ -7874,6 +8539,12 @@ v3.Teleport:AddButton({
         CancelTween()
     end
 })
+
+-- ==========================================
+-- MODULE: src/tabs/visuals.lua
+-- ==========================================
+
+-- Tab: Fake Visuals (Level, Bounty, Beli, Fragments)
 v3.Visual:AddButton({
     ["Title"] = "Fake Stats",
     ["Description"] = "",
@@ -7977,6 +8648,12 @@ _G.SelectFruit = "Dragon-Dragon"
 _G.PermanentFruit = "Dragon-Dragon"
 _G.AutoBuyFruitSniper = false
 _G.AutoSwitchPermanentFruit = false
+
+-- ==========================================
+-- MODULE: src/tabs/fruit.lua
+-- ==========================================
+
+-- Tab: Fruit & ESP (Sniper, Gacha, Store, Fruit TP/Tween)
 local v861 = v3.Fruit:AddDropdown("DropdownFruit", {
     ["Title"] = "Select Fruit",
     ["Description"] = "",
@@ -8457,6 +9134,12 @@ function UpdateIslandMirageEsp()
         end)
     end
 end
+
+-- ==========================================
+-- MODULE: src/tabs/raid.lua
+-- ==========================================
+
+-- Tab: Raid & Dungeon (Chips, Law Raid, Awaken Fruit)
 local v913 = v3.Raid:AddDropdown("DropdownRaid", {
     ["Title"] = "Select Raid Chip",
     ["Description"] = "",
@@ -8764,6 +9447,12 @@ task.spawn(function()
         end
     end)
 end)
+
+-- ==========================================
+-- MODULE: src/tabs/race.lua
+-- ==========================================
+
+-- Tab: Race V4 (Temple of Time, Lever, Trials, Gear)
 v3.Race:AddButton({
     ["Title"] = "Temple of Time",
     ["Description"] = "",
@@ -9091,6 +9780,12 @@ v3.Race:AddToggle("ToggleUpgrade", {
     end
 end)
 v4.ToggleUpgrade:SetValue(false)
+
+-- ==========================================
+-- MODULE: src/tabs/shop.lua
+-- ==========================================
+
+-- Tab: Shop (Abilities, Swords, Fighting Styles, Stat Reset, Race Reroll)
 v3.Shop:AddSection("Haki / Abilities")
 v3.Shop:AddButton({
     ["Title"] = "Skyjump (Geppo)",
@@ -9333,6 +10028,12 @@ v3.Shop:AddButton({
         game:GetService("ReplicatedStorage").Modules.Net:FindFirstChild("RF/InteractDragonQuest"):InvokeServer(unpack(v980))
     end
 })
+
+-- ==========================================
+-- MODULE: src/tabs/misc.lua
+-- ==========================================
+
+-- Tab: Misc (Rejoin, Server Hop, Team Change, Codes, Anti-Ban)
 v3.Misc:AddButton({
     ["Title"] = "Rejoin Server",
     ["Description"] = "",
@@ -9599,610 +10300,12 @@ task.spawn(function()
         end
     end
 end)
-v3.Sea:AddSection("Leviathan")
-v3.Sea:AddButton({
-    ["Title"] = "Buy Leviathan Spy / Chip",
-    ["Description"] = "",
-    ["Callback"] = function()
-        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "2")
-    end
-})
-local v1013 = v3.Sea:AddToggle("ToggleTPFrozenDimension", {
-    ["Title"] = "Teleport to Frozen Dimension",
-    ["Description"] = "",
-    ["Default"] = false
-})
-v1013:OnChanged(function(p1014)
-    _G.TweenToFrozenDimension = p1014
-end)
-v1013:SetValue(false)
-task.spawn(function()
-    local v1015 = nil
-    while not v1015 do
-        v1015 = game:GetService("Workspace").Map:FindFirstChild("FrozenDimension")
-        task.wait()
-    end
-    while task.task.wait() do
-        if _G.TweenToFrozenDimension and v1015 then
-            Tween(v1015.CFrame)
-        end
+
+-- Finalize Tab Selection
+pcall(function()
+    if Window and Window.SelectTab then
+        Window:SelectTab(1)
+    elseif v2 and v2.SelectTab then
+        v2:SelectTab(1)
     end
 end)
-if Sea3 then
-    local vu1016 = v3.Sea:AddParagraph({
-        ["Title"] = "Leviathan Chip Status",
-        ["Content"] = ""
-    })
-    task.spawn(function()
-		-- upvalues: (ref) vu1016
-        pcall(function()
-			-- upvalues: (ref) vu1016
-            while task.task.wait(3) do
-                local v1017 = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "1")
-                if v1017 == 5 then
-                    vu1016:SetDesc("Leviathan Is Out There")
-                elseif v1017 == 0 then
-                    vu1016:SetDesc("I Don\'t Know")
-                else
-                    vu1016:SetDesc("Mua: " .. tostring(v1017))
-                end
-            end
-        end)
-    end)
-end
-local v1018 = v3.Sea:AddSection("Draco")
-v3.Sea:AddToggle("ToggleBlazeEmber", {
-    ["Title"] = "Auto Blaze Ember",
-    ["Description"] = "",
-    ["Default"] = false
-}):OnChanged(function(p1019)
-    _G.AutoBlazeEmber = p1019
-end)
-task.spawn(function()
-    while task.task.wait() do
-        if _G.AutoBlazeEmber then
-            pcall(function()
-                game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Net"):WaitForChild("RE/DragonDojoEmber"):FireServer()
-            end)
-        end
-    end
-end)
-v3.Sea:AddToggle("ToggleReceiveQuest", {
-    ["Title"] = "Get Blaze Ember Quest",
-    ["Description"] = "",
-    ["Default"] = false
-}):OnChanged(function(p1020)
-    _G.AutoReceiveQuest = p1020
-    if _G.AutoReceiveQuest then
-        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(5661.5322265625, 1013.0907592773438, - 334.9649963378906))
-        Tween2(CFrame.new(5814.42724609375, 1208.3267822265625, 884.5785522460938))
-        task.spawn(function()
-            pcall(function()
-                while task.task.wait() do
-                    game:GetService("ReplicatedStorage").Modules.Net:FindFirstChild("RF/DragonHunter"):InvokeServer(unpack({
-                        {
-                            ["Context"] = "RequestQuest"
-                        }
-                    }))
-                    game:GetService("ReplicatedStorage").Modules.Net:FindFirstChild("RF/DragonHunter"):InvokeServer(unpack({
-                        {
-                            ["Context"] = "Check"
-                        }
-                    }))
-                end
-            end)
-        end)
-    end
-end)
-local vu1021 = v3.Sea:AddParagraph({
-    ["Title"] = "Blaze Ember Quest Status",
-    ["Content"] = ""
-})
-task.spawn(function()
-	-- upvalues: (ref) vu1021
-    pcall(function()
-		-- upvalues: (ref) vu1021
-        while task.task.wait(2.5) do
-            local v1022 = game:GetService("ReplicatedStorage").Modules.Net:FindFirstChild("RF/DragonHunter"):InvokeServer(unpack({
-                {
-                    ["Context"] = "Check"
-                }
-            }))
-            if typeof(v1022) ~= "table" then
-                print(v1022)
-            else
-                local v1023, v1024, v1025 = pairs(v1022)
-                while true do
-                    local v1026
-                    v1025, v1026 = v1023(v1024, v1025)
-                    if v1025 == nil then
-                        break
-                    end
-                    if v1026 == "Defeat 3 Venomous Assailants on Hydra Island." then
-                        vu1021:SetDesc("Defeat 3 Venomous Assailants on Hydra Island.")
-                    elseif v1026 == "Defeat 3 Hydra Enforcers on Hydra Island." then
-                        vu1021:SetDesc("Defeat 3 Hydra Enforcers on Hydra Island.")
-                    elseif v1026 == "Destroy 10 trees on Hydra Island." then
-                        vu1021:SetDesc("Destroy 10 trees on Hydra Island.")
-                    end
-                end
-            end
-        end
-    end)
-end)
-v3.Sea:AddToggle("ToggleHydraTree", {
-    ["Title"] = "Destroy Trees at Hydra Island",
-    ["Description"] = "",
-    ["Default"] = false
-}):OnChanged(function(p1027)
-    _G.AutoHydraTree = p1027
-end)
-local function vu1030(p1028)
-    local v1029 = game:GetService("VirtualInputManager")
-    v1029:SendKeyEvent(true, p1028, false, game)
-    v1029:SendKeyEvent(false, p1028, false, game)
-end
-local function vu1042(p1031)
-	-- upvalues: (ref) vu1030
-    local v1032 = game.Players.LocalPlayer
-    local v1033 = v1032.Backpack
-    local v1034, v1035, v1036 = pairs(v1033:GetChildren())
-    while true do
-        local v1037
-        v1036, v1037 = v1034(v1035, v1036)
-        if v1036 == nil then
-            break
-        end
-        if v1037:IsA("Tool") and v1037.ToolTip == p1031 then
-            v1037.Parent = v1032.Character
-            local v1038, v1039, v1040 = ipairs({
-                "Z",
-                "X",
-                "C",
-                "V",
-                "F"
-            })
-            while true do
-                local vu1041
-                v1040, vu1041 = v1038(v1039, v1040)
-                if v1040 == nil then
-                    break
-                end
-                task.wait()
-                pcall(function()
-					-- upvalues: (ref) vu1030, (ref) vu1041
-                    vu1030(vu1041)
-                end)
-            end
-            v1037.Parent = v1033
-            break
-        end
-    end
-end
-local vu1043 = {
-    CFrame.new(5288.61962890625, 1005.4000244140625, 392.43011474609375),
-    CFrame.new(5343.39453125, 1004.1998901367188, 361.0687561035156),
-    CFrame.new(5235.78564453125, 1004.1998901367188, 431.4530944824219),
-    CFrame.new(5321.30615234375, 1004.1998901367188, 440.8951416015625),
-    CFrame.new(5258.96484375, 1004.1998901367188, 345.5052490234375)
-}
-task.spawn(function()
-	-- upvalues: (ref) vu1043, (ref) vu1042
-    while task.task.wait() do
-        if _G.AutoHydraTree then
-            AutoHaki()
-            local v1044, v1045, v1046 = ipairs(vu1043)
-            while true do
-                local v1047
-                v1046, v1047 = v1044(v1045, v1046)
-                if v1046 == nil or not _G.AutoHydraTree then
-                    break
-                end
-                Tween2(v1047)
-                task.wait()
-                local v1048 = game.Players.LocalPlayer.Character
-                if v1048 and (v1048:FindFirstChild("HumanoidRootPart") and (v1048.HumanoidRootPart.Position - v1047.Position).Magnitude <= 1) then
-                    vu1042("Melee")
-                    vu1042("Sword")
-                    vu1042("Gun")
-                end
-            end
-        end
-    end
-end)
-v1018:AddButton({
-    ["Title"] = "Teleport to Dragon Dojo",
-    ["Description"] = "",
-    ["Callback"] = function()
-        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(5661.5322265625, 1013.0907592773438, - 334.9649963378906))
-        Tween2(CFrame.new(5814.42724609375, 1208.3267822265625, 884.5785522460938))
-    end
-})
-v1018:AddButton({
-    ["Title"] = "Buy Volcano Magnet",
-    ["Description"] = "",
-    ["Callback"] = function()
-        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack({
-            "CraftItem",
-            "Craft",
-            "Volcanic Magnet"
-        }))
-    end
-})
-v3.Sea:AddToggle("ToggleCollectFireFlowers", {
-    ["Title"] = "Auto Collect Fire Flower",
-    ["Description"] = "",
-    ["Default"] = false
-}):OnChanged(function(p1049)
-    _G.AutoCollectFireFlowers = p1049
-end)
-task.spawn(function()
-    while task.task.wait() do
-        local v1050 = _G.AutoCollectFireFlowers and workspace:FindFirstChild("FireFlowers")
-        if v1050 then
-            local v1051, v1052, v1053 = pairs(v1050:GetChildren())
-            while true do
-                local v1054
-                v1053, v1054 = v1051(v1052, v1053)
-                if v1053 == nil then
-                    break
-                end
-                if v1054:IsA("Model") and v1054.PrimaryPart then
-                    local v1055 = v1054.PrimaryPart.Position
-                    if (v1055 - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 1 then
-                        Tween2(CFrame.new(v1055))
-                    else
-                        game:GetService("VirtualInputManager"):SendKeyEvent(true, "E", false, game)
-                        task.wait(1.5)
-                        game:GetService("VirtualInputManager"):SendKeyEvent(false, "E", false, game)
-                    end
-                end
-            end
-        end
-    end
-end)
-v3.Sea:AddToggle("ToggleWhiteBelt", {
-    ["Title"] = "Auto Craft White Belt",
-    ["Description"] = "",
-    ["Default"] = false
-}):OnChanged(function(p1056)
-    _G.AutoLevel = p1056
-    if p1056 then
-        game:GetService("ReplicatedStorage").Modules.Net:FindFirstChild("RF/InteractDragonQuest"):InvokeServer(unpack({
-            {
-                ["NPC"] = "Dojo Trainer",
-                ["Command"] = "RequestQuest"
-            }
-        }))
-        task.spawn(function()
-            while _G.AutoLevel do
-                game:GetService("ReplicatedStorage").Modules.Net:FindFirstChild("RF/InteractDragonQuest"):InvokeServer(unpack({
-                    {
-                        ["NPC"] = "Dojo Trainer",
-                        ["Command"] = "ClaimQuest"
-                    }
-                }))
-                task.wait()
-            end
-        end)
-    end
-end)
-v3.Sea:AddParagraph({
-    ["Title"] = "Dragon Race",
-    ["Content"] = ""
-})
-v3.Sea:AddToggle("ToggleTrialTeleport", {
-    ["Title"] = "Teleport to Dragon Trial Door",
-    ["Description"] = "",
-    ["Default"] = false
-}):OnChanged(function(p1057)
-    _G.AutoTrialTeleport = p1057
-end)
-task.spawn(function()
-    while task.task.wait() do
-        if _G.AutoTrialTeleport then
-            local v1058 = workspace.Map.PrehistoricIsland:FindFirstChild("TrialTeleport")
-            if v1058 and v1058:IsA("Part") then
-                Tween2(CFrame.new(v1058.Position))
-            end
-        end
-    end
-end)
-v3.Sea:AddSection("Prehistoric Island")
-local vu1059 = v3.Sea:AddParagraph({
-    ["Title"] = "Volcano / Prehistoric Island Status",
-    ["Content"] = ""
-})
-task.spawn(function()
-	-- upvalues: (ref) vu1059
-    pcall(function()
-		-- upvalues: (ref) vu1059
-        while task.task.wait(2) do
-            if game:GetService("Workspace").Map:FindFirstChild("PrehistoricIsland") then
-                vu1059:SetDesc("Prehistoric Island: ✅")
-            else
-                vu1059:SetDesc("Prehistoric Island: ❌")
-            end
-        end
-    end)
-end)
-v3.Sea:AddToggle("ToggleTPVolcano", {
-    ["Title"] = "Teleport to Prehistoric Island",
-    ["Description"] = "",
-    ["Default"] = false
-}):OnChanged(function(p1060)
-    _G.TweenToPrehistoric = p1060
-end)
-v4.ToggleTPVolcano:SetValue(false)
-task.spawn(function()
-    local v1061 = nil
-    while not v1061 do
-        v1061 = game:GetService("Workspace").Map:FindFirstChild("PrehistoricIsland")
-        task.wait()
-    end
-    while task.task.wait() do
-        local v1062 = _G.TweenToPrehistoric and game:GetService("Workspace").Map:FindFirstChild("PrehistoricIsland")
-        if v1062 then
-            local v1063 = v1062:FindFirstChild("Core")
-            if v1063 then
-                v1063 = v1062.Core:FindFirstChild("PrehistoricRelic")
-            end
-            if v1063 then
-                v1063 = v1063:FindFirstChild("Skull")
-            end
-            if v1063 then
-                Tween2(CFrame.new(v1063.Position))
-                _G.TweenToPrehistoric = false
-            end
-        end
-    end
-end)
-v3.Sea:AddToggle("ToggleDefendVolcano", {
-    ["Title"] = "Safe Mode",
-    ["Description"] = "",
-    ["Default"] = false
-}):OnChanged(function(p1064)
-    _G.AutoDefendVolcano = p1064
-end)
-v3.Sea:AddToggle("ToggleMelee", {
-    ["Title"] = "Use Melee",
-    ["Description"] = "",
-    ["Default"] = false
-}):OnChanged(function(p1065)
-    _G.UseMelee = p1065
-end)
-v3.Sea:AddToggle("ToggleSword", {
-    ["Title"] = "Use Sword",
-    ["Description"] = "",
-    ["Default"] = false
-}):OnChanged(function(p1066)
-    _G.UseSword = p1066
-end)
-v3.Sea:AddToggle("ToggleGun", {
-    ["Title"] = "Use Gun",
-    ["Description"] = "",
-    ["Default"] = false
-}):OnChanged(function(p1067)
-    _G.UseGun = p1067
-end)
-local function vu1069(p1068)
-    game:GetService("VirtualInputManager"):SendKeyEvent(true, p1068, false, game)
-    game:GetService("VirtualInputManager"):SendKeyEvent(false, p1068, false, game)
-end
-local function vu1085()
-    local v1070 = game.Workspace.Map.PrehistoricIsland.Core:FindFirstChild("InteriorLava")
-    if v1070 and v1070:IsA("Model") then
-        v1070:Destroy()
-    end
-    local v1071 = game.Workspace.Map:FindFirstChild("PrehistoricIsland")
-    if v1071 then
-        local v1072, v1073, v1074 = pairs(v1071:GetDescendants())
-        while true do
-            local v1075
-            v1074, v1075 = v1072(v1073, v1074)
-            if v1074 == nil then
-                break
-            end
-            if v1075:IsA("Part") and v1075.Name:lower():find("lava") then
-                v1075:Destroy()
-            end
-        end
-    end
-    local v1076 = game.Workspace.Map:FindFirstChild("PrehistoricIsland")
-    if v1076 then
-        local v1077, v1078, v1079 = pairs(v1076:GetDescendants())
-        while true do
-            local v1080
-            v1079, v1080 = v1077(v1078, v1079)
-            if v1079 == nil then
-                break
-            end
-            if v1080:IsA("Model") then
-                local v1081, v1082, v1083 = pairs(v1080:GetDescendants())
-                while true do
-                    local v1084
-                    v1083, v1084 = v1081(v1082, v1083)
-                    if v1083 == nil then
-                        break
-                    end
-                    if v1084:IsA("MeshPart") and v1084.Name:lower():find("lava") then
-                        v1084:Destroy()
-                    end
-                end
-            end
-        end
-    end
-end
-local function vu1093()
-    local v1086 = game.Workspace.Map.PrehistoricIsland.Core.VolcanoRocks
-    local v1087, v1088, v1089 = pairs(v1086:GetChildren())
-    while true do
-        local v1090
-        v1089, v1090 = v1087(v1088, v1089)
-        if v1089 == nil then
-            break
-        end
-        if v1090:IsA("Model") then
-            local v1091 = v1090:FindFirstChild("volcanorock")
-            if v1091 and v1091:IsA("MeshPart") then
-                local v1092 = v1091.Color
-                if v1092 == Color3.fromRGB(185, 53, 56) or v1092 == Color3.fromRGB(185, 53, 57) then
-                    return v1091
-                end
-            end
-        end
-    end
-    return nil
-end
-local function vu1105(p1094)
-	-- upvalues: (ref) vu1069
-    local v1095 = game.Players.LocalPlayer
-    local v1096 = v1095.Backpack
-    local v1097, v1098, v1099 = pairs(v1096:GetChildren())
-    while true do
-        local v1100
-        v1099, v1100 = v1097(v1098, v1099)
-        if v1099 == nil then
-            break
-        end
-        if v1100:IsA("Tool") and v1100.ToolTip == p1094 then
-            v1100.Parent = v1095.Character
-            local v1101, v1102, v1103 = ipairs({
-                "Z",
-                "X",
-                "C",
-                "V",
-                "F"
-            })
-            while true do
-                local vu1104
-                v1103, vu1104 = v1101(v1102, v1103)
-                if v1103 == nil then
-                    break
-                end
-                task.wait()
-                pcall(function()
-					-- upvalues: (ref) vu1069, (ref) vu1104
-                    vu1069(vu1104)
-                end)
-            end
-            v1100.Parent = v1096
-            break
-        end
-    end
-end
-task.spawn(function()
-	-- upvalues: (ref) vu1085, (ref) vu1093, (ref) vu1105
-    while task.task.wait() do
-        if _G.AutoDefendVolcano then
-            AutoHaki()
-            pcall(vu1085)
-            local v1106 = vu1093()
-            if v1106 then
-                local v1107 = CFrame.new(v1106.Position + Vector3.new(0, 0, 0))
-                Tween2(v1107)
-                local v1108 = v1106.Color
-                if v1108 == Color3.fromRGB(185, 53, 56) or v1108 == Color3.fromRGB(185, 53, 57) then
-                    if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v1106.Position - Vector3.new(0, 0, 0)).Magnitude <= 1 then
-                        if _G.UseMelee then
-                            vu1105("Melee")
-                        end
-                        if _G.UseSword then
-                            vu1105("Sword")
-                        end
-                        if _G.UseGun then
-                            vu1105("Gun")
-                        end
-                    end
-                    _G.TweenToPrehistoric = false
-                else
-                    vu1093()
-                end
-            else
-                _G.TweenToPrehistoric = true
-            end
-        end
-    end
-end)
-v3.Sea:AddToggle("ToggleKillAura", {
-    ["Title"] = "Attack Golems (Kill Aura)",
-    ["Description"] = "",
-    ["Default"] = false
-}):OnChanged(function(p1109)
-    KillAura = p1109
-end)
-v4.ToggleKillAura:SetValue(false)
-task.spawn(function()
-    while task.task.wait() do
-        if KillAura then
-            pcall(function()
-                local v1110, v1111, v1112 = pairs(game.Workspace.Enemies:GetDescendants())
-                while true do
-                    local v1113
-                    v1112, v1113 = v1110(v1111, v1112)
-                    if v1112 == nil then
-                        break
-                    end
-                    if v1113:FindFirstChild("Humanoid") and (v1113:FindFirstChild("HumanoidRootPart") and v1113.Humanoid.Health > 0) then
-                        repeat
-                            task.task.wait()
-                            sethiddenproperty(game:GetService("Players").LocalPlayer, "SimulationRadius", math.huge)
-                            v1113.Humanoid.Health = 0
-                            v1113.HumanoidRootPart.CanCollide = false
-                        until not KillAura or (not v1113.Parent or v1113.Humanoid.Health <= 0)
-                    end
-                end
-            end)
-        end
-    end
-end)
-v3.Sea:AddToggle("ToggleCollectBone", {
-    ["Title"] = "Collect Bones",
-    ["Description"] = "",
-    ["Default"] = false
-}):OnChanged(function(p1114)
-    _G.AutoCollectBone = p1114
-end)
-task.spawn(function()
-    while task.task.wait() do
-        if _G.AutoCollectBone then
-            local v1115, v1116, v1117 = pairs(workspace:GetDescendants())
-            while true do
-                local v1118
-                v1117, v1118 = v1115(v1116, v1117)
-                if v1117 == nil then
-                    break
-                end
-                if v1118:IsA("BasePart") and v1118.Name == "DinoBone" then
-                    Tween2(CFrame.new(v1118.Position))
-                end
-            end
-        end
-    end
-end)
-v3.Sea:AddToggle("ToggleCollectEgg", {
-    ["Title"] = "Collect Dragon Eggs",
-    ["Description"] = "",
-    ["Default"] = false
-}):OnChanged(function(p1119)
-    _G.AutoCollectEgg = p1119
-end)
-task.spawn(function()
-    while task.task.wait() do
-        if _G.AutoCollectEgg then
-            local v1120 = workspace.Map.PrehistoricIsland.Core.SpawnedDragonEggs:GetChildren()
-            if # v1120 > 0 then
-                local v1121 = v1120[math.random(1, # v1120)]
-                if v1121:IsA("Model") and v1121.PrimaryPart then
-                    Tween2(v1121.PrimaryPart.CFrame)
-                    if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v1121.PrimaryPart.Position).Magnitude <= 1 then
-                        game:GetService("VirtualInputManager"):SendKeyEvent(true, "E", false, game)
-                        task.wait(1.5)
-                        game:GetService("VirtualInputManager"):SendKeyEvent(false, "E", false, game)
-                    end
-                end
-            end
-        end
-    end
-end)
-pcall(function() v2:SelectTab(1) end)

@@ -1,0 +1,16 @@
+{
+  "name": "crackbanana",
+  "version": "1.0.0",
+  "description": "Banana Crack Hub - Blox Fruits Modular Script",
+  "main": "banana.lua",
+  "scripts": {
+    "build": "node build.js"
+  },
+  "keywords": [
+    "roblox",
+    "blox-fruits",
+    "lua"
+  ],
+  "author": "wh1tehourse",
+  "license": "MIT"
+}
