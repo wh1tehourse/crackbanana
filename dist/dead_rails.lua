@@ -1,5 +1,5 @@
 --[[
-    🍌 Banana Hub - Dead Rails [ Kaitun Bond & Auto Farm ]
+    🍌 Banana Hub - Dead Rails [ Instant Kaitun Bond & Fast Farm ]
     Author: wh1tehourse
     Target Game: Dead Rails (Roblox)
 ]]
@@ -11,6 +11,7 @@ local TweenService = game:GetService("TweenService")
 local VirtualUser = game:GetService("VirtualUser")
 local ProximityPromptService = game:GetService("ProximityPromptService")
 local HttpService = game:GetService("HttpService")
+local TeleportService = game:GetService("TeleportService")
 local CoreGui = game:GetService("CoreGui")
 
 local LocalPlayer = Players.LocalPlayer
@@ -39,7 +40,7 @@ Fluent = loadstring(res)()
 
 local Window = Fluent:CreateWindow({
     Title = "Banana Hub - Dead Rails",
-    SubTitle = "Kaitun Bond Edition [ v1.0 ]",
+    SubTitle = "Kaitun Bond [ Instant Farm ]",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
     Acrylic = false,
@@ -50,11 +51,9 @@ local Window = Fluent:CreateWindow({
 local Tabs = {
     Home = Window:AddTab({ Title = "Information", Icon = "home" }),
     Kaitun = Window:AddTab({ Title = "Kaitun Bond", Icon = "coins" }),
-    Train = Window:AddTab({ Title = "Train Auto", Icon = "train" }),
     Combat = Window:AddTab({ Title = "Combat / Aura", Icon = "sword" }),
     Visuals = Window:AddTab({ Title = "ESP & Visuals", Icon = "eye" }),
     Player = Window:AddTab({ Title = "Player / Move", Icon = "user" }),
-    Teleport = Window:AddTab({ Title = "Teleports", Icon = "map-pin" }),
     Misc = Window:AddTab({ Title = "Misc / Server", Icon = "settings" })
 }
 
@@ -62,127 +61,135 @@ local Tabs = {
 -- 3. Core State & Utilities
 -- ==============================================================================
 local State = {
-    AutoBond = false,
-    AutoScrap = false,
-    AutoLootChests = false,
-    AutoFuelTrain = false,
-    AutoRepairTrain = false,
+    AutoKaitun = false,
+    AutoResetOnEmpty = true,
+    AutoHopOnEmpty = false,
+    IncludeScrap = false,
+    IncludeChests = false,
+    CollectDelay = 0.05,
+    TeleportMethod = "Instant TP", -- "Instant TP" or "Smooth Tween"
+    TweenSpeed = 60,
     KillAura = false,
     KillAuraRadius = 30,
-    SilentAim = false,
-    InstantPrompt = false,
     SpeedHack = false,
     SpeedValue = 24,
-    InfiniteStamina = false,
-    Fly = false,
+    InfiniteStamina = true,
     Noclip = false,
-    GodMode = false,
     Fullbright = false,
     BondESP = false,
-    TrainESP = false,
-    EnemyESP = false,
-    ChestESP = false,
-    TweenSpeed = 45,
-    BondsCollected = 0
+    BondsCollected = 0,
+    TotalResets = 0,
+    CurrentBondsOnMap = 0
 }
 
--- Smooth Tween Function
-local currentTween = nil
-local function tweenTo(targetCFrame, speed)
-    local char = LocalPlayer.Character
-    if not char then return end
-    local hrp = char:FindFirstChild("HumanoidRootPart")
-    if not hrp then return end
-
-    local dist = (targetCFrame.Position - hrp.Position).Magnitude
-    local time = math.max(dist / (speed or State.TweenSpeed), 0.1)
-
-    if currentTween then
-        currentTween:Cancel()
-    end
-
-    local tweenInfo = TweenInfo.new(time, Enum.EasingStyle.Linear)
-    currentTween = TweenService:Create(hrp, tweenInfo, { CFrame = targetCFrame })
-    currentTween:Play()
-    return currentTween
-end
-
--- Instant Proximity Prompt Hook
-local originalPromptHold = {}
-local function applyInstantPrompts(enable)
-    for _, prompt in ipairs(Workspace:GetDescendants()) do
-        if prompt:IsA("ProximityPrompt") then
-            if enable then
-                if originalPromptHold[prompt] == nil then
-                    originalPromptHold[prompt] = prompt.HoldDuration
-                end
-                prompt.HoldDuration = 0
-            elseif originalPromptHold[prompt] ~= nil then
-                prompt.HoldDuration = originalPromptHold[prompt]
-            end
-        end
-    end
-end
-
-Workspace.DescendantAdded:Connect(function(descendant)
-    if State.InstantPrompt and descendant:IsA("ProximityPrompt") then
-        task.wait(0.1)
-        descendant.HoldDuration = 0
-    end
-end)
-
--- Fire Proximity Prompt Safely
+-- Trigger Proximity Prompt Instantly
 local function triggerPrompt(prompt)
     if not prompt or not prompt:IsA("ProximityPrompt") then return end
     pcall(function()
         if fireproximityprompt then
-            fireproximityprompt(prompt)
+            fireproximityprompt(prompt, 1, true)
         else
+            prompt.HoldDuration = 0
             prompt:InputHoldBegin()
-            task.wait(prompt.HoldDuration + 0.05)
+            task.wait(0.01)
             prompt:InputHoldEnd()
         end
     end)
 end
 
--- Find Train Helper
-local function getTrainModel()
-    for _, obj in ipairs(Workspace:GetChildren()) do
-        if obj.Name:lower():find("train") or obj.Name:lower():find("locomotive") or obj:FindFirstChild("Engine") then
-            return obj
+-- Move / TP Helper
+local currentTween = nil
+local function moveTo(targetCFrame)
+    local char = LocalPlayer.Character
+    if not char then return end
+    local hrp = char:FindFirstChild("HumanoidRootPart")
+    if not hrp then return end
+
+    if State.TeleportMethod == "Instant TP" then
+        hrp.CFrame = targetCFrame
+    else
+        local dist = (targetCFrame.Position - hrp.Position).Magnitude
+        local time = math.max(dist / State.TweenSpeed, 0.05)
+        if currentTween then currentTween:Cancel() end
+        currentTween = TweenService:Create(hrp, TweenInfo.new(time, Enum.EasingStyle.Linear), { CFrame = targetCFrame })
+        currentTween:Play()
+        currentTween.Completed:Wait()
+    end
+end
+
+-- Scan Workspace for Bond / Cash / Scrap targets
+local function scanCollectables()
+    local targets = {}
+    for _, obj in ipairs(Workspace:GetDescendants()) do
+        if obj:IsA("ProximityPrompt") and obj.Enabled then
+            local parent = obj.Parent
+            local pName = parent and parent.Name:lower() or ""
+            local pText = (obj.ActionText .. " " .. obj.ObjectText):lower()
+
+            local isBond = (pName:find("bond") or pName:find("cash") or pName:find("money") or pName:find("dollar") or pText:find("bond") or pText:find("take money") or pText:find("cash"))
+            local isScrap = State.IncludeScrap and (pName:find("scrap") or pName:find("metal") or pName:find("iron") or pText:find("scrap"))
+            local isChest = State.IncludeChests and (pName:find("chest") or pName:find("crate") or pName:find("box") or pText:find("open") or pText:find("search"))
+
+            if isBond or isScrap or isChest then
+                local part = parent:IsA("BasePart") and parent or parent:FindFirstChildWhichIsA("BasePart")
+                if part then
+                    table.insert(targets, { Prompt = obj, Part = part, IsBond = isBond })
+                end
+            end
         end
     end
-    return Workspace:FindFirstChild("Train")
+    return targets
+end
+
+-- Server Hop Function
+local function hopServer()
+    pcall(function()
+        local url = "https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"
+        local servers = HttpService:JSONDecode(game:HttpGet(url))
+        for _, s in ipairs(servers.data) do
+            if s.playing < s.maxPlayers and s.id ~= game.JobId then
+                TeleportService:TeleportToPlaceInstance(game.PlaceId, s.id, LocalPlayer)
+                break
+            end
+        end
+    end)
+end
+
+-- Reset / Kill Character
+local function resetCharacter()
+    local char = LocalPlayer.Character
+    if char then
+        local hum = char:FindFirstChildOfClass("Humanoid")
+        if hum then
+            hum.Health = 0
+        else
+            char:BreakJoints()
+        end
+    end
 end
 
 -- ==============================================================================
 -- 4. TAB: Information
 -- ==============================================================================
 Tabs.Home:AddParagraph({
-    Title = "🍌 Banana Hub - Dead Rails",
-    Content = "Automated Kaitun, Bond Farming, Train Survival & Combat Engine.\nAuthor: wh1tehourse"
+    Title = "🍌 Banana Hub - Dead Rails Kaitun",
+    Content = "Fast Kaitun Bond collector with automatic character reset & server loop.\nAuthor: wh1tehourse"
 })
 
 local StatusPara = Tabs.Home:AddParagraph({
-    Title = "📊 Session Statistics",
-    Content = "Bonds Farmed: 0\nCurrent Health: 100%\nTrain Status: Detecting..."
+    Title = "📊 Live Statistics",
+    Content = "Bonds Collected: 0\nTotal Resets / Runs: 0\nBonds On Map: 0"
 })
 
 task.spawn(function()
     while task.wait(1) do
         pcall(function()
-            local char = LocalPlayer.Character
-            local hum = char and char:FindFirstChildOfClass("Humanoid")
-            local hp = hum and math.floor(hum.Health) or 0
-            local maxHp = hum and math.floor(hum.MaxHealth) or 100
-            
-            local train = getTrainModel()
-            local trainStatus = train and "✅ Found (" .. train.Name .. ")" or "⚠️ Not in range"
-
+            local targets = scanCollectables()
+            State.CurrentBondsOnMap = #targets
             StatusPara:SetDesc(
                 "Bonds Farmed: " .. State.BondsCollected ..
-                "\nCurrent Health: " .. hp .. " / " .. maxHp ..
-                "\nTrain Status: " .. trainStatus ..
+                "\nTotal Resets / Runs: " .. State.TotalResets ..
+                "\nCollectables On Map: " .. State.CurrentBondsOnMap ..
                 "\nPing: " .. math.floor(game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue()) .. " ms"
             )
         end)
@@ -194,157 +201,156 @@ Tabs.Home:AddButton({
     Description = "Official Updates & Script Support",
     Callback = function()
         setclipboard("https://t.me/ayasourcecode")
-        Fluent:Notify({ Title = "Banana Hub", Content = "Telegram link copied to clipboard!", Duration = 3 })
+        Fluent:Notify({ Title = "Banana Hub", Content = "Telegram link copied!", Duration = 3 })
     end
 })
 
 -- ==============================================================================
--- 5. TAB: Kaitun Bond & Auto Farm
+-- 5. TAB: Kaitun Bond (Instant Farm & Auto Die/Reset)
 -- ==============================================================================
-Tabs.Kaitun:AddSection("⚡ Kaitun Bond Collector")
+Tabs.Kaitun:AddSection("⚡ Instant Kaitun Bond Farm")
 
-local AutoBondToggle = Tabs.Kaitun:AddToggle("AutoBond", {
-    Title = "Auto Farm Bonds & Cash",
-    Description = "Automatically finds, teleports & collects bonds/cash across towns",
+local KaitunToggle = Tabs.Kaitun:AddToggle("AutoKaitun", {
+    Title = "Auto Farm Bonds (Kaitun Mode)",
+    Description = "Instantly teleports to all bonds on map, collects them, and resets character when done",
     Default = false
 })
 
-AutoBondToggle:OnChanged(function(val)
-    State.AutoBond = val
+KaitunToggle:OnChanged(function(val)
+    State.AutoKaitun = val
+    if val then
+        Fluent:Notify({
+            Title = "Kaitun Bond",
+            Content = "Auto Bond Farm started! Will auto-reset when all bonds are collected.",
+            Duration = 4
+        })
+    end
 end)
 
-local AutoScrapToggle = Tabs.Kaitun:AddToggle("AutoScrap", {
-    Title = "Auto Collect Scrap & Materials",
-    Description = "Gathers all scrap parts and iron on tracks / towns",
-    Default = false
-})
-
-AutoScrapToggle:OnChanged(function(val)
-    State.AutoScrap = val
-end)
-
-local AutoChestToggle = Tabs.Kaitun:AddToggle("AutoChest", {
-    Title = "Auto Loot Crates & Chests",
-    Description = "Opens supply boxes and loot caches automatically",
-    Default = false
-})
-
-AutoChestToggle:OnChanged(function(val)
-    State.AutoLootChests = val
-end)
-
-Tabs.Kaitun:AddSlider("TweenSpeedSlider", {
-    Title = "Farming Travel Speed",
-    Description = "Speed for flying between bonds & loot targets",
-    Default = 45,
-    Min = 20,
-    Max = 120,
-    Rounding = 0,
+Tabs.Kaitun:AddToggle("AutoReset", {
+    Title = "Auto Die / Reset Character When Done",
+    Description = "Automatically respawns character to restart run when 0 bonds left",
+    Default = true,
     Callback = function(val)
-        State.TweenSpeed = val
+        State.AutoResetOnEmpty = val
     end
 })
 
--- Kaitun Bond Farm Loop
+Tabs.Kaitun:AddToggle("AutoHop", {
+    Title = "Auto Server Hop When Map Empty",
+    Description = "Hops to a new server if no bonds are available after respawn",
+    Default = false,
+    Callback = function(val)
+        State.AutoHopOnEmpty = val
+    end
+})
+
+Tabs.Kaitun:AddDropdown("TPMethodDropdown", {
+    Title = "Movement Method",
+    Values = { "Instant TP", "Smooth Tween" },
+    Default = "Instant TP",
+    Callback = function(val)
+        State.TeleportMethod = val
+    end
+})
+
+Tabs.Kaitun:AddSlider("CollectDelaySlider", {
+    Title = "Collect Delay (Seconds)",
+    Description = "Delay between collecting each bond",
+    Default = 0.05,
+    Min = 0.01,
+    Max = 0.5,
+    Rounding = 2,
+    Callback = function(val)
+        State.CollectDelay = val
+    end
+})
+
+Tabs.Kaitun:AddSection("📦 Extra Collectables")
+
+Tabs.Kaitun:AddToggle("IncScrap", {
+    Title = "Also Collect Scrap / Metal",
+    Default = false,
+    Callback = function(val)
+        State.IncludeScrap = val
+    end
+})
+
+Tabs.Kaitun:AddToggle("IncChests", {
+    Title = "Also Loot Crates / Chests",
+    Default = false,
+    Callback = function(val)
+        State.IncludeChests = val
+    end
+})
+
+-- ==============================================================================
+-- MAIN KAITUN BOND FARM LOOP
+-- ==============================================================================
 task.spawn(function()
-    while task.wait(0.3) do
-        if State.AutoBond or State.AutoScrap or State.AutoLootChests then
-            pcall(function()
-                local char = LocalPlayer.Character
-                local hrp = char and char:FindFirstChild("HumanoidRootPart")
-                if not hrp then return end
+    while true do
+        task.wait(0.1)
+        if State.AutoKaitun then
+            local char = LocalPlayer.Character
+            local hrp = char and char:FindFirstChild("HumanoidRootPart")
+            local hum = char and char:FindFirstChildOfClass("Humanoid")
 
-                -- Search workspace for Bond / Cash / Scrap / Chests
-                local targets = {}
-                for _, obj in ipairs(Workspace:GetDescendants()) do
-                    if obj:IsA("ProximityPrompt") and obj.Enabled then
-                        local parentName = obj.Parent and obj.Parent.Name:lower() or ""
-                        local promptText = (obj.ActionText .. " " .. obj.ObjectText):lower()
+            if char and hrp and hum and hum.Health > 0 then
+                local targets = scanCollectables()
 
-                        local isBond = State.AutoBond and (parentName:find("bond") or parentName:find("cash") or parentName:find("money") or promptText:find("bond") or promptText:find("take money") or promptText:find("cash"))
-                        local isScrap = State.AutoScrap and (parentName:find("scrap") or parentName:find("metal") or parentName:find("iron") or promptText:find("scrap"))
-                        local isChest = State.AutoLootChests and (parentName:find("chest") or parentName:find("crate") or parentName:find("box") or promptText:find("open") or promptText:find("search"))
-
-                        if isBond or isScrap or isChest then
-                            local part = obj.Parent:IsA("BasePart") and obj.Parent or obj.Parent:FindFirstChildWhichIsA("BasePart")
-                            if part then
-                                local dist = (part.Position - hrp.Position).Magnitude
-                                table.insert(targets, { Prompt = obj, Part = part, Dist = dist, IsBond = isBond })
+                if #targets > 0 then
+                    for _, target in ipairs(targets) do
+                        if not State.AutoKaitun then break end
+                        if not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then break end
+                        
+                        local targetPart = target.Part
+                        if targetPart and targetPart:IsDescendantOf(Workspace) and target.Prompt and target.Prompt.Enabled then
+                            -- Teleport to item
+                            moveTo(targetPart.CFrame + Vector3.new(0, 1.5, 0))
+                            
+                            -- Instant interaction
+                            triggerPrompt(target.Prompt)
+                            
+                            if target.IsBond then
+                                State.BondsCollected = State.BondsCollected + 1
                             end
+
+                            task.wait(State.CollectDelay)
+                        end
+                    end
+                else
+                    -- No more bonds/loot on map!
+                    task.wait(0.5)
+                    -- Re-verify if still 0
+                    local recheck = scanCollectables()
+                    if #recheck == 0 and State.AutoKaitun then
+                        if State.AutoHopOnEmpty then
+                            Fluent:Notify({ Title = "Kaitun", Content = "No bonds found! Hopping server...", Duration = 3 })
+                            hopServer()
+                            task.wait(5)
+                        elseif State.AutoResetOnEmpty then
+                            State.TotalResets = State.TotalResets + 1
+                            Fluent:Notify({ Title = "Kaitun", Content = "All bonds collected! Resetting character...", Duration = 2 })
+                            resetCharacter()
+                            
+                            -- Wait for respawn
+                            LocalPlayer.CharacterAdded:Wait()
+                            task.wait(1.5) -- wait for map assets to load
                         end
                     end
                 end
-
-                -- Sort by distance (closest first)
-                table.sort(targets, function(a, b) return a.Dist < b.Dist end)
-
-                if #targets > 0 then
-                    local target = targets[1]
-                    local targetCFrame = target.Part.CFrame + Vector3.new(0, 2, 0)
-                    
-                    local tw = tweenTo(targetCFrame, State.TweenSpeed)
-                    if tw then tw.Completed:Wait() end
-
-                    task.wait(0.1)
-                    triggerPrompt(target.Prompt)
-                    
-                    if target.IsBond then
-                        State.BondsCollected = State.BondsCollected + 1
-                    end
-                    task.wait(0.2)
-                end
-            end)
+            end
         end
     end
 end)
 
 -- ==============================================================================
--- 6. TAB: Train Auto (Fuel, Repair, Defense)
--- ==============================================================================
-Tabs.Train:AddSection("🚂 Train Automation")
-
-Tabs.Train:AddToggle("AutoFuel", {
-    Title = "Auto Fuel Engine (Coal / Wood)",
-    Description = "Automatically picks up fuel & drops into boiler furnace",
-    Default = false,
-    Callback = function(val)
-        State.AutoFuelTrain = val
-    end
-})
-
-Tabs.Train:AddToggle("AutoRepair", {
-    Title = "Auto Repair Train Cars",
-    Description = "Fixes broken train parts when damaged",
-    Default = false,
-    Callback = function(val)
-        State.AutoRepairTrain = val
-    end
-})
-
-Tabs.Train:AddButton({
-    Title = "Teleport to Train Engine",
-    Description = "Instantly hop onto the driver cabin",
-    Callback = function()
-        local train = getTrainModel()
-        if train then
-            local engine = train:FindFirstChild("Engine") or train:FindFirstChildWhichIsA("BasePart")
-            if engine then
-                LocalPlayer.Character.HumanoidRootPart.CFrame = engine.CFrame + Vector3.new(0, 5, 0)
-            end
-        else
-            Fluent:Notify({ Title = "Train", Content = "Train not found!", Duration = 3 })
-        end
-    end
-})
-
--- ==============================================================================
--- 7. TAB: Combat & Kill Aura
+-- 6. TAB: Combat / Kill Aura
 -- ==============================================================================
 Tabs.Combat:AddSection("⚔️ Combat Engine")
 
 Tabs.Combat:AddToggle("KillAura", {
     Title = "Kill Aura (Zombies & Bandits)",
-    Description = "Automatically attacks all hostile mobs within radius",
     Default = false,
     Callback = function(val)
         State.KillAura = val
@@ -379,14 +385,12 @@ task.spawn(function()
                     if hum and root and hum.Health > 0 and model ~= char and not Players:GetPlayerFromCharacter(model) then
                         local dist = (root.Position - hrp.Position).Magnitude
                         if dist <= State.KillAuraRadius then
-                            -- Auto-trigger weapon attack
                             if tool and tool:FindFirstChild("RemoteEvent") then
                                 tool.RemoteEvent:FireServer(root.Position)
                             elseif tool and tool:FindFirstChild("Attack") then
                                 tool.Attack:FireServer(model)
-                            else
-                                -- Fallback standard tool activation
-                                if tool then tool:Activate() end
+                            elseif tool then
+                                tool:Activate()
                             end
                         end
                     end
@@ -397,9 +401,9 @@ task.spawn(function()
 end)
 
 -- ==============================================================================
--- 8. TAB: ESP & Visuals
+-- 7. TAB: Visuals & ESP
 -- ==============================================================================
-Tabs.Visuals:AddSection("👁️ World ESP")
+Tabs.Visuals:AddSection("👁️ World Visuals")
 
 local espFolder = Instance.new("Folder")
 espFolder.Name = "Banana_ESP"
@@ -440,9 +444,21 @@ Tabs.Visuals:AddToggle("BondESP", {
     end
 })
 
+task.spawn(function()
+    while task.wait(1.5) do
+        if State.BondESP then
+            pcall(function()
+                local targets = scanCollectables()
+                for _, t in ipairs(targets) do
+                    createESP(t.Part, "💰 Bond / Cash", Color3.fromRGB(255, 215, 0))
+                end
+            end)
+        end
+    end
+end)
+
 Tabs.Visuals:AddToggle("Fullbright", {
     Title = "Fullbright (Night Vision)",
-    Description = "Completely brightens nighttime darkness",
     Default = false,
     Callback = function(val)
         State.Fullbright = val
@@ -459,9 +475,9 @@ Tabs.Visuals:AddToggle("Fullbright", {
 })
 
 -- ==============================================================================
--- 9. TAB: Movement & Player
+-- 8. TAB: Movement & Player
 -- ==============================================================================
-Tabs.Player:AddSection("🏃 Player Enhancements")
+Tabs.Player:AddSection("🏃 Movement Enhancements")
 
 Tabs.Player:AddToggle("SpeedToggle", {
     Title = "Speed Boost",
@@ -498,7 +514,6 @@ Tabs.Player:AddToggle("Noclip", {
     end
 })
 
--- Movement / Noclip Loop
 RunService.Stepped:Connect(function()
     pcall(function()
         local char = LocalPlayer.Character
@@ -520,81 +535,39 @@ RunService.Stepped:Connect(function()
 end)
 
 -- ==============================================================================
--- 10. TAB: Teleports
+-- 9. TAB: Misc & Server
 -- ==============================================================================
-Tabs.Teleport:AddSection("📍 Instant Navigation")
-
-Tabs.Teleport:AddButton({
-    Title = "Teleport to Safe Train Roof",
-    Description = "Stand safely above zombies on train roof",
-    Callback = function()
-        local train = getTrainModel()
-        if train then
-            local root = train:FindFirstChild("Engine") or train:FindFirstChildWhichIsA("BasePart")
-            if root then
-                LocalPlayer.Character.HumanoidRootPart.CFrame = root.CFrame + Vector3.new(0, 12, 0)
-            end
-        end
-    end
-})
-
-Tabs.Teleport:AddButton({
-    Title = "Teleport to Nearest Town Station",
-    Callback = function()
-        for _, obj in ipairs(Workspace:GetDescendants()) do
-            if obj.Name:lower():find("station") and obj:IsA("BasePart") then
-                LocalPlayer.Character.HumanoidRootPart.CFrame = obj.CFrame + Vector3.new(0, 5, 0)
-                break
-            end
-        end
-    end
-})
-
--- ==============================================================================
--- 11. TAB: Misc / Utilities
--- ==============================================================================
-Tabs.Misc:AddSection("⚙️ Game Tweaks")
-
-Tabs.Misc:AddToggle("InstantPrompt", {
-    Title = "Instant Interaction (0s Hold)",
-    Description = "Eliminates proximity prompt hold delay for all items",
-    Default = true,
-    Callback = function(val)
-        State.InstantPrompt = val
-        applyInstantPrompts(val)
-    end
-})
+Tabs.Misc:AddSection("⚙️ Server & Utilities")
 
 Tabs.Misc:AddButton({
-    Title = "Rejoin Current Server",
+    Title = "Instant Reset / Die Now",
+    Description = "Instantly resets character",
     Callback = function()
-        game:GetService("TeleportService"):Teleport(game.PlaceId, LocalPlayer)
+        resetCharacter()
     end
 })
 
 Tabs.Misc:AddButton({
     Title = "Server Hop (Lowest Ping)",
     Callback = function()
-        pcall(function()
-            local servers = HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"))
-            for _, s in ipairs(servers.data) do
-                if s.playing < s.maxPlayers and s.id ~= game.JobId then
-                    game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, s.id, LocalPlayer)
-                    break
-                end
-            end
-        end)
+        hopServer()
     end
 })
 
--- Initial selection
+Tabs.Misc:AddButton({
+    Title = "Rejoin Server",
+    Callback = function()
+        TeleportService:Teleport(game.PlaceId, LocalPlayer)
+    end
+})
+
+-- Select Tab 1
 pcall(function()
     Window:SelectTab(1)
-    applyInstantPrompts(true)
 end)
 
 Fluent:Notify({
     Title = "Banana Hub",
-    Content = "Dead Rails Kaitun Bond Hub successfully loaded!",
-    Duration = 5
+    Content = "Dead Rails Instant Kaitun loaded!",
+    Duration = 4
 })
