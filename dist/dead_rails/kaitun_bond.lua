@@ -22,9 +22,6 @@ Status = _S({110,147,142,153,142,134,145,142,159,142,147,140,83,83,83},37),
 BaseBonds = nil,
 }
 local STRICT_BOND_KEYWORDS = {
-_S({135,148,147,137},37), _S({135,148,147,137,152},37), _S({153,151,138,134,152,154,151,158},37), _S({156,134,151,135,148,147,137},37), _S({156,134,151,132,135,148,147,137},37), _S({153,151,138,134,152,154,151,158,135,148,147,137},37), _S({153,148,144,138,147},37), _S({153,148,144,138,147,152},37), _S({149,148,142,147,153,152},37), _S({136,154,151,151,138,147,136,158},37)
-}
-local STRICT_BOND_KEYWORDS = {
 _S({135,148,147,137},37), _S({135,148,147,137,152},37), _S({153,151,138,134,152,154,151,158},37), _S({156,134,151,135,148,147,137},37), _S({156,134,151,132,135,148,147,137},37), _S({153,151,138,134,152,154,151,158,135,148,147,137},37), _S({153,148,144,138,147},37), _S({153,148,144,138,147,152},37), _S({149,148,142,147,153,152},37), _S({136,154,151,151,138,147,136,158},37), _S({140,138,146,152},37), _S({152,141,134,151,137},37), _S({152,141,134,151,137,152},37), _S({153,142,136,144,138,153},37), _S({153,142,136,144,138,153,152},37), _S({135,134,145,134,147,136,138},37), _S({153,148,153,134,145},37)
 }
 local function isBondKeyword(str)
@@ -204,16 +201,20 @@ ScreenGui = Instance.new(_S({120,136,151,138,138,147,108,154,142},37))
 ScreenGui.Name = GUI_NAME
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+pcall(function()
 if syn and syn.protect_gui then
 syn.protect_gui(ScreenGui)
 ScreenGui.Parent = CoreGui
 elseif gethui then
 ScreenGui.Parent = gethui()
 elseif CoreGui then
-pcall(function() ScreenGui.Parent = CoreGui end)
-if not ScreenGui.Parent then ScreenGui.Parent = LocalPlayer:WaitForChild(_S({117,145,134,158,138,151,108,154,142},37)) end
-else
-ScreenGui.Parent = LocalPlayer:WaitForChild(_S({117,145,134,158,138,151,108,154,142},37))
+ScreenGui.Parent = CoreGui
+end
+end)
+if not ScreenGui.Parent then
+pcall(function()
+ScreenGui.Parent = LocalPlayer:WaitForChild(_S({117,145,134,158,138,151,108,154,142},37), 5) or LocalPlayer.PlayerGui
+end)
 end
 MainFrame = Instance.new(_S({107,151,134,146,138},37))
 MainFrame.Name = _S({114,134,142,147,107,151,134,146,138},37)
@@ -862,7 +863,7 @@ local collectedThisRun = 0
 if isCacheWarm() then
 collectedThisRun = warmSweep()
 else
-updateStatus(_S({104,134,136,141,138,69,136,148,145,137,69,7,165,185,69,152,136,134,147,147,142,147,140,69,134,145,145,69,159,148,147,138,152,83,83,83},37))
+updateStatus(_S({104,134,136,141,138,69,136,148,145,137,69,82,69,152,136,134,147,147,142,147,140,69,134,145,145,69,159,148,147,138,152,83,83,83},37))
 collectedThisRun = coldSweep()
 end
 if collectedThisRun > 0 then
