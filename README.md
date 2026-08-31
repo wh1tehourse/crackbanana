@@ -1,7 +1,13 @@
-# 🚀 Banana Crack Hub Loader
+# 🚀 Banana Hub Scripts
 
+### 🍌 1. Blox Fruits [ Freemium Hub ]
 ```lua
 loadstring(game:HttpGet("https://raw.githubusercontent.com/wh1tehourse/crackbanana/main/dist/loader.lua"))()
+```
+
+### 🚂 2. Dead Rails [ Kaitun Bond & Auto Farm ]
+```lua
+loadstring(game:HttpGet("https://raw.githubusercontent.com/wh1tehourse/crackbanana/main/dist/dead_rails.lua"))()
 ```
 
 ---
