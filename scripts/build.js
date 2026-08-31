@@ -19,11 +19,15 @@ const buildOrder = [
     // 1. UI Window & Setup
     path.join(srcDir, 'ui', 'window.lua'),
 
-    // 2. Core Engine
+    // 2. Core Engine (Granular Modules)
     path.join(srcDir, 'core', 'services.lua'),
+    path.join(srcDir, 'core', 'anti_afk.lua'),
     path.join(srcDir, 'core', 'quests.lua'),
     path.join(srcDir, 'core', 'esp.lua'),
-    path.join(srcDir, 'core', 'utils.lua'),
+    path.join(srcDir, 'core', 'fast_attack.lua'),
+    path.join(srcDir, 'core', 'noclip.lua'),
+    path.join(srcDir, 'core', 'combat.lua'),
+    path.join(srcDir, 'core', 'tween.lua'),
 
     // 3. UI Controls
     path.join(srcDir, 'ui', 'toggle_button.lua'),

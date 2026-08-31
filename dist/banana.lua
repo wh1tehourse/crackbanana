@@ -1,7 +1,7 @@
 --[[
     Banana Crack Hub - Blox Fruits [ Freemium ]
     Author: wh1tehourse
-    Compiled: 2026-08-31T06:05:26.885Z
+    Compiled: 2026-08-31T06:15:23.730Z
     Source: Modular Architecture (src/)
 ]]
 
@@ -49,15 +49,21 @@ local Options = Fluent.Options
 -- MODULE: src/core/services.lua
 -- ==========================================
 
--- Core Services & Game Setup
+--[[
+    Banana Crack Hub - Core Services
+    Declares Roblox Services & detects current Sea PlaceId.
+]]
+
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local TweenService = game:GetService("TweenService")
 local VirtualUser = game:GetService("VirtualUser")
+local RunService = game:GetService("RunService")
 local HttpService = game:GetService("HttpService")
+local CollectionService = game:GetService("CollectionService")
 
--- Sea PlaceId Detection
+-- Sea Detection
 Sea1 = false
 Sea2 = false
 Sea3 = false
@@ -70,11 +76,19 @@ elseif placeId == 7449423635 then
     Sea3 = true
 end
 
--- Anti-Idle Handler
-Players.LocalPlayer.Idled:Connect(function()
-    VirtualUser:Button2Down(Vector2.new(0, 0), Workspace.CurrentCamera.CFrame)
+-- ==========================================
+-- MODULE: src/core/anti_afk.lua
+-- ==========================================
+
+--[[
+    Banana Crack Hub - Anti-AFK Engine
+    Prevents 20-minute idle disconnects in Roblox.
+]]
+
+game:GetService("Players").LocalPlayer.Idled:Connect(function()
+    game:GetService("VirtualUser"):Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
     task.wait()
-    VirtualUser:Button2Up(Vector2.new(0, 0), Workspace.CurrentCamera.CFrame)
+    game:GetService("VirtualUser"):Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
 end)
 
 -- ==========================================
@@ -2343,10 +2357,14 @@ function EquipTool(p182)
 end
 
 -- ==========================================
--- MODULE: src/core/utils.lua
+-- MODULE: src/core/fast_attack.lua
 -- ==========================================
 
--- Movement, Combat & FastAttack Utilities
+--[[
+    Banana Crack Hub - FastAttack & Metatable Hook Engine
+    Zero-delay skill and melee attack execution.
+]]
+
 task.spawn(function()
     local v184 = getrawmetatable(game)
     local vu185 = v184.__namecall
@@ -2368,6 +2386,41 @@ task.spawn(function()
         return vu185(unpack(v187))
     end)
 end)
+
+function AttackNoCoolDown()
+    local vu223 = {}
+    local v224 = game:GetService("Workspace").Enemies:GetChildren()
+    local vu225 = FindEnemiesInRange(vu223, v224)
+    if vu225 then
+        if GetEquippedTool() then
+            pcall(function()
+				-- upvalues: (ref) vu223, (ref) vu225
+                local v226 = game:GetService("ReplicatedStorage")
+                local v227 = v226:WaitForChild("Modules"):WaitForChild("Net"):WaitForChild("RE/RegisterAttack")
+                local v228 = v226:WaitForChild("Modules"):WaitForChild("Net"):WaitForChild("RE/RegisterHit")
+                if # vu223 <= 0 then
+                    task.task.wait(1e-9)
+                else
+                    v227:FireServer(1e-9)
+                    v228:FireServer(vu225, vu223)
+                end
+            end)
+        end
+    else
+        return
+    end
+end
+Type = 1
+
+-- ==========================================
+-- MODULE: src/core/noclip.lua
+-- ==========================================
+
+--[[
+    Banana Crack Hub - NoClip & BodyVelocity Engine
+    Prevents falling into void and disables character collisions during tweening.
+]]
+
 task.spawn(function()
     while task.task.wait() do
         pcall(function()
@@ -2415,6 +2468,16 @@ task.task.spawn(function()
         end)
     end
 end)
+
+-- ==========================================
+-- MODULE: src/core/combat.lua
+-- ==========================================
+
+--[[
+    Banana Crack Hub - Combat & Inventory Helpers
+    Weapon detection, enemy range targeting, and Auto Haki.
+]]
+
 function CheckMaterial(p193)
     local v194, v195, v196 = pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory"))
     while true do
@@ -2505,30 +2568,22 @@ function GetEquippedTool()
     end
     return nil
 end
-function AttackNoCoolDown()
-    local vu223 = {}
-    local v224 = game:GetService("Workspace").Enemies:GetChildren()
-    local vu225 = FindEnemiesInRange(vu223, v224)
-    if vu225 then
-        if GetEquippedTool() then
-            pcall(function()
-				-- upvalues: (ref) vu223, (ref) vu225
-                local v226 = game:GetService("ReplicatedStorage")
-                local v227 = v226:WaitForChild("Modules"):WaitForChild("Net"):WaitForChild("RE/RegisterAttack")
-                local v228 = v226:WaitForChild("Modules"):WaitForChild("Net"):WaitForChild("RE/RegisterHit")
-                if # vu223 <= 0 then
-                    task.task.wait(1e-9)
-                else
-                    v227:FireServer(1e-9)
-                    v228:FireServer(vu225, vu223)
-                end
-            end)
-        end
-    else
-        return
+
+function AutoHaki()
+    if not game:GetService("Players").LocalPlayer.Character:FindFirstChild("HasBuso") then
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
     end
 end
-Type = 1
+
+-- ==========================================
+-- MODULE: src/core/tween.lua
+-- ==========================================
+
+--[[
+    Banana Crack Hub - Movement & Tween Engine
+    Bypasses anti-cheat for smooth flying and island navigation.
+]]
+
 task.spawn(function()
     while task.task.wait() do
         if Type ~= 1 then
@@ -2566,11 +2621,7 @@ task.spawn(function()
         task.wait(0.2)
     end
 end)
-function AutoHaki()
-    if not game:GetService("Players").LocalPlayer.Character:FindFirstChild("HasBuso") then
-        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
-    end
-end
+
 function to(p229)
     repeat
         task.wait(_G.Fast_Delay)
