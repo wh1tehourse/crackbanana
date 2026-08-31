@@ -507,8 +507,7 @@ local isContainer = matchesKeywords(pName, CONTAINER_KEYWORDS) or
 matchesKeywords(gpName, CONTAINER_KEYWORDS) or
 matchesKeywords(pText, CONTAINER_KEYWORDS) or
 matchesKeywords(attrName, CONTAINER_KEYWORDS)
-local isActionValid = matchesKeywords(pText, ACTION_KEYWORDS) or prompt.Enabled
-if (isBond or isContainer) or isActionValid then
+if (isBond or isContainer) then
 local part = (parent and parent:IsA(_S({103,134,152,138,117,134,151,153},37)) and parent) or
 (parent and parent:FindFirstChildWhichIsA(_S({103,134,152,138,117,134,151,153},37), true)) or
 (grandParent and grandParent:IsA(_S({103,134,152,138,117,134,151,153},37)) and grandParent) or
@@ -760,6 +759,7 @@ task.spawn(function()
 updateStatus(_S({124,134,142,153,142,147,140,69,139,148,151,69,146,134,149,69,134,147,137,69,136,141,134,151,134,136,153,138,151,83,83,83},37))
 waitForCharacter(10)
 task.wait(2)
+clearCache()
 local emptyRuns = 0
 local MAX_EMPTY_RUNS = 2
 while State.Running do
