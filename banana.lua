@@ -58,6 +58,7 @@ local v3 = {
         ["Title"] = "Misc"
     })
 }
+pcall(function() v2:SelectTab(1) end)
 local v4 = vu1.Options
 local v5 = game.PlaceId
 if v5 == 2753915549 then
@@ -2664,9 +2665,14 @@ vu234.Rate = 0
 vu234.Speed = NumberRange.new(5, 10)
 vu234.Color = ColorSequence.new(Color3.fromRGB(255, 85, 255), Color3.fromRGB(85, 255, 255))
 
+local lastToggle = 0
 local function toggleMenu()
+    local now = tick()
+    if now - lastToggle < 0.2 then return end
+    lastToggle = now
+
     vu234.Rate = 100
-    task.delay(0.5, function()
+    task.delay(0.4, function()
         vu234.Rate = 0
     end)
     
@@ -2675,10 +2681,13 @@ local function toggleMenu()
     }):Play()
 
     if v2 then
-        if v2.Minimize then
-            v2:Minimize()
-        elseif v2.Root then
+        if v2.Root then
             v2.Root.Visible = not v2.Root.Visible
+            if v2.Minimized ~= nil then
+                v2.Minimized = not v2.Root.Visible
+            end
+        elseif v2.Minimize then
+            v2:Minimize()
         end
     end
     if vu1 and vu1.GUI then
@@ -2711,6 +2720,9 @@ local function toggleMenu()
         }):Play()
     end
 end
+
+vu232.MouseButton1Click:Connect(toggleMenu)
+vu232.Activated:Connect(toggleMenu)
 
 local isDragging = false
 local dragStartPos = nil
@@ -10195,3 +10207,4 @@ spawn(function()
         end
     end
 end)
+pcall(function() v2:SelectTab(1) end)
