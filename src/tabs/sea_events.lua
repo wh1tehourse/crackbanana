@@ -717,6 +717,171 @@ if Sea3 then
             vu523()
         end
     })
+    -- ============================================================
+    -- AUTO TYRANT OF THE SKIES (Unlock Submerged Island)
+    -- ============================================================
+    v3.Sea:AddSection("Tyrant of the Skies")
+    local vu_TyrantStatus = v3.Sea:AddParagraph({
+        ["Title"] = "Status",
+        ["Content"] = "Checking..."
+    })
+    -- Status updater
+    task.spawn(function()
+        while task.wait(2) do
+            pcall(function()
+                local lp = game:GetService("Players").LocalPlayer
+                local char = lp.Character
+                if not char then return end
+                local hrp = char:FindFirstChild("HumanoidRootPart")
+                if not hrp then return end
+                -- Cek apakah Tyrant sudah spawn di Workspace.Enemies
+                local tyrantAlive = game:GetService("Workspace").Enemies:FindFirstChild("Tyrant of the Skies")
+                -- Cek apakah Falcon statue eyes menyala (TikiOutpost falcon statues)
+                local falconReady = false
+                pcall(function()
+                    local tikiMap = game:GetService("Workspace").Map:FindFirstChild("TikiOutpost")
+                    if tikiMap then
+                        local falcon = tikiMap:FindFirstChild("FalconStatue", true)
+                        if falcon then
+                            falconReady = falcon:FindFirstChild("EyeGlow") ~= nil or falcon.Material == Enum.Material.Neon
+                        end
+                    end
+                end)
+                local statusText = ""
+                if tyrantAlive then
+                    statusText = "🔴 Tyrant ALIVE - Auto Kill aktif!"
+                elseif falconReady then
+                    statusText = "🟡 Falcon Eyes menyala - siap spawn"
+                else
+                    statusText = "⚪ Farm musuh Tiki (butuh 300 kills)"
+                end
+                vu_TyrantStatus:SetDesc(statusText)
+            end)
+        end
+    end)
+    v3.Sea:AddToggle("ToggleAutoTyrant", {
+        ["Title"] = "Auto Tyrant of the Skies (Full Auto)",
+        ["Description"] = "Farm 300 musuh Tiki → Spawn Tyrant → Kill → Unlock Submerged Island",
+        ["Default"] = false
+    }):OnChanged(function(p_tyrant)
+        _G.AutoTyrant = p_tyrant
+    end)
+    v4.ToggleAutoTyrant:SetValue(false)
+    task.spawn(function()
+        while task.wait() do
+            if _G.AutoTyrant and Sea3 then
+                pcall(function()
+                    local lp = game:GetService("Players").LocalPlayer
+                    local char = lp.Character
+                    if not char then return end
+                    local hum = char:FindFirstChild("Humanoid")
+                    local hrp = char:FindFirstChild("HumanoidRootPart")
+                    if not hrp or not hum or hum.Health <= 0 then return end
+
+                    -- FASE 1: Tyrant sudah spawn → langsung kill
+                    if game:GetService("Workspace").Enemies:FindFirstChild("Tyrant of the Skies") then
+                        local enemies = game:GetService("Workspace").Enemies:GetChildren()
+                        for _, enemy in pairs(enemies) do
+                            if enemy.Name == "Tyrant of the Skies"
+                                and enemy:FindFirstChild("Humanoid")
+                                and enemy:FindFirstChild("HumanoidRootPart")
+                                and enemy.Humanoid.Health > 0
+                            then
+                                local savedCFrame = enemy.HumanoidRootPart.CFrame
+                                repeat
+                                    task.wait(_G.Fast_Delay or 0.1)
+                                    char = lp.Character
+                                    if not char then break end
+                                    hum = char:FindFirstChild("Humanoid")
+                                    hrp = char:FindFirstChild("HumanoidRootPart")
+                                    if not hrp or not hum then break end
+                                    AutoHaki()
+                                    EquipTool(SelectWeapon)
+                                    -- Tyrant terbang, pakai offset tinggi
+                                    enemy.HumanoidRootPart.CanCollide = false
+                                    enemy.Humanoid.WalkSpeed = 0
+                                    enemy.HumanoidRootPart.Size = Vector3.new(80, 80, 80)
+                                    enemy.HumanoidRootPart.CFrame = savedCFrame
+                                    Tween(enemy.HumanoidRootPart.CFrame * CFrame.new(0, 15, 0))
+                                    AttackNoCoolDown()
+                                    sethiddenproperty(lp, "SimulationRadius", math.huge)
+                                until not _G.AutoTyrant
+                                    or not enemy.Parent
+                                    or enemy.Humanoid.Health <= 0
+
+                                -- Tyrant mati → coba masuk Submerged Island
+                                if not enemy.Parent or enemy.Humanoid.Health <= 0 then
+                                    task.wait(3)
+                                    pcall(function()
+                                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                                            "requestEntrance",
+                                            Vector3.new(10882.3, -2086.3, 10034.2)
+                                        )
+                                    end)
+                                    _G.AutoTyrant = false
+                                    v4.ToggleAutoTyrant:SetValue(false)
+                                end
+                                break
+                            end
+                        end
+
+                    -- FASE 2: Tyrant belum spawn → farm musuh Tiki Outpost sampai 300 kills
+                    else
+                        -- Pergi ke Tiki Outpost dulu jika jauh
+                        if hrp then
+                            local tikiPos = Vector3.new(-16542.4, 55.7, 1044.4)
+                            if (hrp.Position - tikiPos).Magnitude > 3000 then
+                                Tween2(CFrame.new(tikiPos))
+                                task.wait(2)
+                                return
+                            end
+                        end
+                        -- Farm semua musuh di sekitar Tiki Outpost
+                        local foundEnemy = false
+                        for _, enemy in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                            if enemy:FindFirstChild("Humanoid")
+                                and enemy:FindFirstChild("HumanoidRootPart")
+                                and enemy.Humanoid.Health > 0
+                            then
+                                -- Pastikan musuh ini ada di sekitar Tiki Outpost
+                                local tikiPos = Vector3.new(-16542.4, 55.7, 1044.4)
+                                if (enemy.HumanoidRootPart.Position - tikiPos).Magnitude < 2000 then
+                                    foundEnemy = true
+                                    local savedCF = enemy.HumanoidRootPart.CFrame
+                                    repeat
+                                        task.wait(_G.Fast_Delay or 0.1)
+                                        char = lp.Character
+                                        if not char then break end
+                                        hum = char:FindFirstChild("Humanoid")
+                                        hrp = char:FindFirstChild("HumanoidRootPart")
+                                        if not hrp or not hum or hum.Health <= 0 then break end
+                                        AutoHaki()
+                                        EquipTool(SelectWeapon)
+                                        enemy.HumanoidRootPart.CanCollide = false
+                                        enemy.Humanoid.WalkSpeed = 0
+                                        enemy.HumanoidRootPart.Size = Vector3.new(50, 50, 50)
+                                        enemy.HumanoidRootPart.CFrame = savedCF
+                                        Tween(enemy.HumanoidRootPart.CFrame * Pos)
+                                        AttackNoCoolDown()
+                                    until not _G.AutoTyrant
+                                        or not enemy.Parent
+                                        or enemy.Humanoid.Health <= 0
+                                    break
+                                end
+                            end
+                        end
+                        -- Kalau tidak ada musuh, teleport ke spawn musuh Tiki
+                        if not foundEnemy then
+                            Tween2(CFrame.new(-16357.3, 20.6, 1005.6))
+                            task.wait(1)
+                        end
+                    end
+                end)
+            end
+        end
+    end)
+    -- ============================================================
+
     v3.Sea:AddToggle("ToggleTerrorshark", {
         ["Title"] = "Auto Attack Terrorshark",
         ["Description"] = "",
