@@ -5,6 +5,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { obfuscate } = require('./obfuscate');
 
 const rootDir = path.join(__dirname, '..');
 const srcDir = path.join(rootDir, 'src');
@@ -76,19 +77,25 @@ buildOrder.forEach(filePath => {
 // Finalize call
 output += `\n-- Finalize Tab Selection\npcall(function()\n    if Window and Window.SelectTab then\n        Window:SelectTab(1)\n    elseif v2 and v2.SelectTab then\n        v2:SelectTab(1)\n    end\nend)\n`;
 
-fs.writeFileSync(outputFile, output, 'utf8');
+// Obfuscate banana.lua before writing
+console.log('\n🔒 Obfuscating dist/banana.lua...');
+const obfuscatedBanana = obfuscate(output);
+fs.writeFileSync(outputFile, obfuscatedBanana, 'utf8');
+console.log('  ✓ Obfuscated: dist/banana.lua');
 
-// Also copy loader to dist/loader.lua
+// Also copy + obfuscate loader to dist/loader.lua
 const loaderSrc = path.join(srcDir, 'loader.lua');
 const loaderDist = path.join(distDir, 'loader.lua');
 if (fs.existsSync(loaderSrc)) {
-    fs.copyFileSync(loaderSrc, loaderDist);
-    console.log(`  ✓ Copied: dist/loader.lua`);
+    const loaderRaw = fs.readFileSync(loaderSrc, 'utf8');
+    const obfuscatedLoader = obfuscate(loaderRaw);
+    fs.writeFileSync(loaderDist, obfuscatedLoader, 'utf8');
+    console.log('  ✓ Obfuscated: dist/loader.lua');
 }
 
 const stats = fs.statSync(outputFile);
-const totalLines = output.split('\n').length;
+const totalLines = obfuscatedBanana.split('\n').length;
 console.log(`\n🎉 Build Complete!`);
-console.log(`   Output: dist/banana.lua`);
+console.log(`   Output: dist/banana.lua (obfuscated)`);
 console.log(`   Total Lines: ${totalLines.toLocaleString()}`);
 console.log(`   File Size: ${(stats.size / 1024).toFixed(2)} KB\n`);
