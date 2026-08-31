@@ -21,53 +21,102 @@ CollectDelay = 0.05,
 Status = _S({110,147,142,153,142,134,145,142,159,142,147,140,83,83,83},37),
 BaseBonds = nil,
 }
-local BOND_STAT_KEYWORDS = { _S({135,148,147,137},37), _S({135,148,147,137,152},37), _S({136,154,151,151,138,147,136,158},37), _S({135,134,145,134,147,136,138},37), _S({153,148,153,134,145},37) }
-local CASH_STAT_KEYWORDS = { _S({136,134,152,141},37), _S({146,148,147,138,158},37), _S({140,148,145,137},37), _S({136,148,142,147},37), _S({137,148,145,145,134,151},37), _S({136,151,138,137,142,153},37) }
-local function scoreStatName(name)
-local n = name:lower()
-for _, kw in ipairs(BOND_STAT_KEYWORDS) do
-if n:find(kw) then return 2 end
+local STRICT_BOND_KEYWORDS = {
+_S({135,148,147,137},37), _S({135,148,147,137,152},37), _S({153,151,138,134,152,154,151,158},37), _S({156,134,151,135,148,147,137},37), _S({156,134,151,132,135,148,147,137},37), _S({153,151,138,134,152,154,151,158,135,148,147,137},37), _S({153,148,144,138,147},37), _S({153,148,144,138,147,152},37), _S({149,148,142,147,153,152},37), _S({136,154,151,151,138,147,136,158},37)
+}
+local function isBondKeyword(str)
+if not str or type(str) ~= _S({152,153,151,142,147,140},37) then return false end
+local s = str:lower()
+for _, kw in ipairs(STRICT_BOND_KEYWORDS) do
+if s:find(kw) then return true end
 end
-for _, kw in ipairs(CASH_STAT_KEYWORDS) do
-if n:find(kw) then return 1 end
-end
-return 0
+return false
 end
 function getActualBonds()
 local val = nil
 pcall(function()
-local ls = LocalPlayer:FindFirstChild(_S({145,138,134,137,138,151,152,153,134,153,152},37))
-if ls then
-local bestVal   = nil
-local bestScore = -1
-local bestMag   = -1
-for _, child in ipairs(ls:GetChildren()) do
-if child:IsA(_S({110,147,153,123,134,145,154,138},37)) or child:IsA(_S({115,154,146,135,138,151,123,134,145,154,138},37)) then
-local score = scoreStatName(child.Name)
-local v = child.Value
-if score > bestScore or (score == bestScore and v > bestMag) then
-bestScore = score
-bestMag   = v
-bestVal   = v
-end
-end
-end
-if bestVal ~= nil then
-val = bestVal
+for attrName, attrVal in pairs(LocalPlayer:GetAttributes()) do
+if type(attrVal) == _S({147,154,146,135,138,151},37) and isBondKeyword(attrName) then
+val = math.floor(attrVal)
 return
 end
 end
-local pd = LocalPlayer:FindFirstChild(_S({117,145,134,158,138,151,105,134,153,134},37))
-or LocalPlayer:FindFirstChild(_S({105,134,153,134},37))
-or LocalPlayer:FindFirstChild(_S({120,153,134,153,152},37))
-if pd then
-local bondStat = pd:FindFirstChild(_S({103,148,147,137},37))
-or pd:FindFirstChild(_S({103,148,147,137,152},37))
-or pd:FindFirstChild(_S({104,134,152,141},37))
-or pd:FindFirstChild(_S({114,148,147,138,158},37))
-or pd:FindFirstChild(_S({108,148,145,137},37))
-if bondStat and (bondStat:IsA(_S({110,147,153,123,134,145,154,138},37)) or bondStat:IsA(_S({115,154,146,135,138,151,123,134,145,154,138},37))) then
-val = bondStat.Value
+end)
+if val ~= nil then return val end
+pcall(function()
+local containers = {
+ReplicatedStorage:FindFirstChild(_S({117,145,134,158,138,151,105,134,153,134},37)),
+ReplicatedStorage:FindFirstChild(_S({117,145,134,158,138,151,120,153,134,153,152},37)),
+ReplicatedStorage:FindFirstChild(_S({105,134,153,134},37)),
+ReplicatedStorage:FindFirstChild(_S({117,151,148,139,142,145,138,152},37)),
+ReplicatedStorage:FindFirstChild(_S({120,153,134,153,152},37)),
+ReplicatedStorage:FindFirstChild(_S({119,138,149,145,142,136,134,153,138,137,105,134,153,134},37))
+}
+for _, container in ipairs(containers) do
+if container then
+local pFolder = container:FindFirstChild(LocalPlayer.Name) or container:FindFirstChild(tostring(LocalPlayer.UserId))
+local target = pFolder or container
+for attrName, attrVal in pairs(target:GetAttributes()) do
+if type(attrVal) == _S({147,154,146,135,138,151},37) and isBondKeyword(attrName) then
+val = math.floor(attrVal)
+return
+end
+end
+for _, child in ipairs(target:GetChildren()) do
+if (child:IsA(_S({110,147,153,123,134,145,154,138},37)) or child:IsA(_S({115,154,146,135,138,151,123,134,145,154,138},37))) and isBondKeyword(child.Name) then
+val = math.floor(child.Value)
+return
+end
+end
+end
+end
+end)
+if val ~= nil then return val end
+pcall(function()
+local folders = {
+LocalPlayer:FindFirstChild(_S({117,145,134,158,138,151,105,134,153,134},37)),
+LocalPlayer:FindFirstChild(_S({105,134,153,134},37)),
+LocalPlayer:FindFirstChild(_S({120,153,134,153,152},37)),
+LocalPlayer:FindFirstChild(_S({117,151,148,139,142,145,138},37)),
+LocalPlayer:FindFirstChild(_S({104,154,151,151,138,147,136,142,138,152},37)),
+LocalPlayer:FindFirstChild(_S({123,134,145,154,138,152},37)),
+LocalPlayer:FindFirstChild(_S({145,138,134,137,138,151,152,153,134,153,152},37))
+}
+for _, folder in ipairs(folders) do
+if folder then
+for attrName, attrVal in pairs(folder:GetAttributes()) do
+if type(attrVal) == _S({147,154,146,135,138,151},37) and isBondKeyword(attrName) then
+val = math.floor(attrVal)
+return
+end
+end
+for _, child in ipairs(folder:GetChildren()) do
+if (child:IsA(_S({110,147,153,123,134,145,154,138},37)) or child:IsA(_S({115,154,146,135,138,151,123,134,145,154,138},37))) and isBondKeyword(child.Name) then
+val = math.floor(child.Value)
+return
+end
+end
+end
+end
+end)
+if val ~= nil then return val end
+pcall(function()
+local pg = LocalPlayer:FindFirstChild(_S({117,145,134,158,138,151,108,154,142},37))
+if pg then
+for _, label in ipairs(pg:GetDescendants()) do
+if label:IsA(_S({121,138,157,153,113,134,135,138,145},37)) or label:IsA(_S({121,138,157,153,103,154,153,153,148,147},37)) then
+local pName = label.Parent and label.Parent.Name:lower() or ""
+local lName = label.Name:lower()
+local text = label.Text or ""
+if isBondKeyword(pName) or isBondKeyword(lName) or text:lower():find(_S({135,148,147,137},37)) then
+local cleanNum = text:gsub(_S({128,131,74,137,130},37), "")
+local num = tonumber(cleanNum)
+if num and num > 0 and not text:find(_S({74,73},37)) then
+val = num
+return
+end
+end
+end
 end
 end
 end)
@@ -403,6 +452,17 @@ end
 if target.Prompt then
 triggerPrompt(target.Prompt)
 end
+pcall(function()
+local char = LocalPlayer.Character
+local hrp = char and char:FindFirstChild(_S({109,154,146,134,147,148,142,137,119,148,148,153,117,134,151,153},37))
+if hrp and targetPart then
+if firetouchinterest then
+firetouchinterest(hrp, targetPart, 0)
+task.wait(0.01)
+firetouchinterest(hrp, targetPart, 1)
+end
+end
+end)
 if target.IsContainer then
 for _ = 1, 3 do
 task.wait(0.08)
@@ -420,6 +480,15 @@ if not drop.IsContainer and drop.Part and drop.Part:IsDescendantOf(Workspace) th
 teleportTo(drop.Part.CFrame + Vector3.new(0, 1.5, 0))
 if drop.Prompt then triggerPrompt(drop.Prompt) end
 if drop.ClickDetector then triggerClick(drop.ClickDetector) end
+pcall(function()
+local char = LocalPlayer.Character
+local hrp = char and char:FindFirstChild(_S({109,154,146,134,147,148,142,137,119,148,148,153,117,134,151,153},37))
+if hrp and drop.Part and firetouchinterest then
+firetouchinterest(hrp, drop.Part, 0)
+task.wait(0.01)
+firetouchinterest(hrp, drop.Part, 1)
+end
+end)
 State.BondsCollected = State.BondsCollected + 1
 if BondsLabel and BondsLabel.Parent then
 BondsLabel.Text = string.format(_S({97,139,148,147,153,69,136,148,145,148,151,98,71,72,134,134,134,134,134,134,71,99,103,148,147,137,152,95,69,97,84,139,148,147,153,99,97,139,148,147,153,69,136,148,145,148,151,98,71,72,139,139,136,136,85,85,71,99,74,137,97,84,139,148,147,153,99},37), State.BondsCollected)
