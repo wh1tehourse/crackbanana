@@ -601,10 +601,50 @@ table.insert(waypoints, wpPos)
 end
 return waypoints
 end
-local function processTargets(targets)
+HARDCODED_ZONES = {
+{ Name = _S({120,153,134,151,153,69,123,142,145,145,134,140,138},37), Position = Vector3.new(0, 10,     0), Radius = 100 },
+{ Name = _S({123,142,145,145,134,140,138,69,87},37),     Position = Vector3.new(0, 10, -9000), Radius = 100 },
+{ Name = _S({123,142,145,145,134,140,138,69,88},37),     Position = Vector3.new(0, 10,-19000), Radius = 100 },
+{ Name = _S({104,134,152,153,145,138},37),        Position = Vector3.new(0, 10,-26000), Radius = 120 },
+{ Name = _S({121,138,152,145,134,69,113,134,135},37),     Position = Vector3.new(0, 10,-34000), Radius = 100 },
+{ Name = _S({104,134,155,138,69,84,69,114,142,147,138},37),   Position = Vector3.new(0, 10,-41000), Radius = 100 },
+{ Name = _S({106,147,137,69,107,148,151,153},37),      Position = Vector3.new(0, 10,-52000), Radius = 120 },
+}
+BondCache = BondCache or {}
+function addToCache(position, zoneName, isContainer)
+if not position then return end
+for _, entry in ipairs(BondCache) do
+if (entry.Position - position).Magnitude < 8 then
+return
+end
+end
+table.insert(BondCache, {
+Position    = position,
+ZoneName    = zoneName or _S({122,147,144,147,148,156,147},37),
+IsContainer = isContainer or false,
+})
+end
+function getCacheSize()
+return #BondCache
+end
+function isCacheWarm()
+return #BondCache > 0
+end
+function removeCached(position)
+for i = #BondCache, 1, -1 do
+if (BondCache[i].Position - position).Magnitude < 8 then
+table.remove(BondCache, i)
+return
+end
+end
+end
+function clearCache()
+BondCache = {}
+end
+local function processTargets(targets, zoneName)
 if not targets or #targets == 0 then return 0 end
 local collectedCount = 0
-updateStatus(string.format(_S({117,151,148,136,138,152,152,142,147,140,69,74,137,69,153,134,151,140,138,153,152,69,77,103,148,147,137,152,84,120,134,139,138,152,78,83,83,83},37), #targets))
+updateStatus(string.format(_S({117,151,148,136,138,152,152,142,147,140,69,74,137,69,153,134,151,140,138,153,152,83,83,83},37), #targets))
 for idx, target in ipairs(targets) do
 if not State.Running then break end
 if not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild(_S({109,154,146,134,147,148,142,137,119,148,148,153,117,134,151,153},37)) then break end
@@ -612,64 +652,85 @@ local targetPart = target.Part
 if targetPart and targetPart:IsDescendantOf(Workspace) then
 local label = target.IsContainer and (_S({104,151,134,136,144,142,147,140,69},37) .. (target.Name or _S({120,134,139,138},37))) or (_S({113,148,148,153,142,147,140,69},37) .. (target.Name or _S({103,148,147,137},37)))
 updateStatus(string.format(_S({128,74,137,84,74,137,130,69,74,152},37), idx, #targets, label))
+addToCache(targetPart.Position, zoneName, target.IsContainer)
 collectTarget(target)
 if not target.IsContainer then
 State.BondsCollected = State.BondsCollected + 1
 collectedCount = collectedCount + 1
-if BondsLabel and BondsLabel.Parent then
-BondsLabel.Text = string.format(_S({97,139,148,147,153,69,136,148,145,148,151,98,71,72,134,134,134,134,134,134,71,99,103,148,147,137,152,95,69,97,84,139,148,147,153,99,97,139,148,147,153,69,136,148,145,148,151,98,71,72,139,139,136,136,85,85,71,99,74,137,97,84,139,148,147,153,99},37), State.BondsCollected)
-end
 end
 task.wait(State.CollectDelay)
 end
 end
 return collectedCount
 end
-local function performFullRunSweep()
+local function coldSweep()
 local totalFound = 0
-local pois = getPOILocations()
-if #pois > 0 then
-updateStatus(string.format(_S({120,156,138,138,149,142,147,140,69,74,137,69,117,116,110,152,69,77,105,138,152,134,81,69,112,134,152,153,142,145,81,69,121,138,152,145,134,81,69,108,154,134,81,69,106,147,137,78,83,83,83},37), #pois))
-for _, poi in ipairs(pois) do
+updateStatus(string.format(_S({104,148,145,137,69,152,136,134,147,95,69,74,137,69,159,148,147,138,152,83,83,83},37), #HARDCODED_ZONES))
+local detectedPOIs = getPOILocations()
+local zoneList = {}
+for _, zone in ipairs(HARDCODED_ZONES) do
+table.insert(zoneList, { Name = zone.Name, Position = zone.Position, Radius = zone.Radius })
+end
+for _, poi in ipairs(detectedPOIs) do
+local isDupe = false
+for _, z in ipairs(zoneList) do
+if (z.Position - poi.Position).Magnitude < 500 then
+z.Position = poi.Position
+isDupe = true
+break
+end
+end
+if not isDupe then
+table.insert(zoneList, { Name = poi.Name, Position = poi.Position, Radius = 120 })
+end
+end
+for idx, zone in ipairs(zoneList) do
 if not State.Running then break end
 if not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild(_S({109,154,146,134,147,148,142,137,119,148,148,153,117,134,151,153},37)) then break end
-updateStatus(string.format(_S({123,142,152,142,153,142,147,140,69,117,116,110,95,69,74,152},37), poi.Name))
-teleportTo(CFrame.new(poi.Position + Vector3.new(0, 6, 0)))
-requestStream(poi.Position)
-task.wait(0.25)
-local poiTargets = scanBonds(poi.Position, 250)
-if #poiTargets > 0 then
-processTargets(poiTargets)
-totalFound = totalFound + #poiTargets
+updateStatus(string.format(_S({127,148,147,138,69,128,74,137,84,74,137,130,95,69,74,152},37), idx, #zoneList, zone.Name))
+teleportTo(CFrame.new(zone.Position + Vector3.new(0, 8, 0)))
+requestStream(zone.Position)
+task.wait(0.2)
+local targets = scanBonds(zone.Position, zone.Radius)
+if #targets > 0 then
+local found = processTargets(targets, zone.Name)
+totalFound = totalFound + found
 end
 end
+return totalFound
 end
-local trackPath = getTrackTraversalPath()
-if #trackPath > 0 then
-updateStatus(_S({120,153,151,138,134,146,142,147,140,69,146,134,149,69,155,142,134,69,134,147,136,141,148,151,69,149,148,142,147,153,152,83,83,83},37))
-local anchorIndices = {
-1,
-math.max(1, math.floor(#trackPath * 0.25)),
-math.max(1, math.floor(#trackPath * 0.50)),
-math.max(1, math.floor(#trackPath * 0.75)),
-#trackPath,
-}
-for _, idx in ipairs(anchorIndices) do
+local function warmSweep()
+local totalFound  = 0
+local missedCount = 0
+local cache       = BondCache
+updateStatus(string.format(_S({124,134,151,146,69,151,154,147,95,69,74,137,69,136,134,136,141,138,137,69,149,148,152,142,153,142,148,147,152},37), #cache))
+for idx, entry in ipairs(cache) do
 if not State.Running then break end
 if not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild(_S({109,154,146,134,147,148,142,137,119,148,148,153,117,134,151,153},37)) then break end
-local pos = trackPath[idx]
-teleportTo(CFrame.new(pos + Vector3.new(0, 8, 0)))
+local pos = entry.Position
+teleportTo(CFrame.new(pos + Vector3.new(0, 2, 0)))
 requestStream(pos)
-task.wait(0.3)
+task.wait(0.05)
+local nearby = scanBonds(pos, 15)
+if #nearby > 0 then
+updateStatus(string.format(_S({128,74,137,84,74,137,130,69,109,142,153,153,142,147,140,69,136,134,136,141,138,137,95,69,74,152},37), idx, #cache, entry.ZoneName))
+for _, target in ipairs(nearby) do
+if not State.Running then break end
+collectTarget(target)
+if not target.IsContainer then
+State.BondsCollected = State.BondsCollected + 1
+totalFound = totalFound + 1
+end
+task.wait(State.CollectDelay)
+end
+else
+removeCached(pos)
+missedCount = missedCount + 1
 end
 end
-if State.Running then
-updateStatus(_S({108,145,148,135,134,145,69,152,136,134,147,69,134,136,151,148,152,152,69,134,145,145,69,145,148,134,137,138,137,69,124,148,151,144,152,149,134,136,138,83,83,83},37))
-local globalTargets = scanBonds()
-if #globalTargets > 0 then
-processTargets(globalTargets)
-totalFound = totalFound + #globalTargets
-end
+if missedCount > 0 and missedCount >= math.floor(#cache * 0.6) then
+updateStatus(_S({104,134,136,141,138,69,146,148,152,153,145,158,69,152,153,134,145,138,81,69,136,145,138,134,151,142,147,140,69,139,148,151,69,147,138,157,153,69,136,148,145,137,69,152,136,134,147,83,83,83},37))
+clearCache()
 end
 return totalFound
 end
@@ -678,32 +739,33 @@ updateStatus(_S({124,134,142,153,142,147,140,69,139,148,151,69,146,134,149,69,13
 waitForCharacter(10)
 task.wait(2)
 local emptyRuns = 0
-local MAX_EMPTY_RUNS = 3
+local MAX_EMPTY_RUNS = 2
 while State.Running do
 task.wait(0.1)
 local char = LocalPlayer.Character
-local hrp = char and char:FindFirstChild(_S({109,154,146,134,147,148,142,137,119,148,148,153,117,134,151,153},37))
-local hum = char and char:FindFirstChildOfClass(_S({109,154,146,134,147,148,142,137},37))
+local hrp  = char and char:FindFirstChild(_S({109,154,146,134,147,148,142,137,119,148,148,153,117,134,151,153},37))
+local hum  = char and char:FindFirstChildOfClass(_S({109,154,146,134,147,148,142,137},37))
 if char and hrp and hum and hum.Health > 0 then
-local immediateTargets = scanBonds()
-if #immediateTargets > 0 then
-processTargets(immediateTargets)
+local collectedThisRun = 0
+if isCacheWarm() then
+collectedThisRun = warmSweep()
+else
+updateStatus(_S({104,134,136,141,138,69,136,148,145,137,69,7,165,185,69,152,136,134,147,147,142,147,140,69,134,145,145,69,159,148,147,138,152,83,83,83},37))
+collectedThisRun = coldSweep()
 end
-updateStatus(_S({120,153,134,151,153,142,147,140,69,139,154,145,145,69,151,154,147,69,152,156,138,138,149,69,77,105,138,152,134,69,82,99,69,112,134,152,153,142,145,69,82,99,69,121,138,152,145,134,69,82,99,69,108,154,134,69,82,99,69,106,147,137,78,83,83,83},37))
-local collectedInSweep = performFullRunSweep()
-if collectedInSweep > 0 then
+if collectedThisRun > 0 then
 emptyRuns = 0
-updateStatus(string.format(_S({120,156,138,138,149,69,139,142,147,142,152,141,138,137,70,69,107,134,151,146,138,137,69,74,137,69,142,153,138,146,152,83},37), collectedInSweep))
-task.wait(1)
+updateStatus(string.format(_S({119,154,147,69,137,148,147,138,70,69,80,74,137,69,142,153,138,146,152,69,161,69,104,134,136,141,138,95,69,74,137,69,149,148,152},37), collectedThisRun, getCacheSize()))
+task.wait(0.5)
 else
 emptyRuns = emptyRuns + 1
 if emptyRuns < MAX_EMPTY_RUNS then
-updateStatus(string.format(_S({115,148,69,146,148,151,138,69,135,148,147,137,152,69,139,148,154,147,137,83,69,119,138,153,151,158,142,147,140,69,77,74,137,84,74,137,78,83,83,83},37), emptyRuns, MAX_EMPTY_RUNS))
-task.wait(2)
+updateStatus(string.format(_S({115,148,153,141,142,147,140,69,139,148,154,147,137,81,69,151,138,153,151,158,69,77,74,137,84,74,137,78,83,83,83},37), emptyRuns, MAX_EMPTY_RUNS))
+task.wait(1)
 else
 State.TotalResets = State.TotalResets + 1
-updateStatus(_S({102,145,145,69,145,148,136,134,153,142,148,147,152,69,145,148,148,153,138,137,83,69,120,138,151,155,138,151,69,141,148,149,149,142,147,140,83,83,83},37))
 emptyRuns = 0
+updateStatus(_S({114,134,149,69,138,146,149,153,158,83,69,109,148,149,149,142,147,140,69,152,138,151,155,138,151,83,83,83},37))
 resetCharacter()
 LocalPlayer.CharacterAdded:Wait()
 task.wait(3)
