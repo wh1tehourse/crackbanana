@@ -1,7 +1,7 @@
 --[[
     Banana Crack Hub - Blox Fruits [ Freemium ]
     Author: wh1tehourse
-    Compiled: 2026-08-31T06:15:23.730Z
+    Compiled: 2026-08-31T06:29:46.651Z
     Source: Modular Architecture (src/)
 ]]
 
@@ -728,13 +728,49 @@ function CheckLevel()
             NameMon = "Serpent Hunter"
             CFrameQ = CFrame.new(- 16665.19140625, 104.59640502929688, 1579.6943359375)
             CFrameMon = CFrame.new(- 16621.4140625, 121.40631103515625, 1290.6881103515625)
-        elseif v7 == 2575 or (v7 <= 2599 or (SelectMonster == "Skull Slayer" or v7 == 2600)) then
+        elseif v7 == 2575 or (v7 <= 2599 or SelectMonster == "Skull Slayer") then
             Ms = "Skull Slayer"
             NameQuest = "TikiQuest3"
             QuestLv = 2
             NameMon = "Skull Slayer"
-            CFrameQ = CFrame.new(- 16665.19140625, 104.59640502929688, 1579.6943359375)
-            CFrameMon = CFrame.new(- 16811.5703125, 84.625244140625, 1542.235107421875)
+            CFrameQ = CFrame.new(-16665.19140625, 104.59640502929688, 1579.6943359375)
+            CFrameMon = CFrame.new(-16811.5703125, 84.625244140625, 1542.235107421875)
+        -- Submerged Island (Level 2600 - 2800)
+        elseif v7 == 2600 or (v7 <= 2624 or SelectMonster == "Reef Bandit") then
+            Ms = "Reef Bandit"
+            NameQuest = "SubmergedQuest1"
+            QuestLv = 1
+            NameMon = "Reef Bandit"
+            CFrameQ = CFrame.new(10882.3, -2086.3, 10034.2)
+            CFrameMon = CFrame.new(10736.6, -2087.8, 9338.5)
+        elseif v7 == 2625 or (v7 <= 2649 or SelectMonster == "Coral Pirate") then
+            Ms = "Coral Pirate"
+            NameQuest = "SubmergedQuest1"
+            QuestLv = 2
+            NameMon = "Coral Pirate"
+            CFrameQ = CFrame.new(10882.3, -2086.3, 10034.2)
+            CFrameMon = CFrame.new(10736.6, -2087.8, 9338.5)
+        elseif v7 == 2650 or (v7 <= 2674 or SelectMonster == "Sea Chanter") then
+            Ms = "Sea Chanter"
+            NameQuest = "SubmergedQuest2"
+            QuestLv = 1
+            NameMon = "Sea Chanter"
+            CFrameQ = CFrame.new(10882.3, -2086.3, 10034.2)
+            CFrameMon = CFrame.new(10621.0, -2087.8, 10102.0)
+        elseif v7 == 2675 or (v7 <= 2699 or SelectMonster == "High Disciple") then
+            Ms = "High Disciple"
+            NameQuest = "SubmergedQuest2"
+            QuestLv = 2
+            NameMon = "High Disciple"
+            CFrameQ = CFrame.new(9636.5, -1992.2, 9609.5)
+            CFrameMon = CFrame.new(9828.1, -1940.9, 9693.1)
+        elseif v7 >= 2700 or SelectMonster == "Grand Devotee" then
+            Ms = "Grand Devotee"
+            NameQuest = "SubmergedQuest3"
+            QuestLv = 1
+            NameMon = "Grand Devotee"
+            CFrameQ = CFrame.new(9636.5, -1992.2, 9609.5)
+            CFrameMon = CFrame.new(9557.6, -1928.0, 9859.2)
         end
     end
 end
@@ -830,7 +866,12 @@ elseif Sea3 then
         "Sun-kissed Warrior",
         "Isle Champion",
         "Serpent Hunter",
-        "Skull Slayer"
+        "Skull Slayer",
+        "Reef Bandit",
+        "Coral Pirate",
+        "Sea Chanter",
+        "High Disciple",
+        "Grand Devotee"
     }
 end
 if Sea1 then
@@ -872,7 +913,8 @@ elseif Sea3 then
         "Cake Island",
         "Choco Island",
         "Candy Island",
-        "Tiki Outpost"
+        "Tiki Outpost",
+        "Submerged Island"
     }
 end
 function CheckBossQuest()
@@ -2584,31 +2626,26 @@ end
     Bypasses anti-cheat for smooth flying and island navigation.
 ]]
 
+-- Flying offset loop: rotasi CFrame offset agar anti-cheat tidak detect posisi statis
 task.spawn(function()
-    while task.task.wait() do
-        if Type ~= 1 then
-            if Type ~= 2 then
-                if Type ~= 3 then
-                    if Type ~= 4 then
-                        if Type == 5 then
-                            Pos = CFrame.new(0, 40, - 40)
-                        end
-                    else
-                        Pos = CFrame.new(0, 40, 40)
-                    end
-                else
-                    Pos = CFrame.new(40, 40, 0)
-                end
-            else
-                Pos = CFrame.new(- 40, 40, 0)
-            end
-        else
+    while task.wait() do
+        if Type == 1 then
             Pos = CFrame.new(0, 40, 0)
+        elseif Type == 2 then
+            Pos = CFrame.new(-40, 40, 0)
+        elseif Type == 3 then
+            Pos = CFrame.new(40, 40, 0)
+        elseif Type == 4 then
+            Pos = CFrame.new(0, 40, 40)
+        elseif Type == 5 then
+            Pos = CFrame.new(0, 40, -40)
         end
     end
 end)
+
+-- Type cycling loop
 task.spawn(function()
-    while task.task.wait() do
+    while task.wait() do
         Type = 1
         task.wait(0.2)
         Type = 2
@@ -2622,65 +2659,66 @@ task.spawn(function()
     end
 end)
 
-function to(p229)
-    repeat
-        task.wait(_G.Fast_Delay)
-        game.Players.LocalPlayer.Character.Humanoid:ChangeState(15)
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p229
-        task.task.wait()
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p229
-    until (p229.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 2000
-end
-function to(pu230)
+-- Fungsi teleport jarak jauh dengan bypass anti-cheat
+function to(targetCFrame)
     pcall(function()
-		-- upvalues: (ref) pu230
-        if (pu230.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude >= 2000 and (not Auto_Raid and game.Players.LocalPlayer.Character.Humanoid.Health > 0) then
-            if NameMon ~= "FishmanQuest" then
-                if Mon ~= "God\'s Guard" then
-                    if NameMon ~= "SkyExp1Quest" then
-                        if NameMon ~= "ShipQuest1" then
-                            if NameMon ~= "ShipQuest2" then
-                                if NameMon ~= "FrostQuest" then
-                                    repeat
-                                        task.wait(_G.Fast_Delay)
-                                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pu230
-                                        task.wait(0.05)
-                                        game.Players.LocalPlayer.Character.Head:Destroy()
-                                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pu230
-                                    until (pu230.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 2500 and game.Players.LocalPlayer.Character.Humanoid.Health > 0
-                                    task.wait()
-                                else
-                                    Tween(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
-                                    task.wait()
-                                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(- 6508.5581054688, 89.034996032715, - 132.83953857422))
-                                end
-                            else
-                                Tween(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
-                                task.wait()
-                                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(923.21252441406, 126.9760055542, 32852.83203125))
-                            end
-                        else
-                            Tween(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
-                            task.wait()
-                            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(923.21252441406, 126.9760055542, 32852.83203125))
-                        end
-                    else
-                        Tween(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
-                        task.wait()
-                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(- 7894.6176757813, 5547.1416015625, - 380.29119873047))
-                    end
-                else
-                    Tween(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
-                    task.wait()
-                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(- 4607.82275, 872.54248, - 1667.55688))
-                end
-            else
-                Tween(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
-                task.wait()
-                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(61163.8515625, 11.6796875, 1819.7841796875))
-            end
+        local lp = game.Players.LocalPlayer
+        local char = lp.Character
+        if not char then return end
+
+        local hrp = char:FindFirstChild("HumanoidRootPart")
+        local hum = char:FindFirstChild("Humanoid")
+        if not hrp or not hum then return end
+        if hum.Health <= 0 then return end
+        if Auto_Raid then return end
+
+        local dist = (targetCFrame.Position - hrp.Position).Magnitude
+        if dist < 2000 then return end
+
+        -- Cek apakah perlu requestEntrance untuk area khusus
+        if NameMon == "FishmanQuest" then
+            Tween(hrp.CFrame)
+            task.wait()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(61163.8515625, 11.6796875, 1819.7841796875))
+            return
+        elseif Mon == "God's Guard" then
+            Tween(hrp.CFrame)
+            task.wait()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(-4607.82275, 872.54248, -1667.55688))
+            return
+        elseif NameMon == "SkyExp1Quest" then
+            Tween(hrp.CFrame)
+            task.wait()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(-7894.6176757813, 5547.1416015625, -380.29119873047))
+            return
+        elseif NameMon == "ShipQuest1" or NameMon == "ShipQuest2" then
+            Tween(hrp.CFrame)
+            task.wait()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(923.21252441406, 126.9760055542, 32852.83203125))
+            return
+        elseif NameMon == "FrostQuest" then
+            Tween(hrp.CFrame)
+            task.wait()
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(-6508.5581054688, 89.034996032715, -132.83953857422))
+            return
         end
+
+        -- Teleport terbang biasa untuk jarak jauh (>= 2000 studs)
+        repeat
+            task.wait(_G.Fast_Delay or 0.1)
+            char = lp.Character
+            if not char then break end
+            hrp = char:FindFirstChild("HumanoidRootPart")
+            hum = char:FindFirstChild("Humanoid")
+            if not hrp or not hum then break end
+            if hum.Health <= 0 then break end
+            hum:ChangeState(15) -- Physics bypass / jump state
+            hrp.CFrame = targetCFrame
+            task.wait()
+            hrp.CFrame = targetCFrame
+        until not hrp or (targetCFrame.Position - hrp.Position).Magnitude <= 5
     end)
+end
 
 -- ==========================================
 -- MODULE: src/ui/toggle_button.lua
@@ -8366,7 +8404,8 @@ elseif Sea3 then
         "Cake Island",
         "Cocoa Island",
         "Candy Island",
-        "Tiki Outpost"
+        "Tiki Outpost",
+        "Submerged Island"
     }
 end
 local v842 = v3.Teleport:AddDropdown("DropdownIsland", {
@@ -8433,7 +8472,12 @@ v3.Teleport:AddButton({
                                                                                                                                                                                                 if _G.SelectIsland ~= "Cocoa Island" then
                                                                                                                                                                                                     if _G.SelectIsland ~= "Candy Island" then
                                                                                                                                                                                                         if _G.SelectIsland == "Tiki Outpost" then
-                                                                                                                                                                                                            Tween2(CFrame.new(- 16542.447265625, 55.68632888793945, 1044.41650390625))
+                                                                                                                                                                                                            Tween2(CFrame.new(-16542.447265625, 55.68632888793945, 1044.41650390625))
+                                                                                                                                                                                                        elseif _G.SelectIsland == "Submerged Island" then
+                                                                                                                                                                                                            -- Submerged Island diakses via submarine dari Tiki Outpost
+                                                                                                                                                                                                            Tween2(CFrame.new(-16542.447265625, 55.68632888793945, 1044.41650390625))
+                                                                                                                                                                                                            task.wait(1)
+                                                                                                                                                                                                            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(10882.3, -2086.3, 10034.2))
                                                                                                                                                                                                         end
                                                                                                                                                                                                     else
                                                                                                                                                                                                         Tween2(CFrame.new(- 1014.4241943359375, 149.11068725585938, - 14555.962890625))

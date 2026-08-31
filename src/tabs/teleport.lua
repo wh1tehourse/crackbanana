@@ -200,7 +200,8 @@ elseif Sea3 then
         "Cake Island",
         "Cocoa Island",
         "Candy Island",
-        "Tiki Outpost"
+        "Tiki Outpost",
+        "Submerged Island"
     }
 end
 local v842 = v3.Teleport:AddDropdown("DropdownIsland", {
@@ -267,7 +268,12 @@ v3.Teleport:AddButton({
                                                                                                                                                                                                 if _G.SelectIsland ~= "Cocoa Island" then
                                                                                                                                                                                                     if _G.SelectIsland ~= "Candy Island" then
                                                                                                                                                                                                         if _G.SelectIsland == "Tiki Outpost" then
-                                                                                                                                                                                                            Tween2(CFrame.new(- 16542.447265625, 55.68632888793945, 1044.41650390625))
+                                                                                                                                                                                                            Tween2(CFrame.new(-16542.447265625, 55.68632888793945, 1044.41650390625))
+                                                                                                                                                                                                        elseif _G.SelectIsland == "Submerged Island" then
+                                                                                                                                                                                                            -- Submerged Island diakses via submarine dari Tiki Outpost
+                                                                                                                                                                                                            Tween2(CFrame.new(-16542.447265625, 55.68632888793945, 1044.41650390625))
+                                                                                                                                                                                                            task.wait(1)
+                                                                                                                                                                                                            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(10882.3, -2086.3, 10034.2))
                                                                                                                                                                                                         end
                                                                                                                                                                                                     else
                                                                                                                                                                                                         Tween2(CFrame.new(- 1014.4241943359375, 149.11068725585938, - 14555.962890625))

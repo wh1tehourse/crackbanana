@@ -631,13 +631,49 @@ function CheckLevel()
             NameMon = "Serpent Hunter"
             CFrameQ = CFrame.new(- 16665.19140625, 104.59640502929688, 1579.6943359375)
             CFrameMon = CFrame.new(- 16621.4140625, 121.40631103515625, 1290.6881103515625)
-        elseif v7 == 2575 or (v7 <= 2599 or (SelectMonster == "Skull Slayer" or v7 == 2600)) then
+        elseif v7 == 2575 or (v7 <= 2599 or SelectMonster == "Skull Slayer") then
             Ms = "Skull Slayer"
             NameQuest = "TikiQuest3"
             QuestLv = 2
             NameMon = "Skull Slayer"
-            CFrameQ = CFrame.new(- 16665.19140625, 104.59640502929688, 1579.6943359375)
-            CFrameMon = CFrame.new(- 16811.5703125, 84.625244140625, 1542.235107421875)
+            CFrameQ = CFrame.new(-16665.19140625, 104.59640502929688, 1579.6943359375)
+            CFrameMon = CFrame.new(-16811.5703125, 84.625244140625, 1542.235107421875)
+        -- Submerged Island (Level 2600 - 2800)
+        elseif v7 == 2600 or (v7 <= 2624 or SelectMonster == "Reef Bandit") then
+            Ms = "Reef Bandit"
+            NameQuest = "SubmergedQuest1"
+            QuestLv = 1
+            NameMon = "Reef Bandit"
+            CFrameQ = CFrame.new(10882.3, -2086.3, 10034.2)
+            CFrameMon = CFrame.new(10736.6, -2087.8, 9338.5)
+        elseif v7 == 2625 or (v7 <= 2649 or SelectMonster == "Coral Pirate") then
+            Ms = "Coral Pirate"
+            NameQuest = "SubmergedQuest1"
+            QuestLv = 2
+            NameMon = "Coral Pirate"
+            CFrameQ = CFrame.new(10882.3, -2086.3, 10034.2)
+            CFrameMon = CFrame.new(10736.6, -2087.8, 9338.5)
+        elseif v7 == 2650 or (v7 <= 2674 or SelectMonster == "Sea Chanter") then
+            Ms = "Sea Chanter"
+            NameQuest = "SubmergedQuest2"
+            QuestLv = 1
+            NameMon = "Sea Chanter"
+            CFrameQ = CFrame.new(10882.3, -2086.3, 10034.2)
+            CFrameMon = CFrame.new(10621.0, -2087.8, 10102.0)
+        elseif v7 == 2675 or (v7 <= 2699 or SelectMonster == "High Disciple") then
+            Ms = "High Disciple"
+            NameQuest = "SubmergedQuest2"
+            QuestLv = 2
+            NameMon = "High Disciple"
+            CFrameQ = CFrame.new(9636.5, -1992.2, 9609.5)
+            CFrameMon = CFrame.new(9828.1, -1940.9, 9693.1)
+        elseif v7 >= 2700 or SelectMonster == "Grand Devotee" then
+            Ms = "Grand Devotee"
+            NameQuest = "SubmergedQuest3"
+            QuestLv = 1
+            NameMon = "Grand Devotee"
+            CFrameQ = CFrame.new(9636.5, -1992.2, 9609.5)
+            CFrameMon = CFrame.new(9557.6, -1928.0, 9859.2)
         end
     end
 end
@@ -733,7 +769,12 @@ elseif Sea3 then
         "Sun-kissed Warrior",
         "Isle Champion",
         "Serpent Hunter",
-        "Skull Slayer"
+        "Skull Slayer",
+        "Reef Bandit",
+        "Coral Pirate",
+        "Sea Chanter",
+        "High Disciple",
+        "Grand Devotee"
     }
 end
 if Sea1 then
@@ -775,7 +816,8 @@ elseif Sea3 then
         "Cake Island",
         "Choco Island",
         "Candy Island",
-        "Tiki Outpost"
+        "Tiki Outpost",
+        "Submerged Island"
     }
 end
 function CheckBossQuest()
