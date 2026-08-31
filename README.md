@@ -1,25 +1,7 @@
-# 🍌 Banana Crack Hub
-
-Script Blox Fruits premium & modular untuk **Blox Fruits (Sea 1, Sea 2, Sea 3)**.
-
----
-
-## 🚀 Fast Loader (Recommended)
-
-Gunakan **Ultra-Lightweight Loader** untuk eksekusi yang cepat, anti-lag, dan otomatis mendeteksi Sea:
+# 🚀 Banana Crack Hub Loader
 
 ```lua
 loadstring(game:HttpGet("https://raw.githubusercontent.com/wh1tehourse/crackbanana/main/dist/loader.lua"))()
-```
-
----
-
-## ⚡ Direct Execution
-
-Atau jalankan script utama secara langsung:
-
-```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/wh1tehourse/crackbanana/main/dist/banana.lua?t=" .. tostring(tick())))()
 ```
 
 ---
@@ -75,20 +57,3 @@ crackbanana/
 ├── package.json                   # Konfigurasi NPM build
 └── README.md                      # Dokumentasi Proyek
 ```
-
----
-
-## 🛠️ Cara Edit & Compile Script
-
-1. Buka dan edit file modul yang Anda inginkan di folder `src/`.
-2. Jalankan perintah bundler:
-   ```bash
-   npm run build
-   ```
-   *(Atau `node scripts/build.js`)*
-3. Commit dan push ke GitHub:
-   ```bash
-   git add .
-   git commit -m "Update feature"
-   git push
-   ```
