@@ -21,19 +21,39 @@ CollectDelay = 0.05,
 Status = _S({110,147,142,153,142,134,145,142,159,142,147,140,83,83,83},37),
 BaseBonds = nil,
 }
+local BOND_STAT_KEYWORDS = { _S({135,148,147,137},37), _S({135,148,147,137,152},37), _S({136,154,151,151,138,147,136,158},37), _S({135,134,145,134,147,136,138},37), _S({153,148,153,134,145},37) }
+local CASH_STAT_KEYWORDS = { _S({136,134,152,141},37), _S({146,148,147,138,158},37), _S({140,148,145,137},37), _S({136,148,142,147},37), _S({137,148,145,145,134,151},37), _S({136,151,138,137,142,153},37) }
+local function scoreStatName(name)
+local n = name:lower()
+for _, kw in ipairs(BOND_STAT_KEYWORDS) do
+if n:find(kw) then return 2 end
+end
+for _, kw in ipairs(CASH_STAT_KEYWORDS) do
+if n:find(kw) then return 1 end
+end
+return 0
+end
 function getActualBonds()
 local val = nil
 pcall(function()
 local ls = LocalPlayer:FindFirstChild(_S({145,138,134,137,138,151,152,153,134,153,152},37))
 if ls then
-local bondStat = ls:FindFirstChild(_S({103,148,147,137},37))
-or ls:FindFirstChild(_S({103,148,147,137,152},37))
-or ls:FindFirstChild(_S({104,134,152,141},37))
-or ls:FindFirstChild(_S({114,148,147,138,158},37))
-or ls:FindFirstChild(_S({108,148,145,137},37))
-or ls:FindFirstChild(_S({103,134,145,134,147,136,138},37))
-if bondStat then
-val = bondStat.Value
+local bestVal   = nil
+local bestScore = -1
+local bestMag   = -1
+for _, child in ipairs(ls:GetChildren()) do
+if child:IsA(_S({110,147,153,123,134,145,154,138},37)) or child:IsA(_S({115,154,146,135,138,151,123,134,145,154,138},37)) then
+local score = scoreStatName(child.Name)
+local v = child.Value
+if score > bestScore or (score == bestScore and v > bestMag) then
+bestScore = score
+bestMag   = v
+bestVal   = v
+end
+end
+end
+if bestVal ~= nil then
+val = bestVal
 return
 end
 end
@@ -46,7 +66,7 @@ or pd:FindFirstChild(_S({103,148,147,137,152},37))
 or pd:FindFirstChild(_S({104,134,152,141},37))
 or pd:FindFirstChild(_S({114,148,147,138,158},37))
 or pd:FindFirstChild(_S({108,148,145,137},37))
-if bondStat and bondStat:IsA(_S({110,147,153,123,134,145,154,138},37)) or (bondStat and bondStat:IsA(_S({115,154,146,135,138,151,123,134,145,154,138},37))) then
+if bondStat and (bondStat:IsA(_S({110,147,153,123,134,145,154,138},37)) or bondStat:IsA(_S({115,154,146,135,138,151,123,134,145,154,138},37))) then
 val = bondStat.Value
 end
 end
