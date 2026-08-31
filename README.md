@@ -31,7 +31,9 @@ crackbanana/
 │   │   └── loader.lua
 │   │
 │   └── 📁 dead_rails/                     # Modul Khusus Dead Rails
-│       └── kaitun_bond.lua                # Logika Kaitun Bond & Auto Reset
+│       ├── 📁 core/                       # Core engine (scanner, collector, farm, teleport, server_hop, services, state, anti_afk)
+│       ├── 📁 ui/                         # Standalone compact Kaitun HUD
+│       └── init.lua                       # Modular Entrypoint Overview
 │
 ├── 📁 scripts/                            # Build Automation
 │   ├── build.js                           # Multi-game bundler (npm run build)

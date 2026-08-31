@@ -1,21 +1,18 @@
 -- [[ Banana Crack Hub | Protected Build ]]
 local _S=function(b,k)local t={}for i=1,#b do t[i]=string.char((b[i]-k)%256)end return table.concat(t)end;
-local Players = game:GetService(_S({117,145,134,158,138,151,152},37))
-local Workspace = game:GetService(_S({124,148,151,144,152,149,134,136,138},37))
-local RunService = game:GetService(_S({119,154,147,120,138,151,155,142,136,138},37))
-local TweenService = game:GetService(_S({121,156,138,138,147,120,138,151,155,142,136,138},37))
-local UserInputService = game:GetService(_S({122,152,138,151,110,147,149,154,153,120,138,151,155,142,136,138},37))
-local VirtualUser = game:GetService(_S({123,142,151,153,154,134,145,122,152,138,151},37))
-local HttpService = game:GetService(_S({109,153,153,149,120,138,151,155,142,136,138},37))
-local TeleportService = game:GetService(_S({121,138,145,138,149,148,151,153,120,138,151,155,142,136,138},37))
-local CoreGui = game:GetService(_S({104,148,151,138,108,154,142},37))
-local LocalPlayer = Players.LocalPlayer
-LocalPlayer.Idled:Connect(function()
-VirtualUser:Button2Down(Vector2.new(0, 0), Workspace.CurrentCamera.CFrame)
-task.wait(1)
-VirtualUser:Button2Up(Vector2.new(0, 0), Workspace.CurrentCamera.CFrame)
-end)
-local State = {
+Players = game:GetService(_S({117,145,134,158,138,151,152},37))
+Workspace = game:GetService(_S({124,148,151,144,152,149,134,136,138},37))
+ReplicatedStorage = game:GetService(_S({119,138,149,145,142,136,134,153,138,137,120,153,148,151,134,140,138},37))
+RunService = game:GetService(_S({119,154,147,120,138,151,155,142,136,138},37))
+TweenService = game:GetService(_S({121,156,138,138,147,120,138,151,155,142,136,138},37))
+UserInputService = game:GetService(_S({122,152,138,151,110,147,149,154,153,120,138,151,155,142,136,138},37))
+VirtualUser = game:GetService(_S({123,142,151,153,154,134,145,122,152,138,151},37))
+HttpService = game:GetService(_S({109,153,153,149,120,138,151,155,142,136,138},37))
+TeleportService = game:GetService(_S({121,138,145,138,149,148,151,153,120,138,151,155,142,136,138},37))
+CoreGui = game:GetService(_S({104,148,151,138,108,154,142},37))
+ProximityPromptService = game:GetService(_S({117,151,148,157,142,146,142,153,158,117,151,148,146,149,153,120,138,151,155,142,136,138},37))
+LocalPlayer = Players.LocalPlayer
+State = {
 Running = true,
 BondsCollected = 0,
 TotalResets = 0,
@@ -23,6 +20,58 @@ StartTime = os.time(),
 CollectDelay = 0.05,
 Status = _S({110,147,142,153,142,134,145,142,159,142,147,140,83,83,83},37)
 }
+function updateStatus(text)
+State.Status = text
+if StatusLabel and StatusLabel.Parent then
+StatusLabel.Text = _S({120,153,134,153,154,152,95,69},37) .. text
+end
+end
+LocalPlayer.Idled:Connect(function()
+VirtualUser:Button2Down(Vector2.new(0, 0), Workspace.CurrentCamera.CFrame)
+task.wait(1)
+VirtualUser:Button2Up(Vector2.new(0, 0), Workspace.CurrentCamera.CFrame)
+end)
+function waitForCharacter(timeout)
+timeout = timeout or 10
+local char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+local hrp = char:WaitForChild(_S({109,154,146,134,147,148,142,137,119,148,148,153,117,134,151,153},37), timeout)
+local hum = char:WaitForChild(_S({109,154,146,134,147,148,142,137},37), timeout)
+return char, hrp, hum
+end
+function teleportTo(targetCFrame)
+local char = LocalPlayer.Character
+if not char then return end
+local hrp = char:FindFirstChild(_S({109,154,146,134,147,148,142,137,119,148,148,153,117,134,151,153},37))
+if not hrp then return end
+hrp.CFrame = targetCFrame
+end
+function resetCharacter()
+local char = LocalPlayer.Character
+if char then
+local hum = char:FindFirstChildOfClass(_S({109,154,146,134,147,148,142,137},37))
+if hum then
+hum.Health = 0
+else
+char:BreakJoints()
+end
+end
+end
+function hopServer()
+updateStatus(_S({109,148,149,149,142,147,140,69,153,148,69,134,69,147,138,156,69,152,138,151,155,138,151,83,83,83},37))
+pcall(function()
+local url = _S({141,153,153,149,152,95,84,84,140,134,146,138,152,83,151,148,135,145,148,157,83,136,148,146,84,155,86,84,140,134,146,138,152,84},37) .. game.PlaceId .. _S({84,152,138,151,155,138,151,152,84,117,154,135,145,142,136,100,152,148,151,153,116,151,137,138,151,98,102,152,136,75,145,142,146,142,153,98,86,85,85},37)
+local raw = game:HttpGet(url)
+local servers = HttpService:JSONDecode(raw)
+if servers and servers.data then
+for _, s in ipairs(servers.data) do
+if s.playing and s.maxPlayers and s.playing < s.maxPlayers and s.id ~= game.JobId then
+TeleportService:TeleportToPlaceInstance(game.PlaceId, s.id, LocalPlayer)
+break
+end
+end
+end
+end)
+end
 local GUI_NAME = _S({103,134,147,134,147,134,112,134,142,153,154,147,132,109,122,105},37)
 pcall(function()
 if CoreGui:FindFirstChild(GUI_NAME) then
@@ -32,7 +81,7 @@ if LocalPlayer.PlayerGui:FindFirstChild(GUI_NAME) then
 LocalPlayer.PlayerGui[GUI_NAME]:Destroy()
 end
 end)
-local ScreenGui = Instance.new(_S({120,136,151,138,138,147,108,154,142},37))
+ScreenGui = Instance.new(_S({120,136,151,138,138,147,108,154,142},37))
 ScreenGui.Name = GUI_NAME
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -47,7 +96,7 @@ if not ScreenGui.Parent then ScreenGui.Parent = LocalPlayer:WaitForChild(_S({117
 else
 ScreenGui.Parent = LocalPlayer:WaitForChild(_S({117,145,134,158,138,151,108,154,142},37))
 end
-local MainFrame = Instance.new(_S({107,151,134,146,138},37))
+MainFrame = Instance.new(_S({107,151,134,146,138},37))
 MainFrame.Name = _S({114,134,142,147,107,151,134,146,138},37)
 MainFrame.Size = UDim2.new(0, 380, 0, 135)
 MainFrame.Position = UDim2.new(0.5, -190, 0.12, 0)
@@ -100,7 +149,7 @@ startPos.Y.Offset + delta.Y
 )
 end
 end)
-local TitleLabel = Instance.new(_S({121,138,157,153,113,134,135,138,145},37))
+TitleLabel = Instance.new(_S({121,138,157,153,113,134,135,138,145},37))
 TitleLabel.Name = _S({121,142,153,145,138,113,134,135,138,145},37)
 TitleLabel.Size = UDim2.new(1, -30, 0, 28)
 TitleLabel.Position = UDim2.new(0, 15, 0, 10)
@@ -131,7 +180,7 @@ local TimeStroke = Instance.new(_S({122,110,120,153,151,148,144,138},37))
 TimeStroke.Thickness = 1
 TimeStroke.Color = Color3.fromRGB(55, 55, 65)
 TimeStroke.Parent = TimeBox
-local TimeLabel = Instance.new(_S({121,138,157,153,113,134,135,138,145},37))
+TimeLabel = Instance.new(_S({121,138,157,153,113,134,135,138,145},37))
 TimeLabel.Name = _S({121,142,146,138,113,134,135,138,145},37)
 TimeLabel.Size = UDim2.new(1, 0, 1, 0)
 TimeLabel.BackgroundTransparency = 1
@@ -155,7 +204,7 @@ local BondsStroke = Instance.new(_S({122,110,120,153,151,148,144,138},37))
 BondsStroke.Thickness = 1
 BondsStroke.Color = Color3.fromRGB(55, 55, 65)
 BondsStroke.Parent = BondsBox
-local BondsLabel = Instance.new(_S({121,138,157,153,113,134,135,138,145},37))
+BondsLabel = Instance.new(_S({121,138,157,153,113,134,135,138,145},37))
 BondsLabel.Name = _S({103,148,147,137,152,113,134,135,138,145},37)
 BondsLabel.Size = UDim2.new(1, 0, 1, 0)
 BondsLabel.BackgroundTransparency = 1
@@ -165,21 +214,17 @@ BondsLabel.Font = Enum.Font.GothamBold
 BondsLabel.TextSize = 13.5
 BondsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 BondsLabel.Parent = BondsBox
-local StatusLabel = Instance.new(_S({121,138,157,153,113,134,135,138,145},37))
+StatusLabel = Instance.new(_S({121,138,157,153,113,134,135,138,145},37))
 StatusLabel.Name = _S({120,153,134,153,154,152,113,134,135,138,145},37)
 StatusLabel.Size = UDim2.new(1, -30, 0, 24)
 StatusLabel.Position = UDim2.new(0, 15, 0, 95)
 StatusLabel.BackgroundTransparency = 1
-StatusLabel.Text = _S({120,153,134,153,154,152,95,69,108,138,153,153,142,147,140,69,135,148,147,137,152,83,83,83},37)
+StatusLabel.Text = _S({120,153,134,153,154,152,95,69,110,147,142,153,142,134,145,142,159,142,147,140,83,83,83},37)
 StatusLabel.TextColor3 = Color3.fromRGB(255, 204, 0)
 StatusLabel.Font = Enum.Font.GothamMedium
 StatusLabel.TextSize = 13
 StatusLabel.TextXAlignment = Enum.TextXAlignment.Center
 StatusLabel.Parent = MainFrame
-local function updateStatus(text)
-State.Status = text
-StatusLabel.Text = _S({120,153,134,153,154,152,95,69},37) .. text
-end
 task.spawn(function()
 while ScreenGui.Parent do
 local elapsed = os.time() - State.StartTime
@@ -191,7 +236,16 @@ BondsLabel.Text = string.format(_S({97,139,148,147,153,69,136,148,145,148,151,98
 task.wait(1)
 end
 end)
-local function triggerPrompt(prompt)
+ActivateRemote = nil
+pcall(function()
+local packages = ReplicatedStorage:FindFirstChild(_S({117,134,136,144,134,140,138,152},37))
+if packages and packages:FindFirstChild(_S({102,136,153,142,155,134,153,138,116,135,143,138,136,153,104,145,142,138,147,153},37)) then
+ActivateRemote = packages.ActivateObjectClient
+elseif ReplicatedStorage:FindFirstChild(_S({102,136,153,142,155,134,153,138,116,135,143,138,136,153,104,145,142,138,147,153},37)) then
+ActivateRemote = ReplicatedStorage.ActivateObjectClient
+end
+end)
+function triggerPrompt(prompt)
 if not prompt or not prompt:IsA(_S({117,151,148,157,142,146,142,153,158,117,151,148,146,149,153},37)) then return end
 pcall(function()
 if fireproximityprompt then
@@ -204,98 +258,116 @@ prompt:InputHoldEnd()
 end
 end)
 end
-local function teleportTo(targetCFrame)
-local char = LocalPlayer.Character
-if not char then return end
-local hrp = char:FindFirstChild(_S({109,154,146,134,147,148,142,137,119,148,148,153,117,134,151,153},37))
-if not hrp then return end
-hrp.CFrame = targetCFrame
+function collectTarget(target)
+if not target then return end
+if ActivateRemote and target.Item then
+pcall(function()
+ActivateRemote:FireServer(target.Item)
+end)
 end
-local function resetCharacter()
-local char = LocalPlayer.Character
-if char then
-local hum = char:FindFirstChildOfClass(_S({109,154,146,134,147,148,142,137},37))
-if hum then
-hum.Health = 0
-else
-char:BreakJoints()
+if target.Part and target.Part:IsDescendantOf(Workspace) then
+teleportTo(target.Part.CFrame + Vector3.new(0, 1.5, 0))
+end
+if target.Prompt and target.Prompt.Enabled then
+triggerPrompt(target.Prompt)
 end
 end
-end
-local function scanBonds()
+function scanBonds()
 local targets = {}
+local seen = {}
+local runtimeItems = Workspace:FindFirstChild(_S({119,154,147,153,142,146,138,110,153,138,146,152},37))
+if runtimeItems then
+for _, item in ipairs(runtimeItems:GetChildren()) do
+local iName = item.Name:lower()
+if iName:find(_S({135,148,147,137},37)) or iName:find(_S({136,134,152,141},37)) or iName:find(_S({146,148,147,138,158},37)) or iName:find(_S({137,148,145,145,134,151},37)) then
+local part = item:IsA(_S({103,134,152,138,117,134,151,153},37)) and item or item:FindFirstChildWhichIsA(_S({103,134,152,138,117,134,151,153},37), true)
+local prompt = item:FindFirstChildWhichIsA(_S({117,151,148,157,142,146,142,153,158,117,151,148,146,149,153},37), true)
+if part and not seen[part] then
+seen[part] = true
+table.insert(targets, { Item = item, Part = part, Prompt = prompt })
+end
+end
+end
+end
 for _, obj in ipairs(Workspace:GetDescendants()) do
 if obj:IsA(_S({117,151,148,157,142,146,142,153,158,117,151,148,146,149,153},37)) and obj.Enabled then
 local parent = obj.Parent
 local pName = parent and parent.Name:lower() or ""
-local pText = (obj.ActionText .. _S({69},37) .. obj.ObjectText):lower()
+local grandParent = parent and parent.Parent
+local gpName = grandParent and grandParent.Name:lower() or ""
+local pText = (tostring(obj.ActionText) .. _S({69},37) .. tostring(obj.ObjectText)):lower()
 local isBond = (
 pName:find(_S({135,148,147,137},37)) or
 pName:find(_S({136,134,152,141},37)) or
 pName:find(_S({146,148,147,138,158},37)) or
 pName:find(_S({137,148,145,145,134,151},37)) or
+gpName:find(_S({135,148,147,137},37)) or
+gpName:find(_S({136,134,152,141},37)) or
+gpName:find(_S({146,148,147,138,158},37)) or
+gpName:find(_S({137,148,145,145,134,151},37)) or
 pText:find(_S({135,148,147,137},37)) or
 pText:find(_S({153,134,144,138,69,146,148,147,138,158},37)) or
 pText:find(_S({136,134,152,141},37)) or
-pText:find(_S({153,134,144,138,69,135,148,147,137},37))
+pText:find(_S({153,134,144,138,69,135,148,147,137},37)) or
+pText:find(_S({140,151,134,135},37)) or
+pText:find(_S({152,153,138,134,145},37))
 )
 if isBond then
-local part = parent:IsA(_S({103,134,152,138,117,134,151,153},37)) and parent or parent:FindFirstChildWhichIsA(_S({103,134,152,138,117,134,151,153},37))
-if part then
-table.insert(targets, { Prompt = obj, Part = part })
+local part = (parent and parent:IsA(_S({103,134,152,138,117,134,151,153},37)) and parent) or
+(parent and parent:FindFirstChildWhichIsA(_S({103,134,152,138,117,134,151,153},37))) or
+(grandParent and grandParent:IsA(_S({103,134,152,138,117,134,151,153},37)) and grandParent) or
+(grandParent and grandParent:FindFirstChildWhichIsA(_S({103,134,152,138,117,134,151,153},37)))
+if part and not seen[part] then
+seen[part] = true
+table.insert(targets, { Item = grandParent or parent, Prompt = obj, Part = part })
 end
 end
 end
 end
 return targets
 end
-local function hopServer()
-updateStatus(_S({109,148,149,149,142,147,140,69,153,148,69,134,69,147,138,156,69,152,138,151,155,138,151,83,83,83},37))
-pcall(function()
-local url = _S({141,153,153,149,152,95,84,84,140,134,146,138,152,83,151,148,135,145,148,157,83,136,148,146,84,155,86,84,140,134,146,138,152,84},37) .. game.PlaceId .. _S({84,152,138,151,155,138,151,152,84,117,154,135,145,142,136,100,152,148,151,153,116,151,137,138,151,98,102,152,136,75,145,142,146,142,153,98,86,85,85},37)
-local servers = HttpService:JSONDecode(game:HttpGet(url))
-for _, s in ipairs(servers.data) do
-if s.playing < s.maxPlayers and s.id ~= game.JobId then
-TeleportService:TeleportToPlaceInstance(game.PlaceId, s.id, LocalPlayer)
-break
-end
-end
-end)
-end
 task.spawn(function()
-updateStatus(_S({108,138,153,153,142,147,140,69,135,148,147,137,152,83,83,83},37))
+updateStatus(_S({124,134,142,153,142,147,140,69,139,148,151,69,146,134,149,69,134,147,137,69,136,141,134,151,134,136,153,138,151,83,83,83},37))
+waitForCharacter(10)
+task.wait(2)
+local emptyScanCount = 0
+local MAX_EMPTY_RETRIES = 10
 while State.Running do
-task.wait(0.05)
+task.wait(0.1)
 local char = LocalPlayer.Character
 local hrp = char and char:FindFirstChild(_S({109,154,146,134,147,148,142,137,119,148,148,153,117,134,151,153},37))
 local hum = char and char:FindFirstChildOfClass(_S({109,154,146,134,147,148,142,137},37))
 if char and hrp and hum and hum.Health > 0 then
 local targets = scanBonds()
 if #targets > 0 then
-updateStatus(_S({108,138,153,153,142,147,140,69,135,148,147,137,152,69,77},37) .. #targets .. _S({69,139,148,154,147,137,78,83,83,83},37))
+emptyScanCount = 0
+updateStatus(string.format(_S({104,148,145,145,138,136,153,142,147,140,69,74,137,69,135,148,147,137,152,83,83,83},37), #targets))
 for idx, target in ipairs(targets) do
 if not State.Running then break end
 if not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild(_S({109,154,146,134,147,148,142,137,119,148,148,153,117,134,151,153},37)) then break end
 local targetPart = target.Part
-if targetPart and targetPart:IsDescendantOf(Workspace) and target.Prompt and target.Prompt.Enabled then
+if targetPart and targetPart:IsDescendantOf(Workspace) then
 updateStatus(string.format(_S({104,148,145,145,138,136,153,142,147,140,69,135,148,147,137,69,128,74,137,84,74,137,130,83,83,83},37), idx, #targets))
-teleportTo(targetPart.CFrame + Vector3.new(0, 1.5, 0))
-triggerPrompt(target.Prompt)
+collectTarget(target)
 State.BondsCollected = State.BondsCollected + 1
+if BondsLabel and BondsLabel.Parent then
 BondsLabel.Text = string.format(_S({97,139,148,147,153,69,136,148,145,148,151,98,71,72,134,134,134,134,134,134,71,99,103,148,147,137,152,95,69,97,84,139,148,147,153,99,97,139,148,147,153,69,136,148,145,148,151,98,71,72,139,139,136,136,85,85,71,99,74,137,97,84,139,148,147,153,99},37), State.BondsCollected)
+end
 task.wait(State.CollectDelay)
 end
 end
 else
-updateStatus(_S({114,134,149,69,136,145,138,134,151,138,137,70,69,104,141,138,136,144,142,147,140,83,83,83},37))
-task.wait(0.5)
-local recheck = scanBonds()
-if #recheck == 0 and State.Running then
+emptyScanCount = emptyScanCount + 1
+if emptyScanCount <= MAX_EMPTY_RETRIES then
+updateStatus(string.format(_S({124,134,142,153,142,147,140,69,139,148,151,69,135,148,147,137,152,69,153,148,69,152,149,134,156,147,83,83,83,69,77,74,137,84,74,137,78},37), emptyScanCount, MAX_EMPTY_RETRIES))
+task.wait(1.5)
+else
 State.TotalResets = State.TotalResets + 1
-updateStatus(_S({119,138,152,138,153,153,142,147,140,69,136,141,134,151,134,136,153,138,151,83,83,83},37))
+updateStatus(_S({114,134,149,69,136,145,138,134,151,138,137,83,69,119,138,152,138,153,153,142,147,140,69,136,141,134,151,134,136,153,138,151,83,83,83},37))
+emptyScanCount = 0
 resetCharacter()
 LocalPlayer.CharacterAdded:Wait()
-task.wait(1.5)
+task.wait(3)
 local checkAgain = scanBonds()
 if #checkAgain == 0 then
 hopServer()
@@ -303,6 +375,9 @@ task.wait(5)
 end
 end
 end
+else
+updateStatus(_S({124,134,142,153,142,147,140,69,139,148,151,69,151,138,152,149,134,156,147,83,83,83},37))
+task.wait(1)
 end
 end
 end)
