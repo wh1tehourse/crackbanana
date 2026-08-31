@@ -1,13 +1,18 @@
 /**
  * Banana Crack Hub - Automated Modular Bundler
- * Compiles all modular files from src/ into the production standalone banana.lua
+ * Compiles all modular files from src/ into the dist/ directory
  */
 
 const fs = require('fs');
 const path = require('path');
 
-const srcDir = path.join(__dirname, 'src');
-const outputFile = path.join(__dirname, 'banana.lua');
+const rootDir = path.join(__dirname, '..');
+const srcDir = path.join(rootDir, 'src');
+const distDir = path.join(rootDir, 'dist');
+const outputFile = path.join(distDir, 'banana.lua');
+
+// Ensure dist directory exists
+fs.mkdirSync(distDir, { recursive: true });
 
 // Dependency compilation order
 const buildOrder = [
@@ -51,7 +56,7 @@ let output = `--[[
 ]]\n\n`;
 
 buildOrder.forEach(filePath => {
-    const relPath = path.relative(__dirname, filePath).replace(/\\/g, '/');
+    const relPath = path.relative(rootDir, filePath).replace(/\\/g, '/');
     if (fs.existsSync(filePath)) {
         const fileContent = fs.readFileSync(filePath, 'utf8');
         output += `\n-- ==========================================\n`;
@@ -69,9 +74,17 @@ output += `\n-- Finalize Tab Selection\npcall(function()\n    if Window and Wind
 
 fs.writeFileSync(outputFile, output, 'utf8');
 
+// Also copy loader to dist/loader.lua
+const loaderSrc = path.join(srcDir, 'loader.lua');
+const loaderDist = path.join(distDir, 'loader.lua');
+if (fs.existsSync(loaderSrc)) {
+    fs.copyFileSync(loaderSrc, loaderDist);
+    console.log(`  ✓ Copied: dist/loader.lua`);
+}
+
 const stats = fs.statSync(outputFile);
 const totalLines = output.split('\n').length;
 console.log(`\n🎉 Build Complete!`);
-console.log(`   Output: banana.lua`);
+console.log(`   Output: dist/banana.lua`);
 console.log(`   Total Lines: ${totalLines.toLocaleString()}`);
 console.log(`   File Size: ${(stats.size / 1024).toFixed(2)} KB\n`);

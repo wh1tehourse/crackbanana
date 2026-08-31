@@ -116,12 +116,20 @@ TweenService:Create(stroke, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.Easin
 -- 3. Asynchronously Load Main Script
 task.spawn(function()
     task.wait(0.5)
-    local rawUrl = "https://raw.githubusercontent.com/wh1tehourse/crackbanana/main/banana.lua?t=" .. tostring(tick())
+    local rawUrl = "https://raw.githubusercontent.com/wh1tehourse/crackbanana/main/dist/banana.lua?t=" .. tostring(tick())
     local success, response = pcall(function()
         return game:HttpGet(rawUrl)
     end)
 
     if not success or not response or response == "" then
+        -- Fallback URL
+        local fallbackUrl = "https://raw.githubusercontent.com/wh1tehourse/crackbanana/main/dist/banana.lua"
+        pcall(function()
+            response = game:HttpGet(fallbackUrl)
+        end)
+    end
+
+    if not response or response == "" then
         status.Text = "⚠️ Failed to download script!"
         status.TextColor3 = Color3.fromRGB(255, 80, 80)
         task.wait(2)
