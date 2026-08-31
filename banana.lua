@@ -3,8 +3,8 @@
 
 local vu1 = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local v2 = vu1:CreateWindow({
-    ["Title"] = "Banana Cat Hub-Blox Fruit [ Premium ]",
-    ["SubTitle"] = "By Obii",
+    ["Title"] = "Banana Crack Hub-Blox Fruit [ Freemium ]",
+    ["SubTitle"] = "By wh1tehourse",
     ["TabWidth"] = 160,
     ["Theme"] = "Dark",
     ["Acrylic"] = false,
@@ -13,49 +13,49 @@ local v2 = vu1:CreateWindow({
 })
 local v3 = {
     ["Home"] = v2:AddTab({
-        ["Title"] = "Tab Th\195\180ng Tin"
+        ["Title"] = "Information"
     }),
     ["Main"] = v2:AddTab({
-        ["Title"] = "Tab Farm"
+        ["Title"] = "Main Farm"
     }),
     ["Sea"] = v2:AddTab({
-        ["Title"] = "Tab S\225\187\177 Ki\225\187\135n N\195\186i  L\225\187\173a & Bi\225\187\131n"
+        ["Title"] = "Sea Events"
     }),
     ["ITM"] = v2:AddTab({
-        ["Title"] = "Tab Farm Kh\195\161c"
+        ["Title"] = "Item Farm"
     }),
     ["Setting"] = v2:AddTab({
-        ["Title"] = "Tab Thi\225\186\191t L\225\186\173p Farm"
+        ["Title"] = "Farm Settings"
     }),
     ["Status"] = v2:AddTab({
-        ["Title"] = "Tab Tr\225\186\161ng Th\195\161i & M\195\161y Ch\225\187\167"
+        ["Title"] = "Status & Server"
     }),
     ["Stats"] = v2:AddTab({
-        ["Title"] = "Tab Th\225\187\145ng K\195\170"
+        ["Title"] = "Stats"
     }),
     ["Player"] = v2:AddTab({
-        ["Title"] = "Tab Ng\198\176\225\187\157i Ch\198\161i"
+        ["Title"] = "Player"
     }),
     ["Teleport"] = v2:AddTab({
-        ["Title"] = "Tab D\225\187\139ch Chuy\225\187\131n"
+        ["Title"] = "Teleport"
     }),
     ["Visual"] = v2:AddTab({
-        ["Title"] = "Tab L\195\160m Gi\225\186\163"
+        ["Title"] = "Visuals"
     }),
     ["Fruit"] = v2:AddTab({
-        ["Title"] = "Tab ESP & Tr\195\161i"
+        ["Title"] = "Fruit & ESP"
     }),
     ["Raid"] = v2:AddTab({
-        ["Title"] = "Tab T\225\186\173p K\195\173ch"
+        ["Title"] = "Raid & Dungeon"
     }),
     ["Race"] = v2:AddTab({
-        ["Title"] = "Tab N\195\162ng C\225\186\165p Ch\225\187\167ng T\225\187\153c"
+        ["Title"] = "Race V4"
     }),
     ["Shop"] = v2:AddTab({
-        ["Title"] = "Tab C\225\187\173a h\195\160ng"
+        ["Title"] = "Shop"
     }),
     ["Misc"] = v2:AddTab({
-        ["Title"] = "Tab Kh\195\161c"
+        ["Title"] = "Misc"
     })
 }
 local v4 = vu1.Options
@@ -2704,7 +2704,7 @@ v3.Home:AddButton({
 })
 v3.Home:AddButton({
     ["Title"] = "Remember:",
-    ["Description"] = "Banana Cat Hub On Top , made by Aya.",
+    ["Description"] = "Banana Crack Hub by wh1tehourse",
     ["Callback"] = function()
         setclipboard("https://www.tiktok.com/@hng.royal2?_t=ZS-8ywjDgNQ1ah&_r=1")
     end
@@ -2722,7 +2722,7 @@ spawn(function()
     end
 end)
 local v239 = v3.Main:AddDropdown("DropdownSelectWeapon", {
-    ["Title"] = "Ch\225\187\141n V\197\169 Kh\195\173",
+    ["Title"] = "Select Weapon",
     ["Description"] = "",
     ["Values"] = {
         "Melee",
@@ -2784,7 +2784,7 @@ task.spawn(function()
     end
 end)
 v3.Main:AddToggle("ToggleLevel", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng Farm C\225\186\165p",
+    ["Title"] = "Auto Farm Level",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p253)
@@ -2853,7 +2853,7 @@ spawn(function()
     end
 end)
 v3.Main:AddToggle("ToggleMobAura", {
-    ["Title"] = "\196\144\195\161nh Qu\195\161i G\225\186\167n Nh\225\186\165t",
+    ["Title"] = "Attack Nearest Mob (Mob Aura)",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p262)
@@ -2900,7 +2900,7 @@ spawn(function()
     end
 end)
 v3.Main:AddToggle("ToggleCastleRaid", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng \196\144\195\161nh H\225\186\163i T\225\186\183c",
+    ["Title"] = "Auto Castle Raid",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p267)
@@ -2940,7 +2940,7 @@ spawn(function()
     end
 end)
 v3.Main:AddToggle("ToggleHakiFortress", {
-    ["Title"] = "K\195\173ch Ho\225\186\161t Haki M\195\160u (Ph\195\161o \196\144\195\160i)",
+    ["Title"] = "Activate Color Haki (Fortress)",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p273)
@@ -2991,7 +2991,7 @@ spawn(function()
     end
 end)
 v3.Main:AddToggle("ToggleCollectChest", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng Nh\225\186\183t R\198\176\198\161ng",
+    ["Title"] = "Auto Collect Chests",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p282)
@@ -3025,10 +3025,10 @@ spawn(function()
 end)
 v3.Main:AddSection("Mastery")
 local v293 = v3.Main:AddDropdown("DropdownMastery", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng C\195\160y Th\195\180ng Th\225\186\161o",
+    ["Title"] = "Auto Farm Mastery",
     ["Description"] = "",
     ["Values"] = {
-        "G\225\186\167n \196\145\195\161m \196\145\195\180ng"
+        "Near Mobs"
     },
     ["Multi"] = false,
     ["Default"] = 1
@@ -3038,7 +3038,7 @@ v293:OnChanged(function(p294)
     TypeMastery = p294
 end)
 v3.Main:AddToggle("ToggleMasteryFruit", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng C\195\160y Th\195\180ng Th\225\186\161o Tr\195\161i",
+    ["Title"] = "Auto Farm Fruit Mastery",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p295)
@@ -3046,7 +3046,7 @@ v3.Main:AddToggle("ToggleMasteryFruit", {
 end)
 v4.ToggleMasteryFruit:SetValue(false)
 local v297 = v3.Main:AddSlider("SliderHealt", {
-    ["Title"] = "M\195\161u Qu\195\161i",
+    ["Title"] = "Mob Health %",
     ["Description"] = "",
     ["Default"] = 20,
     ["Min"] = 0,
@@ -3168,9 +3168,9 @@ spawn(function()
     end
 end)
 if Sea3 then
-    v3.Main:AddSection("X\198\176\198\161ng")
+    v3.Main:AddSection("Bones")
     local vu308 = v3.Main:AddParagraph({
-        ["Title"] = "T\195\172nh Tr\225\186\161ng X\198\176\198\161ng",
+        ["Title"] = "Bone Status",
         ["Content"] = ""
     })
     spawn(function()
@@ -3184,7 +3184,7 @@ if Sea3 then
         end)
     end)
     v3.Main:AddToggle("ToggleBone", {
-        ["Title"] = "T\225\187\177 \196\144\225\187\153ng Farm X\198\176\198\161ng",
+        ["Title"] = "Auto Farm Bones",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p310)
@@ -3291,7 +3291,7 @@ if Sea3 then
         end
     end)
     v3.Main:AddToggle("ToggleRandomBone", {
-        ["Title"] = "Trao \196\144\225\187\149i X\198\176\198\161ng",
+        ["Title"] = "Random Surprise (Bone)",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p322)
@@ -3314,7 +3314,7 @@ end
 if Sea3 then
     v3.Main:AddSection("Cake Prince")
     local vu323 = v3.Main:AddParagraph({
-        ["Title"] = "Tr\225\186\161ng th\195\161i",
+        ["Title"] = "Status",
         ["Content"] = ""
     })
     spawn(function()
@@ -3325,12 +3325,12 @@ if Sea3 then
                 if string.len(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("CakePrinceSpawner")) ~= 88 then
                     if string.len(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("CakePrinceSpawner")) ~= 87 then
                         if string.len(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("CakePrinceSpawner")) ~= 86 then
-                            vu323:SetDesc("T\198\176 L\225\187\135nh B\195\161nh : \226\156\133\239\184\143")
+                            vu323:SetDesc("Cake Prince : ✅️")
                         else
-                            vu323:SetDesc("C\195\178n: " .. string.sub(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("CakePrinceSpawner"), 39, 39) .. " ")
+    vu323:SetDesc("Remaining: " .. string.sub(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("CakePrinceSpawner"), 39, 39) .. " ")
                         end
                     else
-                        vu323:SetDesc("C\195\178n: " .. string.sub(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("CakePrinceSpawner"), 39, 40) .. "")
+    vu323:SetDesc("Remaining: " .. string.sub(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("CakePrinceSpawner"), 39, 40) .. "")
                     end
                 else
                     vu323:SetDesc("Left: " .. string.sub(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("CakePrinceSpawner"), 39, 41) .. "")
@@ -3339,7 +3339,7 @@ if Sea3 then
         end
     end)
     local v324 = v3.Main:AddToggle("ToggleCake", {
-        ["Title"] = "T\225\187\177 \196\144\225\187\153ng Ho\195\160ng t\225\187\173 b\195\161nh",
+        ["Title"] = "Auto Cake Prince",
         ["Description"] = "",
         ["Default"] = false
     })
@@ -3420,7 +3420,7 @@ if Sea3 then
         end
     end)
     v3.Main:AddToggle("ToggleDoughKing", {
-        ["Title"] = "T\225\187\177 \196\144\225\187\153ng C\195\160y Vua B\225\187\153t",
+        ["Title"] = "Auto Dough King",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p336)
@@ -3463,7 +3463,7 @@ if Sea3 then
         end
     end)
     v3.Main:AddToggle("ToggleSpawnCake", {
-        ["Title"] = "Tri\225\187\135u H\225\187\147i Ho\195\160ng T\225\187\173 B\195\161nh T\225\187\177 \196\144\225\187\153ng",
+        ["Title"] = "Auto Spawn Cake Prince",
         ["Description"] = "",
         ["Default"] = true
     }):OnChanged(function(p341)
@@ -3487,7 +3487,7 @@ end)
 if Sea2 then
     v3.Main:AddSection("Ectoplasm Farm")
     v3.Main:AddToggle("ToggleVatChatKiDi", {
-        ["Title"] = "T\225\187\177 \196\144\225\187\153ng C\195\160y Ngo\225\186\161i ch\225\186\165t",
+        ["Title"] = "Auto Farm Ectoplasm",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p342)
@@ -3581,7 +3581,7 @@ elseif Sea3 then
     }
 end
 local v347 = v3.Main:AddDropdown("DropdownBoss", {
-    ["Title"] = "Ch\225\187\141n Boss",
+    ["Title"] = "Select Boss",
     ["Description"] = "",
     ["Values"] = tableBoss,
     ["Multi"] = false,
@@ -3592,7 +3592,7 @@ v347:OnChanged(function(p348)
     _G.SelectBoss = p348
 end)
 v3.Main:AddToggle("ToggleAutoFarmBoss", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng \196\144\195\161nh Boss",
+    ["Title"] = "Auto Farm Boss",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p349)
@@ -3665,7 +3665,7 @@ elseif Sea3 then
     }
 end
 local v354 = v3.Main:AddDropdown("DropdownMaterial", {
-    ["Title"] = "Ch\225\187\141n V\225\186\173t Li\225\187\135u",
+    ["Title"] = "Select Material",
     ["Description"] = "",
     ["Values"] = MaterialList,
     ["Multi"] = false,
@@ -3676,7 +3676,7 @@ v354:OnChanged(function(p355)
     SelectMaterial = p355
 end)
 v3.Main:AddToggle("ToggleMaterial", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng Farm V\225\186\173t li\225\187\135u",
+    ["Title"] = "Auto Farm Material",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p356)
@@ -3747,9 +3747,9 @@ if Sea3 then
     function UpdateKitsune()
 		-- upvalues: (ref) vu365
         if game:GetService("Workspace").Map:FindFirstChild("KitsuneIsland") then
-            vu365:SetDesc("Kitsune Island : \226\156\133\239\184\143")
+            vu365:SetDesc("Kitsune Island : ✅")
         else
-            vu365:SetDesc("Kitsune Island : \226\157\140\239\184\143")
+            vu365:SetDesc("Kitsune Island : ❌")
         end
     end
     spawn(function()
@@ -3760,7 +3760,7 @@ if Sea3 then
         end)
     end)
     v3.Sea:AddToggle("ToggleEspKitsune", {
-        ["Title"] = "\196\144\195\161nh D\225\186\165u \196\144\225\186\163o C\195\161o",
+        ["Title"] = "ESP Kitsune Island",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p366)
@@ -3811,7 +3811,7 @@ if Sea3 then
         end
     end
     v3.Sea:AddToggle("ToggleTPKitsune", {
-        ["Title"] = "Bay \196\144\225\186\191n \196\144\225\186\163o Kitsune",
+        ["Title"] = "Teleport to Kitsune Island",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p373)
@@ -3844,7 +3844,7 @@ if Sea3 then
         end
     end)
     v3.Sea:AddToggle("ToggleCollectAzure", {
-        ["Title"] = "T\225\187\177 \196\144\225\187\153ng Nh\225\186\183t Azure Ember",
+        ["Title"] = "Auto Collect Azure Ember",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p380)
@@ -3864,7 +3864,7 @@ if Sea3 then
     end)
 end
 v3.Sea:AddButton({
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng Trao \196\144\225\187\149i Azure Ember",
+    ["Title"] = "Auto Trade Azure Ember",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Net"):WaitForChild("RF/KitsuneStatuePray"):InvokeServer()
@@ -3878,7 +3878,7 @@ if Sea3 then
     local vu384 = game:GetService("Workspace")
     local vu385 = 350
     v3.Sea:AddSlider("SliderSpeedBoat", {
-        ["Title"] = "T\225\187\145c \196\144\225\187\153 Thuy\225\187\129n",
+        ["Title"] = "Boat Speed",
         ["Description"] = "",
         ["Default"] = vu385,
         ["Min"] = 0,
@@ -3890,7 +3890,7 @@ if Sea3 then
         end
     }):SetValue(vu385)
     local v387 = v3.Sea:AddToggle("AutoFindPrehistoric", {
-        ["Title"] = "T\225\187\177 \196\144\225\187\153ng T\195\172m \196\144\225\186\163o N\195\186i L\225\187\173a",
+        ["Title"] = "Auto Find Prehistoric Island",
         ["Description"] = "",
         ["Default"] = false
     })
@@ -3996,8 +3996,8 @@ if Sea3 then
                         _G.AutoFindPrehistoric = false
                         if not vu391 then
                             vu1:Notify({
-                                ["Title"] = "Banana Cat Hub",
-                                ["Content"] = " T\195\172m Th\225\186\165y \196\144\225\186\163o Dung Nham",
+                                ["Title"] = "Banana Crack Hub",
+                                ["Content"] = " Found Prehistoric Island",
                                 ["Duration"] = 10
                             })
                             vu391 = true
@@ -4015,7 +4015,7 @@ if Sea3 then
         end
     end)
     local v419 = v3.Sea:AddToggle("AutoFindMirage", {
-        ["Title"] = "T\225\187\177 \196\145\225\187\153ng t\195\172m \196\144\225\186\163o Mirage",
+        ["Title"] = "Auto Find Mirage Island",
         ["Description"] = "",
         ["Default"] = false
     })
@@ -4121,8 +4121,8 @@ if Sea3 then
                         _G.AutoFindMirage = false
                         if not vu423 then
                             vu1:Notify({
-                                ["Title"] = "Banana Cat Hub",
-                                ["Content"] = "T\195\172m Th\225\186\165y \196\144\225\186\163o B\195\173 \225\186\168n",
+                                ["Title"] = "Banana Crack Hub",
+                                ["Content"] = " Found Mirage Island",
                                 ["Duration"] = 10
                             })
                             vu423 = true
@@ -4140,7 +4140,7 @@ if Sea3 then
         end
     end)
     local v451 = v3.Sea:AddToggle("AutoFindFrozen", {
-        ["Title"] = "T\225\187\177 \196\145\225\187\153ng t\195\172m \196\145\225\186\163o Leviathan",
+        ["Title"] = "Auto Find Frozen Dimension / Leviathan",
         ["Description"] = "",
         ["Default"] = false
     })
@@ -4246,8 +4246,8 @@ if Sea3 then
                         _G.AutoFindFrozen = false
                         if not vu455 then
                             vu1:Notify({
-                                ["Title"] = "Banana Cat Hub",
-                                ["Content"] = " T\195\172m Th\225\186\165y \196\144\225\186\163o Leviathan",
+                                ["Title"] = "Banana Crack Hub",
+                                ["Content"] = " Found Leviathan Island",
                                 ["Duration"] = 10
                             })
                             vu455 = true
@@ -4265,7 +4265,7 @@ if Sea3 then
         end
     end)
     v3.Sea:AddToggle("AutoComeTiki", {
-        ["Title"] = "Quay l\225\186\161i Tiki Outpost",
+        ["Title"] = "Return to Tiki Outpost",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p483)
@@ -4311,7 +4311,7 @@ if Sea3 then
         end
     end)
     v3.Sea:AddToggle("AutoComeHydra", {
-        ["Title"] = "Quay l\225\186\161i \196\144\225\186\163o Hydra",
+        ["Title"] = "Return to Hydra Island",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p496)
@@ -4357,7 +4357,7 @@ if Sea3 then
         end
     end)
     v3.Sea:AddButton({
-        ["Title"] = "Bay \196\144\225\186\191n Ng\198\176\225\187\157i B\195\161n Thuy\225\187\129n [ \196\144\225\186\163o TiKi ]",
+        ["Title"] = "Teleport to Boat Dealer [ Tiki Outpost ]",
         ["Description"] = "",
         ["Callback"] = function()
             Tween2(CFrame.new(- 16917.154296875, 7.757596015930176, 511.8203125))
@@ -4365,7 +4365,7 @@ if Sea3 then
     })
     local vu509 = {}
     local v510 = v3.Sea:AddDropdown("DropdownBoat", {
-        ["Title"] = "Ch\225\187\141n Thuy\225\187\129n",
+        ["Title"] = "Select Boat",
         ["Description"] = "",
         ["Values"] = {
             "Beast Hunter",
@@ -4442,7 +4442,7 @@ if Sea3 then
         end
     end)
     v3.Sea:AddButton({
-        ["Title"] = "Mua Thuy\225\187\129n",
+        ["Title"] = "Buy Boat",
         ["Description"] = "",
         ["Callback"] = function()
 			-- upvalues: (ref) vu518
@@ -4450,7 +4450,7 @@ if Sea3 then
         end
     })
     v3.Sea:AddButton({
-        ["Title"] = "Bay \196\144\225\186\191n Thuy\225\187\129n C\225\187\167a T\195\180i",
+        ["Title"] = "Teleport to My Boat",
         ["Description"] = "",
         ["Callback"] = function()
 			-- upvalues: (ref) vu523
@@ -4458,7 +4458,7 @@ if Sea3 then
         end
     })
     v3.Sea:AddToggle("ToggleTerrorshark", {
-        ["Title"] = "T\225\186\165n C\195\180ng Terrorshark",
+        ["Title"] = "Auto Attack Terrorshark",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p528)
@@ -4498,7 +4498,7 @@ if Sea3 then
         end
     end)
     v3.Sea:AddToggle("TogglePiranha", {
-        ["Title"] = "T\225\186\165n C\195\180ng C\195\161 Piranha",
+        ["Title"] = "Auto Attack Piranha",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p533)
@@ -4538,7 +4538,7 @@ if Sea3 then
         end
     end)
     v3.Sea:AddToggle("ToggleShark", {
-        ["Title"] = "T\225\186\165n C\195\180ng C\195\161 M\225\186\173p",
+        ["Title"] = "Auto Attack Shark",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p538)
@@ -4582,7 +4582,7 @@ if Sea3 then
         end
     end)
     v3.Sea:AddToggle("ToggleFishCrew", {
-        ["Title"] = "T\225\186\165n C\195\180ng Fish Crew",
+        ["Title"] = "Auto Attack Fish Crew",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p543)
@@ -4626,7 +4626,7 @@ if Sea3 then
         end
     end)
     v3.Sea:AddToggle("ToggleShip", {
-        ["Title"] = "T\225\186\165n C\195\180ng T\195\160u",
+        ["Title"] = "Auto Attack Ship",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p548)
@@ -4675,7 +4675,7 @@ if Sea3 then
         end
     end)
     v3.Sea:AddToggle("ToggleGhostShip", {
-        ["Title"] = "T\225\186\165n C\195\180ng T\195\160u Ma",
+        ["Title"] = "Auto Attack Ghost Ship",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p555)
@@ -4818,7 +4818,7 @@ if Sea3 then
     end)
     v3.Main:AddSection("Elite")
     local vu578 = v3.Main:AddParagraph({
-        ["Title"] = "Tr\225\186\161ng Th\195\161i Elite",
+        ["Title"] = "Elite Hunter Status",
         ["Content"] = ""
     })
     spawn(function()
@@ -4827,15 +4827,15 @@ if Sea3 then
             pcall(function()
 				-- upvalues: (ref) vu578
                 if game:GetService("ReplicatedStorage"):FindFirstChild("Diablo") or (game:GetService("ReplicatedStorage"):FindFirstChild("Deandre") or (game:GetService("ReplicatedStorage"):FindFirstChild("Urban") or (game:GetService("Workspace").Enemies:FindFirstChild("Diablo") or (game:GetService("Workspace").Enemies:FindFirstChild("Deandre") or game:GetService("Workspace").Enemies:FindFirstChild("Urban"))))) then
-                    vu578:SetDesc("Elite Boss: \226\156\133\239\184\143 | Killed:  " .. game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter", "Progress"))
+                    vu578:SetDesc("Elite Boss: ✅ | Killed:  " .. game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter", "Progress"))
                 else
-                    vu578:SetDesc("Elite Boss: \226\157\140\239\184\143 | Killed: " .. game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter", "Progress"))
+                    vu578:SetDesc("Elite Boss: ❌ | Killed: " .. game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter", "Progress"))
                 end
             end)
         end
     end)
     v3.Main:AddToggle("ToggleElite", {
-        ["Title"] = "T\225\187\177 \196\144\225\187\153ng Elite Hunter",
+        ["Title"] = "Auto Elite Hunter",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p579)
@@ -4887,7 +4887,7 @@ end
 if Sea3 then
     v3.Sea:AddSection("Mirage Island")
     local vu584 = v3.Sea:AddParagraph({
-        ["Title"] = "Tr\225\186\161ng Th\195\161i",
+        ["Title"] = "Status",
         ["Content"] = ""
     })
     task.spawn(function()
@@ -4914,9 +4914,9 @@ if Sea3 then
         while task.wait() do
             pcall(function()
                 if game.Workspace.Map:FindFirstChild("MysticIsland") then
-                    MirageStatus = "\226\156\133\239\184\143"
+                    MirageStatus = "✅"
                 else
-                    MirageStatus = "\226\157\140\239\184\143"
+                    MirageStatus = "❌"
                 end
             end)
         end
@@ -4931,7 +4931,7 @@ if Sea3 then
         end)
     end)
     v3.Sea:AddButton({
-        ["Title"] = "Bay \196\144\225\186\191n Ng\225\187\141n N\195\186i Cao",
+        ["Title"] = "Teleport to Highest Mountain",
         ["Description"] = "",
         ["Callback"] = function()
             TweenToHighestPoint()
@@ -4961,7 +4961,7 @@ if Sea3 then
     end
 end
 v3.Sea:AddToggle("ToggleTpAdvanced", {
-    ["Title"] = "Bay \196\144\225\186\191n Ng\198\176\225\187\157i B\195\161n Tr\195\161i C\195\162y Cao C\225\186\165p",
+    ["Title"] = "Teleport to Advanced Fruit Dealer",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p591)
@@ -4984,7 +4984,7 @@ spawn(function()
     end
 end)
 v3.Sea:AddToggle("ToggleTweenGear", {
-    ["Title"] = "Bay \196\144\225\186\191n B\195\161nh R\196\131ng",
+    ["Title"] = "Teleport to Gear",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p594)
@@ -5011,7 +5011,7 @@ spawn(function()
     end)
 end)
 v3.Sea:AddToggle("Togglelockmoon", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng Nh\195\172n Tr\196\131ng",
+    ["Title"] = "Auto Look at Moon",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p599)
@@ -5039,7 +5039,7 @@ spawn(function()
     end
 end)
 v3.ITM:AddToggle("ToggleAutoSaber", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng L\225\186\165y Saber",
+    ["Title"] = "Auto Get Saber",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p602)
@@ -5160,7 +5160,7 @@ spawn(function()
     end
 end)
 v3.ITM:AddToggle("ToggleAutoPoleV1", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng L\225\186\165y Pole V1",
+    ["Title"] = "Auto Get Pole V1",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p611)
@@ -5207,7 +5207,7 @@ spawn(function()
     end
 end)
 v3.ITM:AddToggle("ToggleAutoSaw", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng L\225\186\165y Shark Saw",
+    ["Title"] = "Auto Get Shark Saw",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p617)
@@ -5254,7 +5254,7 @@ spawn(function()
     end
 end)
 v3.ITM:AddToggle("ToggleAutoWarden", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng L\225\186\165y Warden",
+    ["Title"] = "Auto Get Warden Sword",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p623)
@@ -5302,7 +5302,7 @@ spawn(function()
 end)
 if Sea3 then
     v3.ITM:AddToggle("ToggleHallow", {
-        ["Title"] = "T\225\187\177 \196\144\225\187\153ng L\225\186\165y Hallow Scythe",
+        ["Title"] = "Auto Get Hallow Scythe",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p629)
@@ -5361,7 +5361,7 @@ if Sea3 then
         end
     end)
     v3.ITM:AddToggle("ToggleYama", {
-        ["Title"] = "T\225\187\177 \196\144\225\187\153ng L\225\186\165y Yama",
+        ["Title"] = "Auto Get Yama",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p634)
@@ -5379,7 +5379,7 @@ if Sea3 then
         end
     end)
     v3.ITM:AddToggle("ToggleTushita", {
-        ["Title"] = "T\225\187\177 \196\144\225\187\153ng L\225\186\165y Tushita",
+        ["Title"] = "Auto Get Tushita",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p635)
@@ -5436,7 +5436,7 @@ if Sea3 then
         end
     end)
     v3.ITM:AddToggle("ToggleHoly", {
-        ["Title"] = "T\225\187\177 \196\144\225\187\153ng Th\225\186\175p S\195\161ng Ng\225\187\141n \196\144u\225\187\145c",
+        ["Title"] = "Auto Light Torches",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p640)
@@ -5478,7 +5478,7 @@ if Sea3 then
     end)
 end
 v3.ITM:AddToggle("ToggleAutoCanvander", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng L\225\186\165y Canvander",
+    ["Title"] = "Auto Get Canvander",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p641)
@@ -5525,7 +5525,7 @@ spawn(function()
     end
 end)
 v3.ITM:AddToggle("ToggleAutoMusketeerHat", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng L\225\186\165y Musketeer Hat",
+    ["Title"] = "Auto Get Musketeer Hat",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p647)
@@ -5622,7 +5622,7 @@ spawn(function()
     end)
 end)
 v3.ITM:AddToggle("ToggleAutoObservationV2", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng L\225\186\165y Haki Quan S\195\161t V2",
+    ["Title"] = "Auto Get Observation Haki V2",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p656)
@@ -5675,7 +5675,7 @@ spawn(function()
     end
 end)
 v3.ITM:AddToggle("ToggleAutoRainbowHaki", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng L\225\186\165y Rainbow Haki",
+    ["Title"] = "Auto Get Rainbow Haki",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p661)
@@ -5831,7 +5831,7 @@ spawn(function()
     end)
 end)
 v3.ITM:AddToggle("ToggleAutoSkullGuitar", {
-    ["Title"] = "Auto Skull Guitar",
+    ["Title"] = "Auto Soul Guitar",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p682)
@@ -5954,7 +5954,7 @@ spawn(function()
     end
 end)
 v3.ITM:AddToggle("ToggleAutoBuddy", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng L\225\186\165y Buddy",
+    ["Title"] = "Auto Get Buddy Sword",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p687)
@@ -6001,7 +6001,7 @@ spawn(function()
     end
 end)
 v3.ITM:AddToggle("ToggleAutoDualKatana", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng L\225\186\165y CDK",
+    ["Title"] = "Auto Get Cursed Dual Katana (CDK)",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p693)
@@ -6630,7 +6630,7 @@ if Sea2 then
     end)
 end
 v3.ITM:AddToggle("ToggleAutoFarmSwan", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng \196\144\195\161nh Swan",
+    ["Title"] = "Auto Kill Don Swan",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p748)
@@ -6676,7 +6676,7 @@ spawn(function()
     end)
 end)
 v3.ITM:AddToggle("ToggleAutoRengoku", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng L\225\186\165y Rengoku",
+    ["Title"] = "Auto Get Rengoku",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p753)
@@ -6724,7 +6724,7 @@ spawn(function()
 end)
 if Sea2 or Sea3 then
     v3.ITM:AddToggle("ToggleHakiColor", {
-        ["Title"] = "Mua Haki M\195\160u",
+        ["Title"] = "Buy Color Haki",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p758)
@@ -6744,7 +6744,7 @@ if Sea2 or Sea3 then
 end
 if Sea2 then
     v3.Main:AddToggle("ToggleSwordLengend", {
-        ["Title"] = "T\225\187\177 \196\145\225\187\153ng mua ki\225\186\191m huy\225\187\129n tho\225\186\161i",
+        ["Title"] = "Auto Buy Legendary Sword",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p759)
@@ -6768,7 +6768,7 @@ if Sea2 then
 end
 if Sea2 then
     v3.Main:AddToggle("ToggleEvoRace", {
-        ["Title"] = "T\225\187\177 \196\144\225\187\153ng N\195\162ng C\225\186\165p T\225\187\153c V2",
+        ["Title"] = "Auto Upgrade Race V2",
         ["Description"] = "",
         ["Default"] = false
     }):OnChanged(function(p760)
@@ -6838,7 +6838,7 @@ if Sea2 then
     end)
 end
 v3.Setting:AddToggle("ToggleAutoT", {
-    ["Title"] = "T\225\187\177 \196\145\225\187\153ng b\225\186\173t T\225\187\153c V3",
+    ["Title"] = "Auto Upgrade Race V3",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p765)
@@ -6855,7 +6855,7 @@ spawn(function()
     end
 end)
 v3.Setting:AddToggle("ToggleAutoY", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng B\225\186\173t T\225\187\153c V4",
+    ["Title"] = "Auto Use Race V4",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p766)
@@ -6874,7 +6874,7 @@ spawn(function()
     end
 end)
 v3.Setting:AddToggle("ToggleAutoKen", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng B\225\186\173t Ken",
+    ["Title"] = "Auto Ken Haki",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p767)
@@ -6896,7 +6896,7 @@ spawn(function()
     end
 end)
 v3.Setting:AddToggle("ToggleSaveSpawn", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng L\198\176u \196\145i\225\187\131m H\225\187\147i Sinh",
+    ["Title"] = "Auto Set Spawn Point",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p768)
@@ -6921,7 +6921,7 @@ spawn(function()
 end)
 require(game.ReplicatedStorage.Util.CameraShaker):Stop()
 v3.Setting:AddToggle("ToggleBringMob", {
-    ["Title"] = "Gom Qu\195\161i",
+    ["Title"] = "Bring Mobs (Mob Magnet)",
     ["Description"] = "",
     ["Default"] = true
 }):OnChanged(function(p769)
@@ -6971,7 +6971,7 @@ spawn(function()
     end
 end)
 v3.Setting:AddToggle("ToggleRemoveNotify", {
-    ["Title"] = "X\195\179a th\195\180ng b\195\161o",
+    ["Title"] = "Remove Notifications",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p774)
@@ -6988,7 +6988,7 @@ spawn(function()
     end
 end)
 v3.Setting:AddToggle("ToggleWhite", {
-    ["Title"] = "M\195\160n h\195\172nh tr\225\186\175ng",
+    ["Title"] = "White Screen (Reduce Lag)",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p775)
@@ -7047,12 +7047,12 @@ local v781 = v3.Status
 local v782 = v781
 local v783 = v781.AddParagraph
 local v784 = {
-    ["Title"] = "Th\195\180ng Tin",
-    ["Content"] = "\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\n" .. "T\195\170n : " .. game.Players.LocalPlayer.DisplayName .. " (@" .. game.Players.LocalPlayer.Name .. ")\n" .. "C\225\186\165p \196\144\225\187\153 : " .. game:GetService("Players").LocalPlayer.Data.Level.Value .. "\n" .. "Beli : " .. game:GetService("Players").LocalPlayer.Data.Beli.Value .. "\n" .. "Fragments : " .. game:GetService("Players").LocalPlayer.Data.Fragments.Value .. "\n" .. "Wanted Beli : " .. game:GetService("Players").LocalPlayer.leaderstats["Bounty/Honor"].Value .. "\n" .. "HP: " .. game.Players.LocalPlayer.Character.Humanoid.Health .. "/" .. game.Players.LocalPlayer.Character.Humanoid.MaxHealth .. "\n" .. "Energy : " .. game.Players.LocalPlayer.Character.Energy.Value .. "/" .. game.Players.LocalPlayer.Character.Energy.MaxValue .. "\n" .. "Race : " .. game:GetService("Players").LocalPlayer.Data.Race.Value .. "\n" .. "Fruit : " .. game:GetService("Players").LocalPlayer.Data.DevilFruit.Value .. "\n\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129\226\148\129"
+    ["Title"] = "Information",
+    ["Content"] = "━━━━━━━━━━━━━━━━━━━━━\n" .. "Name : " .. game.Players.LocalPlayer.DisplayName .. " (@" .. game.Players.LocalPlayer.Name .. ")\n" .. "Level : " .. game:GetService("Players").LocalPlayer.Data.Level.Value .. "\n" .. "Beli : " .. game:GetService("Players").LocalPlayer.Data.Beli.Value .. "\n" .. "Fragments : " .. game:GetService("Players").LocalPlayer.Data.Fragments.Value .. "\n" .. "Bounty/Honor : " .. game:GetService("Players").LocalPlayer.leaderstats["Bounty/Honor"].Value .. "\n" .. "HP: " .. game.Players.LocalPlayer.Character.Humanoid.Health .. "/" .. game.Players.LocalPlayer.Character.Humanoid.MaxHealth .. "\n" .. "Energy : " .. game.Players.LocalPlayer.Character.Energy.Value .. "/" .. game.Players.LocalPlayer.Character.Energy.MaxValue .. "\n" .. "Race : " .. game:GetService("Players").LocalPlayer.Data.Race.Value .. "\n" .. "Fruit : " .. game:GetService("Players").LocalPlayer.Data.DevilFruit.Value .. "\n━━━━━━━━━━━━━━━━━━━━━"
 }
 v783(v782, v784)
 local vu785 = v3.Status:AddParagraph({
-    ["Title"] = "Th\225\187\157i gian",
+    ["Title"] = "Time",
     ["Content"] = ""
 })
 local function vu795()
@@ -7079,7 +7079,7 @@ spawn(function()
     end
 end)
 local vu796 = v3.Status:AddParagraph({
-    ["Title"] = "Th\225\187\157i Gian M\195\161y Ch\225\187\167",
+    ["Title"] = "Server Time",
     ["Content"] = ""
 })
 local function vu801()
@@ -7088,7 +7088,7 @@ local function vu801()
     local v798 = math.floor(v797 / 3600) % 24
     local v799 = math.floor(v797 / 60) % 60
     local v800 = v797 % 60
-    vu796:SetDesc(string.format("%02d Ti\225\186\191ng-%02d Ph\195\186t-%02d Gi\195\162y", v798, v799, v800))
+    vu796:SetDesc(string.format("%02dh %02dm %02ds", v798, v799, v800))
 end
 spawn(function()
 	-- upvalues: (ref) vu801
@@ -7097,7 +7097,7 @@ spawn(function()
     end
 end)
 local vu802 = v3.Status:AddParagraph({
-    ["Title"] = "\196\144\225\186\163o Leviathan",
+    ["Title"] = "Leviathan Island",
     ["Content"] = ""
 })
 spawn(function()
@@ -7106,15 +7106,15 @@ spawn(function()
 		-- upvalues: (ref) vu802
         while wait() do
             if game:GetService("Workspace").Map:FindFirstChild("FrozenDimension") then
-                vu802:SetDesc("\226\156\133")
+                vu802:SetDesc("✅")
             else
-                vu802:SetDesc("\226\157\140")
+                vu802:SetDesc("❌")
             end
         end
     end)
 end)
 v3.Status:AddInput("Input", {
-    ["Title"] = "ID M\195\161y Ch\225\187\167",
+    ["Title"] = "Server JobId",
     ["Default"] = "",
     ["Placeholder"] = "",
     ["Numeric"] = false,
@@ -7124,21 +7124,21 @@ v3.Status:AddInput("Input", {
     end
 })
 v3.Status:AddButton({
-    ["Title"] = "Tham gia ID m\195\161y ch\225\187\167",
+    ["Title"] = "Join Server by ID",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("TeleportService"):TeleportToPlaceInstance(game.placeId, _G.Job, game.Players.LocalPlayer)
     end
 })
 v3.Status:AddButton({
-    ["Title"] = "Sao Ch\195\169p ID M\195\161y Ch\225\187\167 ",
+    ["Title"] = "Copy Server ID",
     ["Description"] = "",
     ["Callback"] = function()
         setclipboard(tostring(game.JobId))
     end
 })
 v3.Status:AddToggle("MyToggle", {
-    ["Title"] = "Spam Tham Gia ID M\195\161y  Ch\225\187\167",
+    ["Title"] = "Spam Join Server ID",
     ["Default"] = false
 }):OnChanged(function(p804)
     _G.Join = p804
@@ -7151,7 +7151,7 @@ spawn(function()
     end
 end)
 v3.Stats:AddToggle("ToggleMelee", {
-    ["Title"] = "C\225\186\173n Chi\225\186\191n",
+    ["Title"] = "Melee",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p805)
@@ -7159,7 +7159,7 @@ v3.Stats:AddToggle("ToggleMelee", {
 end)
 v4.ToggleMelee:SetValue(false)
 v3.Stats:AddToggle("ToggleDe", {
-    ["Title"] = "Ph\195\178ng th\225\187\167",
+    ["Title"] = "Defense",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p806)
@@ -7167,7 +7167,7 @@ v3.Stats:AddToggle("ToggleDe", {
 end)
 v4.ToggleDe:SetValue(false)
 v3.Stats:AddToggle("ToggleSword", {
-    ["Title"] = "Ki\225\186\191m",
+    ["Title"] = "Sword",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p807)
@@ -7175,7 +7175,7 @@ v3.Stats:AddToggle("ToggleSword", {
 end)
 v4.ToggleSword:SetValue(false)
 v3.Stats:AddToggle("ToggleGun", {
-    ["Title"] = "S\195\186ng",
+    ["Title"] = "Gun",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p808)
@@ -7183,7 +7183,7 @@ v3.Stats:AddToggle("ToggleGun", {
 end)
 v4.ToggleGun:SetValue(false)
 v3.Stats:AddToggle("ToggleFruit", {
-    ["Title"] = "Tr\195\161i \195\129c Qu\225\187\183",
+    ["Title"] = "Blox Fruit",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p809)
@@ -7257,7 +7257,7 @@ while true do
     table.insert(vu814, v815.Name)
 end
 local v816 = v3.Player:AddDropdown("SelectedPly", {
-    ["Title"] = "Ch\225\187\141n ng\198\176\225\187\157i ch\198\161i",
+    ["Title"] = "Select Player",
     ["Description"] = "",
     ["Values"] = vu814,
     ["Multi"] = false,
@@ -7268,7 +7268,7 @@ v816:OnChanged(function(p817)
     _G.SelectPly = p817
 end)
 v3.Player:AddButton({
-    ["Title"] = "T\225\186\163i",
+    ["Title"] = "Refresh Players",
     ["Description"] = "",
     ["Callback"] = function()
 		-- upvalues: (ref) vu814
@@ -7285,7 +7285,7 @@ v3.Player:AddButton({
     end
 })
 v3.Player:AddToggle("ToggleTeleport", {
-    ["Title"] = "D\225\187\139ch Chuy\225\187\131n \196\144\225\186\191n Ng\198\176\225\187\157i Ch\198\161i",
+    ["Title"] = "Teleport to Player",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p822)
@@ -7311,7 +7311,7 @@ spawn(function()
 end)
 v3.Player:AddSection("Other")
 v3.Player:AddToggle("ToggleNoClip", {
-    ["Title"] = "Kh\195\180ng c\195\179 clip",
+    ["Title"] = "No Clip",
     ["Description"] = "",
     ["Default"] = true
 }):OnChanged(function(p823)
@@ -7338,7 +7338,7 @@ spawn(function()
     end)
 end)
 v3.Player:AddToggle("ToggleWalkonWater", {
-    ["Title"] = "\196\144i Tr\195\170n M\225\186\183t N\198\176\225\187\155c",
+    ["Title"] = "Walk on Water",
     ["Description"] = "",
     ["Default"] = true
 }):OnChanged(function(p828)
@@ -7357,7 +7357,7 @@ spawn(function()
     end
 end)
 v3.Player:AddToggle("ToggleEnablePvp", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng B\225\186\173t PVP",
+    ["Title"] = "Auto Enable PvP",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p829)
@@ -7375,7 +7375,7 @@ spawn(function()
 end)
 local vu830 = v3.Teleport:AddSection("Sea")
 v3.Teleport:AddToggle("ToggleAutoSea2", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng Bi\225\187\131n 2",
+    ["Title"] = "Auto Sea 2 Quest",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p831)
@@ -7444,7 +7444,7 @@ spawn(function()
     end
 end)
 v3.Teleport:AddToggle("ToggleAutoSea3", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng Bi\225\187\131n 3",
+    ["Title"] = "Auto Sea 3 Quest",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p837)
@@ -7498,21 +7498,21 @@ spawn(function()
     end
 end)
 v3.Teleport:AddButton({
-    ["Title"] = "Bi\225\187\131n 1",
+    ["Title"] = "Sea 1",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("TravelMain")
     end
 })
 v3.Teleport:AddButton({
-    ["Title"] = "Bi\225\187\131n 2",
+    ["Title"] = "Sea 2",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("TravelDressrosa")
     end
 })
 v3.Teleport:AddButton({
-    ["Title"] = "Bi\225\187\131n 3",
+    ["Title"] = "Sea 3",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("TravelZou")
@@ -7578,7 +7578,7 @@ elseif Sea3 then
     }
 end
 local v842 = v3.Teleport:AddDropdown("DropdownIsland", {
-    ["Title"] = "Ch\225\187\141n \196\144\225\186\163o",
+    ["Title"] = "Select Island",
     ["Description"] = "",
     ["Values"] = IslandList,
     ["Multi"] = false,
@@ -7589,7 +7589,7 @@ v842:OnChanged(function(p843)
     _G.SelectIsland = p843
 end)
 v3.Teleport:AddButton({
-    ["Title"] = "D\225\187\139ch Chuy\225\187\131n \196\144\225\186\191n \196\144\225\186\163o",
+    ["Title"] = "Teleport to Island",
     ["Description"] = "",
     ["Callback"] = function()
         if _G.SelectIsland ~= "WindMill" then
@@ -7792,14 +7792,14 @@ v3.Teleport:AddButton({
     end
 })
 v3.Teleport:AddButton({
-    ["Title"] = "D\225\187\171ng d\225\187\139ch chuy\225\187\131n T\225\187\169c Th\225\187\157i",
+    ["Title"] = "Stop Teleport",
     ["Description"] = "",
     ["Callback"] = function()
         CancelTween()
     end
 })
 v3.Visual:AddButton({
-    ["Title"] = "L\195\160m Gi\225\186\163",
+    ["Title"] = "Fake Stats",
     ["Description"] = "",
     ["Callback"] = function()
         local v844 = game:GetService("Players").LocalPlayer
@@ -7842,7 +7842,7 @@ v3.Visual:AddButton({
     end
 })
 v3.Visual:AddInput("Input_Level", {
-    ["Title"] = "C\225\186\165p \196\144\225\187\153",
+    ["Title"] = "Fake Level",
     ["Default"] = "",
     ["Placeholder"] = "...",
     ["Numeric"] = false,
@@ -7852,7 +7852,7 @@ v3.Visual:AddInput("Input_Level", {
     end
 })
 v3.Visual:AddInput("Input_EXP", {
-    ["Title"] = "Kink Nghi\225\187\135m",
+    ["Title"] = "Fake Bounty / EXP",
     ["Default"] = "",
     ["Placeholder"] = "...",
     ["Numeric"] = false,
@@ -7862,7 +7862,7 @@ v3.Visual:AddInput("Input_EXP", {
     end
 })
 v3.Visual:AddInput("Input_Beli", {
-    ["Title"] = "Ti\225\187\129n",
+    ["Title"] = "Fake Beli",
     ["Default"] = "",
     ["Placeholder"] = "...",
     ["Numeric"] = false,
@@ -7872,7 +7872,7 @@ v3.Visual:AddInput("Input_Beli", {
     end
 })
 v3.Visual:AddInput("Input_Fragments", {
-    ["Title"] = "Ti\225\187\129n T\195\173m",
+    ["Title"] = "Fake Fragments",
     ["Default"] = "",
     ["Placeholder"] = "...",
     ["Numeric"] = false,
@@ -7902,7 +7902,7 @@ _G.PermanentFruit = "Dragon-Dragon"
 _G.AutoBuyFruitSniper = false
 _G.AutoSwitchPermanentFruit = false
 local v861 = v3.Fruit:AddDropdown("DropdownFruit", {
-    ["Title"] = "Ch\225\187\141n Tr\195\161i \195\129c Qu\225\187\183",
+    ["Title"] = "Select Fruit",
     ["Description"] = "",
     ["Values"] = Table_DevilFruitSniper,
     ["Multi"] = false,
@@ -7913,7 +7913,7 @@ v861:OnChanged(function(p862)
     _G.SelectFruit = p862
 end)
 v3.Fruit:AddToggle("ToggleFruit", {
-    ["Title"] = "Mua",
+    ["Title"] = "Buy Fruit",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p863)
@@ -7928,7 +7928,7 @@ v3.Fruit:AddToggle("ToggleFruit", {
 end)
 v4.ToggleFruit:SetValue(false)
 local v864 = v3.Fruit:AddDropdown("DropdownPermanentFruit", {
-    ["Title"] = "Ch\225\187\141n Tr\195\161i \195\129c Qu\225\187\183 vv",
+    ["Title"] = "Select Permanent Fruit",
     ["Description"] = "",
     ["Values"] = Table_DevilFruitSniper,
     ["Multi"] = false,
@@ -7939,7 +7939,7 @@ v864:OnChanged(function(p865)
     _G.PermanentFruit = p865
 end)
 v3.Fruit:AddToggle("TogglePermanentFruit", {
-    ["Title"] = "S\225\187\173 D\225\187\165ng Tr\195\161i \195\129c Qu\225\187\183 vv",
+    ["Title"] = "Equip Permanent Fruit",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p866)
@@ -7957,7 +7957,7 @@ v3.Fruit:AddToggle("TogglePermanentFruit", {
 end)
 v4.TogglePermanentFruit:SetValue(false)
 v3.Fruit:AddToggle("ToggleStore", {
-    ["Title"] = "L\198\176u tr\225\187\175 tr\195\161i \195\129c Qu\225\187\183",
+    ["Title"] = "Store Fruit",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p868)
@@ -8078,7 +8078,7 @@ spawn(function()
     end
 end)
 v3.Fruit:AddToggle("ToggleRandomFruit", {
-    ["Title"] = "Random Tr\195\161i \195\129c Qu\225\187\183",
+    ["Title"] = "Random Fruit (Gacha)",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p869)
@@ -8095,8 +8095,8 @@ spawn(function()
     end)
 end)
 v3.Fruit:AddToggle("ToggleCollectTP", {
-    ["Title"] = "Nh\225\186\183t tr\195\161i c\195\162y (TP)",
-    ["Description"] = "Risk",
+    ["Title"] = "Collect Fruit (Teleport)",
+    ["Description"] = "Risk (May Kick)",
     ["Default"] = false
 }):OnChanged(function(p870)
     _G.CollectFruitTP = p870
@@ -8120,7 +8120,7 @@ spawn(function()
     end
 end)
 v3.Fruit:AddToggle("ToggleCollect", {
-    ["Title"] = "Nh\225\186\183t tr\195\161i c\195\162y",
+    ["Title"] = "Collect Fruit (Tween)",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p875)
@@ -8146,7 +8146,7 @@ spawn(function()
 end)
 v3.Fruit:AddSection("Esp")
 v3.Fruit:AddToggle("ToggleEspPlayer", {
-    ["Title"] = "Ng\198\176\225\187\157i ch\198\161i",
+    ["Title"] = "ESP Players",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p880)
@@ -8155,7 +8155,7 @@ v3.Fruit:AddToggle("ToggleEspPlayer", {
 end)
 v4.ToggleEspPlayer:SetValue(false)
 v3.Fruit:AddToggle("ToggleEspFruit", {
-    ["Title"] = "Tr\195\161i \195\129c Qu\225\187\183",
+    ["Title"] = "Blox Fruit",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p881)
@@ -8167,7 +8167,7 @@ v3.Fruit:AddToggle("ToggleEspFruit", {
 end)
 v4.ToggleEspFruit:SetValue(false)
 v3.Fruit:AddToggle("ToggleEspIsland", {
-    ["Title"] = "\196\144\225\186\163o",
+    ["Title"] = "ESP Islands",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p882)
@@ -8179,7 +8179,7 @@ v3.Fruit:AddToggle("ToggleEspIsland", {
 end)
 v4.ToggleEspIsland:SetValue(false)
 v3.Fruit:AddToggle("ToggleEspFlower", {
-    ["Title"] = "Hoa",
+    ["Title"] = "ESP Flowers",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p883)
@@ -8207,7 +8207,7 @@ spawn(function()
     end
 end)
 v3.Fruit:AddToggle("ToggleEspRealFruit", {
-    ["Title"] = "Tr\195\161i c\195\162y th\225\186\173t",
+    ["Title"] = "ESP Dropped Fruit",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p884)
@@ -8324,7 +8324,7 @@ function UpdateRealFruitEsp()
     end
 end
 v3.Fruit:AddToggle("ToggleIslandMirageEsp", {
-    ["Title"] = "\196\144\225\186\163o Mirage",
+    ["Title"] = "ESP Mirage Island",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p903)
@@ -8382,7 +8382,7 @@ function UpdateIslandMirageEsp()
     end
 end
 local v913 = v3.Raid:AddDropdown("DropdownRaid", {
-    ["Title"] = "Ch\225\187\141n Chip",
+    ["Title"] = "Select Raid Chip",
     ["Description"] = "",
     ["Values"] = {
         "Flame",
@@ -8406,7 +8406,7 @@ v913:OnChanged(function(p914)
     SelectChip = p914
 end)
 v3.Raid:AddToggle("ToggleBuy", {
-    ["Title"] = "Mua Chip",
+    ["Title"] = "Buy Raid Chip",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p915)
@@ -8428,7 +8428,7 @@ spawn(function()
     end
 end)
 v3.Raid:AddToggle("ToggleStart", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng B\225\186\175t \196\144\225\186\167u \196\144\225\187\153t K\195\173ch",
+    ["Title"] = "Auto Start Raid",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p917)
@@ -8458,7 +8458,7 @@ spawn(function()
     end
 end)
 v3.Raid:AddToggle("ToggleNextIsland", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng \196\144\195\161nh \196\144\225\187\153t k\195\173ch",
+    ["Title"] = "Auto Attack Raid Mobs",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p918)
@@ -8515,7 +8515,7 @@ spawn(function()
     end
 end)
 v3.Raid:AddToggle("ToggleAwake", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng Th\225\187\169c T\225\187\137nh Tr\195\161i \195\129c Qu\225\187\183",
+    ["Title"] = "Auto Awaken Fruit",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p923)
@@ -8532,7 +8532,7 @@ spawn(function()
     end
 end)
 v3.Raid:AddToggle("ToggleGetFruit", {
-    ["Title"] = "D\195\185ng Tr\195\161i th\198\176\225\187\157ng \226\128\148> Chip \196\144\225\187\153t k\195\173ch",
+    ["Title"] = "Trade Fruit for Raid Chip",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p924)
@@ -8616,7 +8616,7 @@ spawn(function()
 end)
 if Sea2 then
     v3.Raid:AddButton({
-        ["Title"] = "Bay \196\145\225\186\191n ph\195\178ng \196\145\225\187\153t k\195\173ch",
+        ["Title"] = "Teleport to Raid Lab",
         ["Description"] = "",
         ["Callback"] = function()
             Tween2(CFrame.new(- 6438.73535, 250.645355, - 4501.50684))
@@ -8624,7 +8624,7 @@ if Sea2 then
     })
 elseif Sea3 then
     v3.Raid:AddButton({
-        ["Title"] = "Bay \196\145\225\186\191n ph\195\178ng \196\145\225\187\153t K\195\173ch",
+        ["Title"] = "Teleport to Raid Lab",
         ["Description"] = "",
         ["Callback"] = function()
             game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(- 5075.50927734375, 314.5155029296875, - 3150.0224609375))
@@ -8634,7 +8634,7 @@ elseif Sea3 then
 end
 v3.Raid:AddSection("Law")
 v3.Raid:AddToggle("ToggleLaw", {
-    ["Title"] = "T\225\187\177 \196\145\225\187\153ng \196\145\225\187\153t k\195\173ch th\225\186\165p (\196\144\225\186\167y \196\145\225\187\167)",
+    ["Title"] = "Auto Order Raid (Full)",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p925)
@@ -8689,14 +8689,14 @@ spawn(function()
     end)
 end)
 v3.Race:AddButton({
-    ["Title"] = "Ng\195\180i \196\144\225\187\129n Th\225\187\157i Gian",
+    ["Title"] = "Temple of Time",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(28286.35546875, 14895.3017578125, 102.62469482421875))
     end
 })
 v3.Race:AddButton({
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng G\225\186\161t C\225\186\167n",
+    ["Title"] = "Auto Pull Lever",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(28286.35546875, 14895.3017578125, 102.62469482421875))
@@ -8704,7 +8704,7 @@ v3.Race:AddButton({
     end
 })
 v3.Race:AddButton({
-    ["Title"] = "TP NPC Mua B\195\161nh R\196\131ng",
+    ["Title"] = "TP to Ancient One (Buy Gear)",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(28286.35546875, 14895.3017578125, 102.62469482421875))
@@ -8713,7 +8713,7 @@ v3.Race:AddButton({
 })
 v3.Race:AddSection("Race")
 v3.Race:AddButton({
-    ["Title"] = "C\225\187\173a T\225\187\153c",
+    ["Title"] = "Select Race Door",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(28286.35546875, 14895.3017578125, 102.62469482421875))
@@ -8743,7 +8743,7 @@ v3.Race:AddButton({
     end
 })
 v3.Race:AddToggle("ToggleHumanandghoul", {
-    ["Title"] = "V\198\176\225\187\163t qua th\225\187\173 th\195\161ch [Con ng\198\176\225\187\157i/Ma c\195\160 r\225\187\147ng]",
+    ["Title"] = "Complete Trial [Human / Ghoul]",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p930)
@@ -8751,7 +8751,7 @@ v3.Race:AddToggle("ToggleHumanandghoul", {
 end)
 v4.ToggleHumanandghoul:SetValue(false)
 v3.Race:AddToggle("ToggleAutotrial", {
-    ["Title"] = "V\198\176\225\187\163t qua th\225\187\173 th\195\161ch",
+    ["Title"] = "Complete Trial",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p931)
@@ -8934,7 +8934,7 @@ spawn(function()
     end)
 end)
 v3.Race:AddToggle("ToggleKillTrial", {
-    ["Title"] = "Gi\225\186\191t Ng\198\176\225\187\157i Trong Trial",
+    ["Title"] = "Auto Kill Players in Trial",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p968)
@@ -8970,7 +8970,7 @@ spawn(function()
 end)
 v3.Race:AddSection("")
 local v973 = v3.Race:AddToggle("ToggleFarmRace", {
-    ["Title"] = "C\195\160y T\225\187\153c",
+    ["Title"] = "Auto Train Race V4",
     ["Description"] = "",
     ["Default"] = false
 })
@@ -9005,7 +9005,7 @@ spawn(function()
     end
 end)
 v3.Race:AddToggle("ToggleUpgrade", {
-    ["Title"] = "Mua B\195\161nh R\196\131ng",
+    ["Title"] = "Buy Gear",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p976)
@@ -9015,107 +9015,107 @@ v3.Race:AddToggle("ToggleUpgrade", {
     end
 end)
 v4.ToggleUpgrade:SetValue(false)
-v3.Shop:AddSection("Haki")
+v3.Shop:AddSection("Haki / Abilities")
 v3.Shop:AddButton({
-    ["Title"] = "Nh\225\186\163y Cao",
+    ["Title"] = "Skyjump (Geppo)",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyHaki", "Geppo")
     end
 })
 v3.Shop:AddButton({
-    ["Title"] = "Haki",
+    ["Title"] = "Haki / Abilities",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyHaki", "Buso")
     end
 })
 v3.Shop:AddButton({
-    ["Title"] = "D\225\187\139ch Chuy\225\187\131n",
+    ["Title"] = "Flash Step (Soru)",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyHaki", "Soru")
     end
 })
 v3.Shop:AddButton({
-    ["Title"] = "Haki Quan S\195\161t",
+    ["Title"] = "Observation Haki (Ken)",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("KenTalk", "Buy")
     end
 })
-v3.Shop:AddSection("Ki\225\186\191m")
+v3.Shop:AddSection("Sword")
 v3.Shop:AddButton({
-    ["Title"] = "Dao G\196\131m",
+    ["Title"] = "Katana / Dagger",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Cutlass")
     end
 })
 v3.Shop:AddButton({
-    ["Title"] = "katana",
+    ["Title"] = "Katana",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Katana")
     end
 })
 v3.Shop:AddButton({
-    ["Title"] = "Ch\195\185y s\225\186\175t",
+    ["Title"] = "Iron Mace",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Iron Mace")
     end
 })
 v3.Shop:AddButton({
-    ["Title"] = "\196\144\225\186\165u ki\225\186\191m Katana",
+    ["Title"] = "Dual Katana",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Duel Katana")
     end
 })
 v3.Shop:AddButton({
-    ["Title"] = "Tam Ki\225\186\191m Katana",
+    ["Title"] = "Triple Katana",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Triple Katana")
     end
 })
 v3.Shop:AddButton({
-    ["Title"] = "\196\144\198\176\225\187\157ng \225\187\145ng",
+    ["Title"] = "Pipe",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Pipe")
     end
 })
 v3.Shop:AddButton({
-    ["Title"] = "L\198\176\225\187\161i dao hai \196\145\225\186\167u",
+    ["Title"] = "Dual-Headed Blade",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Dual-Headed Blade")
     end
 })
 v3.Shop:AddButton({
-    ["Title"] = "\196\144\225\186\161i \196\144ao Bisento",
+    ["Title"] = "Bisento",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Bisento")
     end
 })
 v3.Shop:AddButton({
-    ["Title"] = "C\195\162y g\225\186\173y linh h\225\187\147n",
+    ["Title"] = "Soul Cane",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Soul Cane")
     end
 })
 v3.Shop:AddButton({
-    ["Title"] = "Pole V2",
+    ["Title"] = "Pole (2nd Form)",
     ["Description"] = "",
     ["Callback"] = function()
         game.ReplicatedStorage.Remotes.CommF_:InvokeServer("ThunderGodTalk")
     end
 })
-v3.Shop:AddSection("V\195\181")
+v3.Shop:AddSection("Fighting Styles")
 v3.Shop:AddButton({
     ["Title"] = "Black leg",
     ["Description"] = "",
@@ -9197,7 +9197,7 @@ v3.Shop:AddButton({
 })
 v3.Shop:AddSection("Other")
 v3.Shop:AddButton({
-    ["Title"] = "\196\144\225\186\183t l\225\186\161i Ch\225\187\137 S\225\187\145",
+    ["Title"] = "Reset Stats",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward", "Refund", "1")
@@ -9205,7 +9205,7 @@ v3.Shop:AddButton({
     end
 })
 v3.Shop:AddButton({
-    ["Title"] = "Random T\225\187\153c",
+    ["Title"] = "Reroll Race",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward", "Reroll", "1")
@@ -9213,7 +9213,7 @@ v3.Shop:AddButton({
     end
 })
 v3.Shop:AddButton({
-    ["Title"] = "Chuy\225\187\131n sang ch\225\187\167ng t\225\187\153c Qu\225\187\183",
+    ["Title"] = "Change to Ghoul Race",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack({
@@ -9224,7 +9224,7 @@ v3.Shop:AddButton({
     end
 })
 v3.Shop:AddButton({
-    ["Title"] = "Chuy\225\187\131n sang ch\225\187\167ng t\225\187\153c Ng\198\176\225\187\157i M\195\161y",
+    ["Title"] = "Change to Cyborg Race",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack({
@@ -9234,7 +9234,7 @@ v3.Shop:AddButton({
     end
 })
 v3.Shop:AddButton({
-    ["Title"] = "\196\144\225\187\149i Sang T\225\187\153c R\225\187\147ng",
+    ["Title"] = "Change to Dragon Race",
     ["Description"] = "Sea 3 Only",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(5661.5322265625, 1013.0907592773438, - 334.9649963378906))
@@ -9258,14 +9258,14 @@ v3.Shop:AddButton({
     end
 })
 v3.Misc:AddButton({
-    ["Title"] = "Tham gia l\225\186\161i",
+    ["Title"] = "Rejoin Server",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
     end
 })
 v3.Misc:AddButton({
-    ["Title"] = "Tham Gia M\195\161y Ch\225\187\167 Kh\195\161c",
+    ["Title"] = "Server Hop",
     ["Description"] = "",
     ["Callback"] = function()
         Hop()
@@ -9348,14 +9348,14 @@ function Hop()
 end
 v3.Misc:AddSection("Team")
 v3.Misc:AddButton({
-    ["Title"] = "H\225\186\163i T\225\186\183c",
+    ["Title"] = "Pirates",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("SetTeam", "Pirates")
     end
 })
 v3.Misc:AddButton({
-    ["Title"] = "H\225\186\163i Qu\195\162n",
+    ["Title"] = "Marines",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("SetTeam", "Marines")
@@ -9408,7 +9408,7 @@ local vu997 = {
     "SECRET_ADMIN"
 }
 v3.Misc:AddButton({
-    ["Title"] = "S\225\187\173 D\225\187\165ng T\225\186\165t C\225\186\163 GiftCode",
+    ["Title"] = "Redeem All Gift Codes",
     ["Description"] = "",
     ["Callback"] = function()
 		-- upvalues: (ref) vu997
@@ -9426,9 +9426,9 @@ v3.Misc:AddButton({
 function RedeemCode(p1002)
     game:GetService("ReplicatedStorage").Remotes.Redeem:InvokeServer(p1002)
 end
-v3.Misc:AddSection("Ti\195\170u \196\144\225\187\129")
+v3.Misc:AddSection("Titles")
 v3.Misc:AddButton({
-    ["Title"] = "Ti\195\170u \196\144\225\187\129",
+    ["Title"] = "Titles",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack({
@@ -9439,7 +9439,7 @@ v3.Misc:AddButton({
 })
 v3.Misc:AddSection("Awakening")
 v3.Misc:AddButton({
-    ["Title"] = "S\225\187\177 th\225\187\169c t\225\187\137nh",
+    ["Title"] = "Awaken Ability",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("Players").LocalPlayer.PlayerGui.Main.AwakeningToggler.Visible = true
@@ -9447,7 +9447,7 @@ v3.Misc:AddButton({
 })
 v3.Misc:AddSection("Misc")
 v3.Misc:AddToggle("ToggleRejoin", {
-    ["Title"] = "Tham gia l\225\186\161i",
+    ["Title"] = "Rejoin Server",
     ["Description"] = "",
     ["Default"] = true
 }):OnChanged(function(p1003)
@@ -9486,7 +9486,7 @@ local function vu1006()
     v1005.FogEnd = 100000
 end
 v3.Misc:AddButton({
-    ["Title"] = "Th\225\187\169c T\225\187\137nh",
+    ["Title"] = "Awakening Status",
     ["Description"] = "",
     ["Callback"] = function()
 		-- upvalues: (ref) vu1006
@@ -9494,7 +9494,7 @@ v3.Misc:AddButton({
     end
 })
 v3.Misc:AddToggle("ToggleAntiBand", {
-    ["Title"] = "Ch\225\187\145ng Ban",
+    ["Title"] = "Anti-Ban Protection",
     ["Description"] = "",
     ["Default"] = true
 }):OnChanged(function(p1007)
@@ -9525,14 +9525,14 @@ spawn(function()
 end)
 v3.Sea:AddSection("Leviathan")
 v3.Sea:AddButton({
-    ["Title"] = "Mua Chip Leviathan",
+    ["Title"] = "Buy Leviathan Spy / Chip",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("InfoLeviathan", "2")
     end
 })
 local v1013 = v3.Sea:AddToggle("ToggleTPFrozenDimension", {
-    ["Title"] = "Bay \196\145\225\186\191n Frozen Dimension",
+    ["Title"] = "Teleport to Frozen Dimension",
     ["Description"] = "",
     ["Default"] = false
 })
@@ -9554,7 +9554,7 @@ spawn(function()
 end)
 if Sea3 then
     local vu1016 = v3.Sea:AddParagraph({
-        ["Title"] = "Tr\225\186\161ng th\195\161i Chip Leviathan",
+        ["Title"] = "Leviathan Chip Status",
         ["Content"] = ""
     })
     spawn(function()
@@ -9576,7 +9576,7 @@ if Sea3 then
 end
 local v1018 = v3.Sea:AddSection("Draco")
 v3.Sea:AddToggle("ToggleBlazeEmber", {
-    ["Title"] = "T\198\176\204\163 \196\144\225\187\153ng Blaze Ember",
+    ["Title"] = "Auto Blaze Ember",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p1019)
@@ -9592,7 +9592,7 @@ spawn(function()
     end
 end)
 v3.Sea:AddToggle("ToggleReceiveQuest", {
-    ["Title"] = "L\225\186\165y Nhi\225\187\135m V\225\187\165 Blaze Ember",
+    ["Title"] = "Get Blaze Ember Quest",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p1020)
@@ -9619,7 +9619,7 @@ v3.Sea:AddToggle("ToggleReceiveQuest", {
     end
 end)
 local vu1021 = v3.Sea:AddParagraph({
-    ["Title"] = "Tr\225\186\161ng th\195\161i nhi\225\187\135m v\225\187\165 Blaze Ember",
+    ["Title"] = "Blaze Ember Quest Status",
     ["Content"] = ""
 })
 spawn(function()
@@ -9655,7 +9655,7 @@ spawn(function()
     end)
 end)
 v3.Sea:AddToggle("ToggleHydraTree", {
-    ["Title"] = "Ph\195\161 h\225\187\167y c\195\162y c\225\187\145i \225\187\159 \196\144\225\186\163o Hydra",
+    ["Title"] = "Destroy Trees at Hydra Island",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p1027)
@@ -9735,7 +9735,7 @@ spawn(function()
     end
 end)
 v1018:AddButton({
-    ["Title"] = "D\225\187\139ch chuy\225\187\131n \196\145\225\186\191n Dragon Dojo",
+    ["Title"] = "Teleport to Dragon Dojo",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(5661.5322265625, 1013.0907592773438, - 334.9649963378906))
@@ -9743,7 +9743,7 @@ v1018:AddButton({
     end
 })
 v1018:AddButton({
-    ["Title"] = "Mua Nam Ch\195\162m N\195\186i L\225\187\173a",
+    ["Title"] = "Buy Volcano Magnet",
     ["Description"] = "",
     ["Callback"] = function()
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack({
@@ -9754,7 +9754,7 @@ v1018:AddButton({
     end
 })
 v3.Sea:AddToggle("ToggleCollectFireFlowers", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng Thu th\225\186\173p Hoa l\225\187\173a",
+    ["Title"] = "Auto Collect Fire Flower",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p1049)
@@ -9786,7 +9786,7 @@ spawn(function()
     end
 end)
 v3.Sea:AddToggle("ToggleWhiteBelt", {
-    ["Title"] = "T\225\187\177 \196\144\225\187\153ng L\195\160m \196\144ai tr\225\186\175ng",
+    ["Title"] = "Auto Craft White Belt",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p1056)
@@ -9812,11 +9812,11 @@ v3.Sea:AddToggle("ToggleWhiteBelt", {
     end
 end)
 v3.Sea:AddParagraph({
-    ["Title"] = "T\225\187\153c R\225\187\147ng",
+    ["Title"] = "Dragon Race",
     ["Content"] = ""
 })
 v3.Sea:AddToggle("ToggleTrialTeleport", {
-    ["Title"] = "Bay \196\145\225\186\191n C\225\187\173a Trial T\225\187\153c R\225\187\147ng",
+    ["Title"] = "Teleport to Dragon Trial Door",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p1057)
@@ -9834,7 +9834,7 @@ spawn(function()
 end)
 v3.Sea:AddSection("Prehistoric Island")
 local vu1059 = v3.Sea:AddParagraph({
-    ["Title"] = "Tr\225\186\161ng Th\195\161i \196\145\225\186\163o N\195\186i L\225\187\173a",
+    ["Title"] = "Volcano / Prehistoric Island Status",
     ["Content"] = ""
 })
 spawn(function()
@@ -9843,15 +9843,15 @@ spawn(function()
 		-- upvalues: (ref) vu1059
         while wait() do
             if ggame:GetService("Workspace").Map:FindFirstChild("PrehistoricIsland") then
-                vu1059:SetDesc("Prehistoric Island: \226\156\133\239\184\143")
+                vu1059:SetDesc("Prehistoric Island: ✅")
             else
-                vu1059:SetDesc("Prehistoric Island: \226\157\140\239\184\143")
+                vu1059:SetDesc("Prehistoric Island: ❌")
             end
         end
     end)
 end)
 v3.Sea:AddToggle("ToggleTPVolcano", {
-    ["Title"] = "Bay \196\144\225\186\191n \196\144\225\186\163o N\195\186i L\225\187\173a",
+    ["Title"] = "Teleport to Prehistoric Island",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p1060)
@@ -9882,28 +9882,28 @@ spawn(function()
     end
 end)
 v3.Sea:AddToggle("ToggleDefendVolcano", {
-    ["Title"] = "An To\195\160n",
+    ["Title"] = "Safe Mode",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p1064)
     _G.AutoDefendVolcano = p1064
 end)
 v3.Sea:AddToggle("ToggleMelee", {
-    ["Title"] = "S\225\187\173 D\225\187\165ng C\225\186\173n Chi\225\186\191n",
+    ["Title"] = "Use Melee",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p1065)
     _G.UseMelee = p1065
 end)
 v3.Sea:AddToggle("ToggleSword", {
-    ["Title"] = "S\225\187\173 D\225\187\165ng Ki\225\186\191m",
+    ["Title"] = "Use Sword",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p1066)
     _G.UseSword = p1066
 end)
 v3.Sea:AddToggle("ToggleGun", {
-    ["Title"] = "S\225\187\173 D\225\187\165ng S\195\186ng",
+    ["Title"] = "Use Gun",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p1067)
@@ -10049,7 +10049,7 @@ spawn(function()
     end
 end)
 v3.Sea:AddToggle("ToggleKillAura", {
-    ["Title"] = "T\225\186\165n C\195\180ng Golems Kill Aura",
+    ["Title"] = "Attack Golems (Kill Aura)",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p1109)
@@ -10081,7 +10081,7 @@ spawn(function()
     end
 end)
 v3.Sea:AddToggle("ToggleCollectBone", {
-    ["Title"] = "L\225\187\165m X\198\176\198\161ng",
+    ["Title"] = "Collect Bones",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p1114)
@@ -10105,7 +10105,7 @@ spawn(function()
     end
 end)
 v3.Sea:AddToggle("ToggleCollectEgg", {
-    ["Title"] = "L\225\187\165m Tr\225\187\169ng R\225\187\147ng",
+    ["Title"] = "Collect Dragon Eggs",
     ["Description"] = "",
     ["Default"] = false
 }):OnChanged(function(p1119)
