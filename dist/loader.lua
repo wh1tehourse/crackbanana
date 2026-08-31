@@ -1,3 +1,137 @@
--- [[ Banana Crack Hub | Obfuscated Build ]]
-local _S=function(t)local r=""for _,v in ipairs(t)do r=r..string.char(v)end return r end
-local Players = game:GetService(_S({80,108,97,121,101,114,115})) local StarterGui = game:GetService(_S({83,116,97,114,116,101,114,71,117,105})) local TweenService = game:GetService(_S({84,119,101,101,110,83,101,114,118,105,99,101})) local LocalPlayer = Players.LocalPlayer local function _a(_j, _q, _r) pcall(function() StarterGui:SetCore(_S({83,101,110,100,78,111,116,105,102,105,99,97,116,105,111,110}), { Title = _j or _S({66,97,110,97,110,97,32,67,114,97,99,107,32,72,117,98}), Text = _q or _S({}), Duration = _r or 4, Icon = _S({104,116,116,112,58,47,47,119,119,119,46,114,111,98,108,111,120,46,99,111,109,47,97,115,115,101,116,47,63,105,100,61,49,51,48,57,52,55,56,53,54,57,50,57,57,48,50}) }) end) end local _b = { [2753915549] = _S({66,108,111,120,32,70,114,117,105,116,115,32,40,83,101,97,32,49,41}), [4442272183] = _S({66,108,111,120,32,70,114,117,105,116,115,32,40,83,101,97,32,50,41}), [7449423635] = _S({66,108,111,120,32,70,114,117,105,116,115,32,40,83,101,97,32,51,41}) } local _c = game.PlaceId local _d = _b[_c] if not _d then _a(_S({66,97,110,97,110,97,32,67,114,97,99,107,32,72,117,98}), _S({9888,65039,32,71,97,109,101,32,110,111,116,32,115,117,112,112,111,114,116,101,100,33,32,66,108,111,120,32,70,114,117,105,116,115,32,111,110,108,121,46}), 6) return end local _e = Instance.new(_S({83,99,114,101,101,110,71,117,105})) _e.Name = _S({66,97,110,97,110,97,76,111,97,100,101,114,71,117,105}) _e.ResetOnSpawn = false _e.ZIndexBehavior = Enum.ZIndexBehavior.Sibling if (syn and syn.protect_gui) then syn.protect_gui(_e) _e.Parent = game.CoreGui elseif gethui then _e.Parent = gethui() elseif game:GetService(_S({67,111,114,101,71,117,105})):FindFirstChild(_S({82,111,98,108,111,120,71,117,105})) then _e.Parent = game:GetService(_S({67,111,114,101,71,117,105})) else _e.Parent = LocalPlayer:WaitForChild(_S({80,108,97,121,101,114,71,117,105})) end local _f = Instance.new(_S({70,114,97,109,101})) _f.Name = _S({76,111,97,100,101,114,67,97,114,100}) _f.Size = UDim2.new(0, 320, 0, 75) _f.Position = UDim2.new(0.5, -160, 0.15, 0) _f.BackgroundColor3 = Color3.fromRGB(22, 22, 26) _f.BackgroundTransparency = 0.15 _f.BorderSizePixel = 0 _f.ClipsDescendants = true _f.Parent = _e local _g = Instance.new(_S({85,73,67,111,114,110,101,114})) _g.CornerRadius = UDim.new(0, 12) _g.Parent = _f local _h = Instance.new(_S({85,73,83,116,114,111,107,101})) _h.Color = Color3.fromRGB(255, 204, 0) _h.Thickness = 1.5 _h.Transparency = 0.3 _h.Parent = _f local _i = Instance.new(_S({73,109,97,103,101,76,97,98,101,108})) _i.Size = UDim2.new(0, 42, 0, 42) _i.Position = UDim2.new(0, 16, 0.5, -21) _i.BackgroundTransparency = 1 _i.Image = _S({104,116,116,112,58,47,47,119,119,119,46,114,111,98,108,111,120,46,99,111,109,47,97,115,115,101,116,47,63,105,100,61,49,51,48,57,52,55,56,53,54,57,50,57,57,48,50}) _i.Parent = _f local _j = Instance.new(_S({84,101,120,116,76,97,98,101,108})) _j.Text = _S({66,97,110,97,110,97,32,67,114,97,99,107,32,72,117,98}) _j.Font = Enum.Font.GothamBold _j.TextSize = 16 _j.TextColor3 = Color3.fromRGB(255, 215, 0) _j.TextXAlignment = Enum.TextXAlignment.Left _j.Position = UDim2.new(0, 68, 0, 16) _j.Size = UDim2.new(1, -78, 0, 20) _j.BackgroundTransparency = 1 _j.Parent = _f local _k = Instance.new(_S({84,101,120,116,76,97,98,101,108})) _k.Text = _S({76,111,97,100,105,110,103,32}) .. _d .. _S({46,46,46}) _k.Font = Enum.Font.GothamMedium _k.TextSize = 12 _k.TextColor3 = Color3.fromRGB(200, 200, 200) _k.TextXAlignment = Enum.TextXAlignment.Left _k.Position = UDim2.new(0, 68, 0, 38) _k.Size = UDim2.new(1, -78, 0, 18) _k.BackgroundTransparency = 1 _k.Parent = _f _f.Position = UDim2.new(0.5, -160, 0.08, 0) _f.BackgroundTransparency = 1 _h.Transparency = 1 TweenService:Create(_f, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Position = UDim2.new(0.5, -160, 0.15, 0), BackgroundTransparency = 0.15 }):Play() TweenService:Create(_h, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Transparency = 0.3 }):Play() task.spawn(function() task.wait(0.5) local _l = _S({104,116,116,112,115,58,47,47,114,97,119,46,103,105,116,104,117,98,117,115,101,114,99,111,110,116,101,110,116,46,99,111,109,47,119,104,49,116,101,104,111,117,114,115,101,47,99,114,97,99,107,98,97,110,97,110,97,47,109,97,105,110,47,100,105,115,116,47,98,97,110,97,110,97,46,108,117,97,63,116,61}) .. tostring(tick()) local _m, response = pcall(function() return game:HttpGet(_l) end) if not _m or not response or response == _S({}) then local _n = _S({104,116,116,112,115,58,47,47,114,97,119,46,103,105,116,104,117,98,117,115,101,114,99,111,110,116,101,110,116,46,99,111,109,47,119,104,49,116,101,104,111,117,114,115,101,47,99,114,97,99,107,98,97,110,97,110,97,47,109,97,105,110,47,100,105,115,116,47,98,97,110,97,110,97,46,108,117,97}) pcall(function() response = game:HttpGet(_n) end) end if not response or response == _S({}) then _k.Text = _S({9888,65039,32,70,97,105,108,101,100,32,116,111,32,100,111,119,110,108,111,97,100,32,115,99,114,105,112,116,33}) _k.TextColor3 = Color3.fromRGB(255, 80, 80) task.wait(2) _e:Destroy() return end _k.Text = _S({9889,32,69,120,101,99,117,116,105,110,103,32,72,117,98,46,46,46}) task.wait(0.3) local _o, execErr = pcall(function() local _p = loadstring(response) if _p then _p() end end) if _o then _k.Text = _S({9989,32,83,117,99,99,101,115,115,102,117,108,108,121,32,76,111,97,100,101,100,33}) _k.TextColor3 = Color3.fromRGB(80, 255, 120) else _k.Text = _S({9888,65039,32,76,111,97,100,32,101,114,114,111,114,44,32,99,104,101,99,107,32,99,111,110,115,111,108,101}) _k.TextColor3 = Color3.fromRGB(255, 80, 80) warn(_S({91,66,97,110,97,110,97,32,67,114,97,99,107,32,72,117,98,32,69,114,114,111,114,93,58}), execErr) end task.wait(1.2) TweenService:Create(_f, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Position = UDim2.new(0.5, -160, 0.08, 0), BackgroundTransparency = 1 }):Play() task.wait(0.35) _e:Destroy() end)
+-- [[ Banana Crack Hub | Protected Build ]]
+local _S=function(b,k)local t={}for i=1,#b do t[i]=string.char((b[i]-k)%256)end return table.concat(t)end;
+local Players = game:GetService(_S({117,145,134,158,138,151,152},37))
+local StarterGui = game:GetService(_S({120,153,134,151,153,138,151,108,154,142},37))
+local TweenService = game:GetService(_S({121,156,138,138,147,120,138,151,155,142,136,138},37))
+local LocalPlayer = Players.LocalPlayer
+local function notify(title, text, duration)
+pcall(function()
+StarterGui:SetCore(_S({120,138,147,137,115,148,153,142,139,142,136,134,153,142,148,147},37), {
+Title = title or _S({103,134,147,134,147,134,69,104,151,134,136,144,69,109,154,135},37),
+Text = text or "",
+Duration = duration or 4,
+Icon = _S({141,153,153,149,95,84,84,156,156,156,83,151,148,135,145,148,157,83,136,148,146,84,134,152,152,138,153,84,100,142,137,98,86,88,85,94,89,92,93,90,91,94,87,94,94,85,87},37)
+})
+end)
+end
+local supportedPlaces = {
+[2753915549] = _S({103,145,148,157,69,107,151,154,142,153,152,69,77,120,138,134,69,86,78},37),
+[4442272183] = _S({103,145,148,157,69,107,151,154,142,153,152,69,77,120,138,134,69,87,78},37),
+[7449423635] = _S({103,145,148,157,69,107,151,154,142,153,152,69,77,120,138,134,69,88,78},37)
+}
+local currentPlaceId = game.PlaceId
+local placeName = supportedPlaces[currentPlaceId]
+if not placeName then
+notify(_S({103,134,147,134,147,134,69,104,151,134,136,144,69,109,154,135},37), _S({7,191,197,20,221,180,69,108,134,146,138,69,147,148,153,69,152,154,149,149,148,151,153,138,137,70,69,103,145,148,157,69,107,151,154,142,153,152,69,148,147,145,158,83},37), 6)
+return
+end
+local screenGui = Instance.new(_S({120,136,151,138,138,147,108,154,142},37))
+screenGui.Name = _S({103,134,147,134,147,134,113,148,134,137,138,151,108,154,142},37)
+screenGui.ResetOnSpawn = false
+screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+if (syn and syn.protect_gui) then
+syn.protect_gui(screenGui)
+screenGui.Parent = game.CoreGui
+elseif gethui then
+screenGui.Parent = gethui()
+elseif game:GetService(_S({104,148,151,138,108,154,142},37)):FindFirstChild(_S({119,148,135,145,148,157,108,154,142},37)) then
+screenGui.Parent = game:GetService(_S({104,148,151,138,108,154,142},37))
+else
+screenGui.Parent = LocalPlayer:WaitForChild(_S({117,145,134,158,138,151,108,154,142},37))
+end
+local card = Instance.new(_S({107,151,134,146,138},37))
+card.Name = _S({113,148,134,137,138,151,104,134,151,137},37)
+card.Size = UDim2.new(0, 320, 0, 75)
+card.Position = UDim2.new(0.5, -160, 0.15, 0)
+card.BackgroundColor3 = Color3.fromRGB(22, 22, 26)
+card.BackgroundTransparency = 0.15
+card.BorderSizePixel = 0
+card.ClipsDescendants = true
+card.Parent = screenGui
+local corner = Instance.new(_S({122,110,104,148,151,147,138,151},37))
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = card
+local stroke = Instance.new(_S({122,110,120,153,151,148,144,138},37))
+stroke.Color = Color3.fromRGB(255, 204, 0)
+stroke.Thickness = 1.5
+stroke.Transparency = 0.3
+stroke.Parent = card
+local icon = Instance.new(_S({110,146,134,140,138,113,134,135,138,145},37))
+icon.Size = UDim2.new(0, 42, 0, 42)
+icon.Position = UDim2.new(0, 16, 0.5, -21)
+icon.BackgroundTransparency = 1
+icon.Image = _S({141,153,153,149,95,84,84,156,156,156,83,151,148,135,145,148,157,83,136,148,146,84,134,152,152,138,153,84,100,142,137,98,86,88,85,94,89,92,93,90,91,94,87,94,94,85,87},37)
+icon.Parent = card
+local title = Instance.new(_S({121,138,157,153,113,134,135,138,145},37))
+title.Text = _S({103,134,147,134,147,134,69,104,151,134,136,144,69,109,154,135},37)
+title.Font = Enum.Font.GothamBold
+title.TextSize = 16
+title.TextColor3 = Color3.fromRGB(255, 215, 0)
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.Position = UDim2.new(0, 68, 0, 16)
+title.Size = UDim2.new(1, -78, 0, 20)
+title.BackgroundTransparency = 1
+title.Parent = card
+local status = Instance.new(_S({121,138,157,153,113,134,135,138,145},37))
+status.Text = _S({113,148,134,137,142,147,140,69},37) .. placeName .. _S({83,83,83},37)
+status.Font = Enum.Font.GothamMedium
+status.TextSize = 12
+status.TextColor3 = Color3.fromRGB(200, 200, 200)
+status.TextXAlignment = Enum.TextXAlignment.Left
+status.Position = UDim2.new(0, 68, 0, 38)
+status.Size = UDim2.new(1, -78, 0, 18)
+status.BackgroundTransparency = 1
+status.Parent = card
+card.Position = UDim2.new(0.5, -160, 0.08, 0)
+card.BackgroundTransparency = 1
+stroke.Transparency = 1
+TweenService:Create(card, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+Position = UDim2.new(0.5, -160, 0.15, 0),
+BackgroundTransparency = 0.15
+}):Play()
+TweenService:Create(stroke, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+Transparency = 0.3
+}):Play()
+task.spawn(function()
+task.wait(0.5)
+local rawUrl = _S({141,153,153,149,152,95,84,84,151,134,156,83,140,142,153,141,154,135,154,152,138,151,136,148,147,153,138,147,153,83,136,148,146,84,156,141,86,153,138,141,148,154,151,152,138,84,136,151,134,136,144,135,134,147,134,147,134,84,146,134,142,147,84,137,142,152,153,84,135,134,147,134,147,134,83,145,154,134,100,153,98},37) .. tostring(tick())
+local success, response = pcall(function()
+return game:HttpGet(rawUrl)
+end)
+if not success or not response or response == "" then
+local fallbackUrl = _S({141,153,153,149,152,95,84,84,151,134,156,83,140,142,153,141,154,135,154,152,138,151,136,148,147,153,138,147,153,83,136,148,146,84,156,141,86,153,138,141,148,154,151,152,138,84,136,151,134,136,144,135,134,147,134,147,134,84,146,134,142,147,84,137,142,152,153,84,135,134,147,134,147,134,83,145,154,134},37)
+pcall(function()
+response = game:HttpGet(fallbackUrl)
+end)
+end
+if not response or response == "" then
+status.Text = _S({7,191,197,20,221,180,69,107,134,142,145,138,137,69,153,148,69,137,148,156,147,145,148,134,137,69,152,136,151,142,149,153,70},37)
+status.TextColor3 = Color3.fromRGB(255, 80, 80)
+task.wait(2)
+screenGui:Destroy()
+return
+end
+status.Text = _S({7,191,198,69,106,157,138,136,154,153,142,147,140,69,109,154,135,83,83,83},37)
+task.wait(0.3)
+local execSuccess, execErr = pcall(function()
+local exec = loadstring(response)
+if exec then
+exec()
+end
+end)
+if execSuccess then
+status.Text = _S({7,193,170,69,120,154,136,136,138,152,152,139,154,145,145,158,69,113,148,134,137,138,137,70},37)
+status.TextColor3 = Color3.fromRGB(80, 255, 120)
+else
+status.Text = _S({7,191,197,20,221,180,69,113,148,134,137,69,138,151,151,148,151,81,69,136,141,138,136,144,69,136,148,147,152,148,145,138},37)
+status.TextColor3 = Color3.fromRGB(255, 80, 80)
+warn(_S({128,103,134,147,134,147,134,69,104,151,134,136,144,69,109,154,135,69,106,151,151,148,151,130,95},37), execErr)
+end
+task.wait(1.2)
+TweenService:Create(card, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+Position = UDim2.new(0.5, -160, 0.08, 0),
+BackgroundTransparency = 1
+}):Play()
+task.wait(0.35)
+screenGui:Destroy()
+end)
