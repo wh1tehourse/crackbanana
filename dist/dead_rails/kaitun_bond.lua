@@ -26,7 +26,8 @@ local val = nil
 pcall(function()
 local ls = LocalPlayer:FindFirstChild(_S({145,138,134,137,138,151,152,153,134,153,152},37))
 if ls then
-local bondStat = ls:FindFirstChild(_S({103,148,147,137,152},37))
+local bondStat = ls:FindFirstChild(_S({103,148,147,137},37))
+or ls:FindFirstChild(_S({103,148,147,137,152},37))
 or ls:FindFirstChild(_S({104,134,152,141},37))
 or ls:FindFirstChild(_S({114,148,147,138,158},37))
 or ls:FindFirstChild(_S({108,148,145,137},37))
@@ -40,7 +41,8 @@ local pd = LocalPlayer:FindFirstChild(_S({117,145,134,158,138,151,105,134,153,13
 or LocalPlayer:FindFirstChild(_S({105,134,153,134},37))
 or LocalPlayer:FindFirstChild(_S({120,153,134,153,152},37))
 if pd then
-local bondStat = pd:FindFirstChild(_S({103,148,147,137,152},37))
+local bondStat = pd:FindFirstChild(_S({103,148,147,137},37))
+or pd:FindFirstChild(_S({103,148,147,137,152},37))
 or pd:FindFirstChild(_S({104,134,152,141},37))
 or pd:FindFirstChild(_S({114,148,147,138,158},37))
 or pd:FindFirstChild(_S({108,148,145,137},37))
