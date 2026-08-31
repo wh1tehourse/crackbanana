@@ -18,8 +18,39 @@ BondsCollected = 0,
 TotalResets = 0,
 StartTime = os.time(),
 CollectDelay = 0.05,
-Status = _S({110,147,142,153,142,134,145,142,159,142,147,140,83,83,83},37)
+Status = _S({110,147,142,153,142,134,145,142,159,142,147,140,83,83,83},37),
+BaseBonds = nil,
 }
+function getActualBonds()
+local val = nil
+pcall(function()
+local ls = LocalPlayer:FindFirstChild(_S({145,138,134,137,138,151,152,153,134,153,152},37))
+if ls then
+local bondStat = ls:FindFirstChild(_S({103,148,147,137,152},37))
+or ls:FindFirstChild(_S({104,134,152,141},37))
+or ls:FindFirstChild(_S({114,148,147,138,158},37))
+or ls:FindFirstChild(_S({108,148,145,137},37))
+or ls:FindFirstChild(_S({103,134,145,134,147,136,138},37))
+if bondStat then
+val = bondStat.Value
+return
+end
+end
+local pd = LocalPlayer:FindFirstChild(_S({117,145,134,158,138,151,105,134,153,134},37))
+or LocalPlayer:FindFirstChild(_S({105,134,153,134},37))
+or LocalPlayer:FindFirstChild(_S({120,153,134,153,152},37))
+if pd then
+local bondStat = pd:FindFirstChild(_S({103,148,147,137,152},37))
+or pd:FindFirstChild(_S({104,134,152,141},37))
+or pd:FindFirstChild(_S({114,148,147,138,158},37))
+or pd:FindFirstChild(_S({108,148,145,137},37))
+if bondStat and bondStat:IsA(_S({110,147,153,123,134,145,154,138},37)) or (bondStat and bondStat:IsA(_S({115,154,146,135,138,151,123,134,145,154,138},37))) then
+val = bondStat.Value
+end
+end
+end)
+return val
+end
 function updateStatus(text)
 State.Status = text
 if StatusLabel and StatusLabel.Parent then
@@ -100,7 +131,7 @@ ScreenGui.Parent = LocalPlayer:WaitForChild(_S({117,145,134,158,138,151,108,154,
 end
 MainFrame = Instance.new(_S({107,151,134,146,138},37))
 MainFrame.Name = _S({114,134,142,147,107,151,134,146,138},37)
-MainFrame.Size = UDim2.new(0, 380, 0, 135)
+MainFrame.Size = UDim2.new(0, 380, 0, 175)
 MainFrame.Position = UDim2.new(0.5, -190, 0.12, 0)
 MainFrame.BackgroundColor3 = Color3.fromRGB(22, 22, 26)
 MainFrame.BorderSizePixel = 0
@@ -211,15 +242,63 @@ BondsLabel.Name = _S({103,148,147,137,152,113,134,135,138,145},37)
 BondsLabel.Size = UDim2.new(1, 0, 1, 0)
 BondsLabel.BackgroundTransparency = 1
 BondsLabel.RichText = true
-BondsLabel.Text = _S({97,139,148,147,153,69,136,148,145,148,151,98,71,72,134,134,134,134,134,134,71,99,103,148,147,137,152,95,69,97,84,139,148,147,153,99,97,139,148,147,153,69,136,148,145,148,151,98,71,72,139,139,136,136,85,85,71,99,85,97,84,139,148,147,153,99},37)
+BondsLabel.Text = _S({97,139,148,147,153,69,136,148,145,148,151,98,71,72,134,134,134,134,134,134,71,99,107,134,151,146,138,137,95,69,97,84,139,148,147,153,99,97,139,148,147,153,69,136,148,145,148,151,98,71,72,139,139,136,136,85,85,71,99,85,97,84,139,148,147,153,99},37)
 BondsLabel.Font = Enum.Font.GothamBold
 BondsLabel.TextSize = 13.5
 BondsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 BondsLabel.Parent = BondsBox
+local Row2Container = Instance.new(_S({107,151,134,146,138},37))
+Row2Container.Name = _S({119,148,156,87,104,148,147,153,134,142,147,138,151},37)
+Row2Container.Size = UDim2.new(1, -30, 0, 42)
+Row2Container.Position = UDim2.new(0, 15, 0, 92)
+Row2Container.BackgroundTransparency = 1
+Row2Container.Parent = MainFrame
+local WalletBox = Instance.new(_S({107,151,134,146,138},37))
+WalletBox.Name = _S({124,134,145,145,138,153,103,148,157},37)
+WalletBox.Size = UDim2.new(0.48, 0, 1, 0)
+WalletBox.Position = UDim2.new(0, 0, 0, 0)
+WalletBox.BackgroundColor3 = Color3.fromRGB(20, 28, 20)
+WalletBox.BorderSizePixel = 0
+WalletBox.Parent = Row2Container
+Instance.new(_S({122,110,104,148,151,147,138,151},37), WalletBox).CornerRadius = UDim.new(0, 9)
+local WalletStroke = Instance.new(_S({122,110,120,153,151,148,144,138},37), WalletBox)
+WalletStroke.Thickness = 1
+WalletStroke.Color = Color3.fromRGB(40, 80, 40)
+WalletLabel = Instance.new(_S({121,138,157,153,113,134,135,138,145},37))
+WalletLabel.Name = _S({124,134,145,145,138,153,113,134,135,138,145},37)
+WalletLabel.Size = UDim2.new(1, 0, 1, 0)
+WalletLabel.BackgroundTransparency = 1
+WalletLabel.RichText = true
+WalletLabel.Text = _S({97,139,148,147,153,69,136,148,145,148,151,98,71,72,134,134,134,134,134,134,71,99,124,134,145,145,138,153,95,69,97,84,139,148,147,153,99,97,139,148,147,153,69,136,148,145,148,151,98,71,72,91,91,139,139,93,93,71,99,100,97,84,139,148,147,153,99},37)
+WalletLabel.Font = Enum.Font.GothamBold
+WalletLabel.TextSize = 13.5
+WalletLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+WalletLabel.Parent = WalletBox
+local EarnedBox = Instance.new(_S({107,151,134,146,138},37))
+EarnedBox.Name = _S({106,134,151,147,138,137,103,148,157},37)
+EarnedBox.Size = UDim2.new(0.48, 0, 1, 0)
+EarnedBox.Position = UDim2.new(0.52, 0, 0, 0)
+EarnedBox.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+EarnedBox.BorderSizePixel = 0
+EarnedBox.Parent = Row2Container
+Instance.new(_S({122,110,104,148,151,147,138,151},37), EarnedBox).CornerRadius = UDim.new(0, 9)
+local EarnedStroke = Instance.new(_S({122,110,120,153,151,148,144,138},37), EarnedBox)
+EarnedStroke.Thickness = 1
+EarnedStroke.Color = Color3.fromRGB(50, 50, 90)
+EarnedLabel = Instance.new(_S({121,138,157,153,113,134,135,138,145},37))
+EarnedLabel.Name = _S({106,134,151,147,138,137,113,134,135,138,145},37)
+EarnedLabel.Size = UDim2.new(1, 0, 1, 0)
+EarnedLabel.BackgroundTransparency = 1
+EarnedLabel.RichText = true
+EarnedLabel.Text = _S({97,139,148,147,153,69,136,148,145,148,151,98,71,72,134,134,134,134,134,134,71,99,106,134,151,147,138,137,95,69,97,84,139,148,147,153,99,97,139,148,147,153,69,136,148,145,148,151,98,71,72,134,134,137,137,139,139,71,99,80,85,97,84,139,148,147,153,99},37)
+EarnedLabel.Font = Enum.Font.GothamBold
+EarnedLabel.TextSize = 13.5
+EarnedLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+EarnedLabel.Parent = EarnedBox
 StatusLabel = Instance.new(_S({121,138,157,153,113,134,135,138,145},37))
 StatusLabel.Name = _S({120,153,134,153,154,152,113,134,135,138,145},37)
 StatusLabel.Size = UDim2.new(1, -30, 0, 24)
-StatusLabel.Position = UDim2.new(0, 15, 0, 95)
+StatusLabel.Position = UDim2.new(0, 15, 0, 140)
 StatusLabel.BackgroundTransparency = 1
 StatusLabel.Text = _S({120,153,134,153,154,152,95,69,110,147,142,153,142,134,145,142,159,142,147,140,83,83,83},37)
 StatusLabel.TextColor3 = Color3.fromRGB(255, 204, 0)
@@ -234,7 +313,21 @@ local hours = math.floor(elapsed / 3600)
 local mins = math.floor((elapsed % 3600) / 60)
 local secs = elapsed % 60
 TimeLabel.Text = string.format(_S({97,139,148,147,153,69,136,148,145,148,151,98,71,72,134,134,134,134,134,134,71,99,121,142,146,138,95,69,97,84,139,148,147,153,99,97,139,148,147,153,69,136,148,145,148,151,98,71,72,85,85,139,139,91,91,71,99,74,85,87,137,95,74,85,87,137,95,74,85,87,137,97,84,139,148,147,153,99},37), hours, mins, secs)
-BondsLabel.Text = string.format(_S({97,139,148,147,153,69,136,148,145,148,151,98,71,72,134,134,134,134,134,134,71,99,103,148,147,137,152,95,69,97,84,139,148,147,153,99,97,139,148,147,153,69,136,148,145,148,151,98,71,72,139,139,136,136,85,85,71,99,74,137,97,84,139,148,147,153,99},37), State.BondsCollected)
+BondsLabel.Text = string.format(_S({97,139,148,147,153,69,136,148,145,148,151,98,71,72,134,134,134,134,134,134,71,99,107,134,151,146,138,137,95,69,97,84,139,148,147,153,99,97,139,148,147,153,69,136,148,145,148,151,98,71,72,139,139,136,136,85,85,71,99,74,137,97,84,139,148,147,153,99},37), State.BondsCollected)
+local actualBonds = getActualBonds()
+if actualBonds ~= nil then
+if State.BaseBonds == nil then
+State.BaseBonds = actualBonds
+end
+local earned = actualBonds - State.BaseBonds
+local earnedColor = earned >= 0 and _S({72,91,91,139,139,93,93},37) or _S({72,139,139,91,91,91,91},37)
+local earnedPrefix = earned >= 0 and _S({80},37) or ""
+WalletLabel.Text = string.format(_S({97,139,148,147,153,69,136,148,145,148,151,98,71,72,134,134,134,134,134,134,71,99,124,134,145,145,138,153,95,69,97,84,139,148,147,153,99,97,139,148,147,153,69,136,148,145,148,151,98,71,72,91,91,139,139,93,93,71,99,74,137,97,84,139,148,147,153,99},37), actualBonds)
+EarnedLabel.Text = string.format(_S({97,139,148,147,153,69,136,148,145,148,151,98,71,72,134,134,134,134,134,134,71,99,106,134,151,147,138,137,95,69,97,84,139,148,147,153,99,97,139,148,147,153,69,136,148,145,148,151,98,71,74,152,71,99,74,152,74,137,97,84,139,148,147,153,99},37), earnedColor, earnedPrefix, earned)
+else
+WalletLabel.Text = _S({97,139,148,147,153,69,136,148,145,148,151,98,71,72,134,134,134,134,134,134,71,99,124,134,145,145,138,153,95,69,97,84,139,148,147,153,99,97,139,148,147,153,69,136,148,145,148,151,98,71,72,93,93,93,93,93,93,71,99,115,84,102,97,84,139,148,147,153,99},37)
+EarnedLabel.Text = _S({97,139,148,147,153,69,136,148,145,148,151,98,71,72,134,134,134,134,134,134,71,99,106,134,151,147,138,137,95,69,97,84,139,148,147,153,99,97,139,148,147,153,69,136,148,145,148,151,98,71,72,93,93,93,93,93,93,71,99,115,84,102,97,84,139,148,147,153,99},37)
+end
 task.wait(1)
 end
 end)
@@ -552,29 +645,30 @@ end
 end
 end
 local trackPath = getTrackTraversalPath()
-updateStatus(_S({121,151,134,155,138,151,152,142,147,140,69,90,90,144,146,69,119,134,142,145,156,134,158,69,145,142,147,138,69,139,148,151,69,134,145,145,69,145,148,136,134,153,142,148,147,152,83,83,83},37))
-for stepIdx, pos in ipairs(trackPath) do
+if #trackPath > 0 then
+updateStatus(_S({120,153,151,138,134,146,142,147,140,69,146,134,149,69,155,142,134,69,134,147,136,141,148,151,69,149,148,142,147,153,152,83,83,83},37))
+local anchorIndices = {
+1,
+math.max(1, math.floor(#trackPath * 0.25)),
+math.max(1, math.floor(#trackPath * 0.50)),
+math.max(1, math.floor(#trackPath * 0.75)),
+#trackPath,
+}
+for _, idx in ipairs(anchorIndices) do
 if not State.Running then break end
 if not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild(_S({109,154,146,134,147,148,142,137,119,148,148,153,117,134,151,153},37)) then break end
+local pos = trackPath[idx]
 teleportTo(CFrame.new(pos + Vector3.new(0, 8, 0)))
 requestStream(pos)
-task.wait(0.12)
-local localTargets = scanBonds(pos, 380)
-if #localTargets > 0 then
-processTargets(localTargets)
-totalFound = totalFound + #localTargets
-end
-if stepIdx % 10 == 0 then
-local newlyDiscoveredPOIs = getPOILocations()
-for _, newPOI in ipairs(newlyDiscoveredPOIs) do
-if (newPOI.Position - pos).Magnitude < 400 then
-local newTargets = scanBonds(newPOI.Position, 200)
-if #newTargets > 0 then
-processTargets(newTargets)
-totalFound = totalFound + #newTargets
+task.wait(0.3)
 end
 end
-end
+if State.Running then
+updateStatus(_S({108,145,148,135,134,145,69,152,136,134,147,69,134,136,151,148,152,152,69,134,145,145,69,145,148,134,137,138,137,69,124,148,151,144,152,149,134,136,138,83,83,83},37))
+local globalTargets = scanBonds()
+if #globalTargets > 0 then
+processTargets(globalTargets)
+totalFound = totalFound + #globalTargets
 end
 end
 return totalFound
