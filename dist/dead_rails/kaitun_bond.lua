@@ -24,6 +24,9 @@ BaseBonds = nil,
 local STRICT_BOND_KEYWORDS = {
 _S({135,148,147,137},37), _S({135,148,147,137,152},37), _S({153,151,138,134,152,154,151,158},37), _S({156,134,151,135,148,147,137},37), _S({156,134,151,132,135,148,147,137},37), _S({153,151,138,134,152,154,151,158,135,148,147,137},37), _S({153,148,144,138,147},37), _S({153,148,144,138,147,152},37), _S({149,148,142,147,153,152},37), _S({136,154,151,151,138,147,136,158},37)
 }
+local STRICT_BOND_KEYWORDS = {
+_S({135,148,147,137},37), _S({135,148,147,137,152},37), _S({153,151,138,134,152,154,151,158},37), _S({156,134,151,135,148,147,137},37), _S({156,134,151,132,135,148,147,137},37), _S({153,151,138,134,152,154,151,158,135,148,147,137},37), _S({153,148,144,138,147},37), _S({153,148,144,138,147,152},37), _S({149,148,142,147,153,152},37), _S({136,154,151,151,138,147,136,158},37), _S({140,138,146,152},37), _S({152,141,134,151,137},37), _S({152,141,134,151,137,152},37), _S({153,142,136,144,138,153},37), _S({153,142,136,144,138,153,152},37), _S({135,134,145,134,147,136,138},37), _S({153,148,153,134,145},37)
+}
 local function isBondKeyword(str)
 if not str or type(str) ~= _S({152,153,151,142,147,140},37) then return false end
 local s = str:lower()
@@ -34,11 +37,15 @@ return false
 end
 function getActualBonds()
 local val = nil
+local candidates = {}
 pcall(function()
 for attrName, attrVal in pairs(LocalPlayer:GetAttributes()) do
-if type(attrVal) == _S({147,154,146,135,138,151},37) and isBondKeyword(attrName) then
+if type(attrVal) == _S({147,154,146,135,138,151},37) then
+table.insert(candidates, { Name = _S({102,153,153,151,95},37) .. attrName, Val = attrVal, Score = isBondKeyword(attrName) and 10 or 1 })
+if isBondKeyword(attrName) then
 val = math.floor(attrVal)
 return
+end
 end
 end
 end)
@@ -50,22 +57,29 @@ ReplicatedStorage:FindFirstChild(_S({117,145,134,158,138,151,120,153,134,153,152
 ReplicatedStorage:FindFirstChild(_S({105,134,153,134},37)),
 ReplicatedStorage:FindFirstChild(_S({117,151,148,139,142,145,138,152},37)),
 ReplicatedStorage:FindFirstChild(_S({120,153,134,153,152},37)),
-ReplicatedStorage:FindFirstChild(_S({119,138,149,145,142,136,134,153,138,137,105,134,153,134},37))
+ReplicatedStorage:FindFirstChild(_S({119,138,149,145,142,136,134,153,138,137,105,134,153,134},37)),
+ReplicatedStorage:FindFirstChild(_S({117,145,134,158,138,151,152},37))
 }
 for _, container in ipairs(containers) do
 if container then
 local pFolder = container:FindFirstChild(LocalPlayer.Name) or container:FindFirstChild(tostring(LocalPlayer.UserId))
 local target = pFolder or container
 for attrName, attrVal in pairs(target:GetAttributes()) do
-if type(attrVal) == _S({147,154,146,135,138,151},37) and isBondKeyword(attrName) then
+if type(attrVal) == _S({147,154,146,135,138,151},37) then
+table.insert(candidates, { Name = _S({119,120,132,102,153,153,151,95},37) .. attrName, Val = attrVal, Score = isBondKeyword(attrName) and 10 or 1 })
+if isBondKeyword(attrName) then
 val = math.floor(attrVal)
 return
 end
 end
-for _, child in ipairs(target:GetChildren()) do
-if (child:IsA(_S({110,147,153,123,134,145,154,138},37)) or child:IsA(_S({115,154,146,135,138,151,123,134,145,154,138},37))) and isBondKeyword(child.Name) then
+end
+for _, child in ipairs(target:GetDescendants()) do
+if (child:IsA(_S({110,147,153,123,134,145,154,138},37)) or child:IsA(_S({115,154,146,135,138,151,123,134,145,154,138},37))) then
+table.insert(candidates, { Name = _S({119,120,132,123,134,145,95},37) .. child.Name, Val = child.Value, Score = isBondKeyword(child.Name) and 10 or 1 })
+if isBondKeyword(child.Name) then
 val = math.floor(child.Value)
 return
+end
 end
 end
 end
@@ -73,26 +87,13 @@ end
 end)
 if val ~= nil then return val end
 pcall(function()
-local folders = {
-LocalPlayer:FindFirstChild(_S({117,145,134,158,138,151,105,134,153,134},37)),
-LocalPlayer:FindFirstChild(_S({105,134,153,134},37)),
-LocalPlayer:FindFirstChild(_S({120,153,134,153,152},37)),
-LocalPlayer:FindFirstChild(_S({117,151,148,139,142,145,138},37)),
-LocalPlayer:FindFirstChild(_S({104,154,151,151,138,147,136,142,138,152},37)),
-LocalPlayer:FindFirstChild(_S({123,134,145,154,138,152},37)),
-LocalPlayer:FindFirstChild(_S({145,138,134,137,138,151,152,153,134,153,152},37))
-}
-for _, folder in ipairs(folders) do
-if folder then
-for attrName, attrVal in pairs(folder:GetAttributes()) do
-if type(attrVal) == _S({147,154,146,135,138,151},37) and isBondKeyword(attrName) then
-val = math.floor(attrVal)
-return
-end
-end
-for _, child in ipairs(folder:GetChildren()) do
-if (child:IsA(_S({110,147,153,123,134,145,154,138},37)) or child:IsA(_S({115,154,146,135,138,151,123,134,145,154,138},37))) and isBondKeyword(child.Name) then
-val = math.floor(child.Value)
+for _, obj in ipairs(LocalPlayer:GetDescendants()) do
+if obj:IsA(_S({110,147,153,123,134,145,154,138},37)) or obj:IsA(_S({115,154,146,135,138,151,123,134,145,154,138},37)) then
+local isCash = obj.Name:lower():find(_S({136,134,152,141},37)) or obj.Name:lower():find(_S({146,148,147,138,158},37)) or obj.Name:lower():find(_S({137,148,145,145,134,151},37))
+if not isCash then
+table.insert(candidates, { Name = _S({113,117,132,123,134,145,95},37) .. obj.Name, Val = obj.Value, Score = isBondKeyword(obj.Name) and 10 or (obj.Value > 50 and 3 or 1) })
+if isBondKeyword(obj.Name) then
+val = math.floor(obj.Value)
 return
 end
 end
@@ -107,11 +108,11 @@ for _, label in ipairs(pg:GetDescendants()) do
 if label:IsA(_S({121,138,157,153,113,134,135,138,145},37)) or label:IsA(_S({121,138,157,153,103,154,153,153,148,147},37)) then
 local pName = label.Parent and label.Parent.Name:lower() or ""
 local lName = label.Name:lower()
-local text = label.Text or ""
-if isBondKeyword(pName) or isBondKeyword(lName) or text:lower():find(_S({135,148,147,137},37)) then
+local text = tostring(label.Text or "")
+if (isBondKeyword(pName) or isBondKeyword(lName) or text:lower():find(_S({135,148,147,137},37)) or text:lower():find(_S({153,151,138,134,152,154,151,158},37))) and not text:find(_S({74,73},37)) then
 local cleanNum = text:gsub(_S({128,131,74,137,130},37), "")
 local num = tonumber(cleanNum)
-if num and num > 0 and not text:find(_S({74,73},37)) then
+if num and num > 0 then
 val = num
 return
 end
@@ -120,6 +121,20 @@ end
 end
 end
 end)
+if val ~= nil then return val end
+if #candidates > 0 then
+table.sort(candidates, function(a, b) return a.Score > b.Score end)
+if candidates[1].Score > 1 or candidates[1].Val > 50 then
+val = math.floor(candidates[1].Val)
+return val
+end
+end
+if not State._LoggedStats and #candidates > 0 then
+State._LoggedStats = true
+pcall(function()
+print(_S({128,103,134,147,134,147,134,109,154,135,130,69,47,69,69,69,69,69,69,69,69,69,69,69,69,139,148,151,69,132,81,69,136,69,142,147,69,142,149,134,142,151,152,77,136,134,147,137,142,137,134,153,138,152,78,69,137,148,47,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,149,151,142,147,153,77,152,153,151,142,147,140,83,139,148,151,146,134,153,77},37)  -> %s = %s (Score: %d)_S({81,69,136,83,115,134,146,138,81,69,153,148,152,153,151,142,147,140,77,136,83,123,134,145,78,81,69,136,83,120,136,148,151,138,78,78,47,69,69,69,69,69,69,69,69,69,69,69,69,138,147,137,47,69,69,69,69,69,69,69,69,69,69,69,69,149,151,142,147,153,77},37)[BananaHub]
+end)
+end
 return val
 end
 function updateStatus(text)
