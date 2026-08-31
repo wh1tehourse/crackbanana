@@ -146,25 +146,42 @@ function stripComments(code) {
 
 // ── Main Obfuscator ───────────────────────────────────────────────────────────
 
+// ── Minify ───────────────────────────────────────────────────────────────────
+
+/**
+ * Collapse code into a single line.
+ * Lua is statement-based so we can join lines with a space safely
+ * as long as we keep semicolons where needed.
+ */
+function minify(code) {
+    return code
+        .split('\n')
+        .map(l => l.trim())
+        .filter(l => l.length > 0)
+        .join(' ');
+}
+
+// ── Main Obfuscator ───────────────────────────────────────────────────────────
+
 /**
  * Full obfuscation pipeline:
  * 1. Strip comments
  * 2. Rename local variables
  * 3. Encode string literals
- * 4. Prepend decoder helper
+ * 4. Minify (collapse to single line)
+ * 5. Prepend decoder helper
  */
 function obfuscate(code) {
     code = stripComments(code);
     code = obfuscateVariables(code);
     code = obfuscateStrings(code);
+    code = minify(code);
 
-    const header = [
-        '-- [[ Banana Crack Hub | Obfuscated Build ]]',
-        'local _S=function(t)local r=""for _,v in ipairs(t)do r=r..string.char(v)end return r end',
-        '',
-    ].join('\n');
+    const header =
+        '-- [[ Banana Crack Hub | Obfuscated Build ]]\n' +
+        'local _S=function(t)local r=""for _,v in ipairs(t)do r=r..string.char(v)end return r end\n';
 
-    return header + code;
+    return header + code + '\n';
 }
 
 module.exports = { obfuscate };
