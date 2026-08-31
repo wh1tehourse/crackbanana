@@ -7,7 +7,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/wh1tehourse/crackbana
 
 ### 🚂 2. Dead Rails [ Kaitun Bond & Auto Farm ]
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/wh1tehourse/crackbanana/main/dist/dead_rails/kaitun_bond.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/wh1tehourse/crackbanana/main/dist/dead_rails/loader.lua?t=" .. tostring(tick())))()
 ```
 
 ---
