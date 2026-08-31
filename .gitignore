@@ -1,0 +1,10 @@
+# Source files - only dist/ is public
+src/
+scripts/
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
