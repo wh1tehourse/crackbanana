@@ -387,51 +387,108 @@ function UpdateGeaESP()
     end
 end
 function Tween2(p170)
-    local v171 = (p170.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-    local _ = 350 <= v171
-    local v172 = 350
-    local v173 = TweenInfo.new(v171 / v172, Enum.EasingStyle.Linear)
-    local v174 = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, v173, {
-        ["CFrame"] = p170
-    })
-    v174:Play()
-    if _G.CancelTween2 then
-        v174:Cancel()
-    end
-    _G.Clip2 = true
-    task.wait(v171 / v172)
-    _G.Clip2 = false
+    -- Tween2: smooth tween ke titik tujuan, await hingga selesai, safe noclip
+    pcall(function()
+        local lp = game:GetService("Players").LocalPlayer
+        local char = lp.Character
+        if not char then return end
+        local hrp = char:FindFirstChild("HumanoidRootPart")
+        if not hrp then return end
+
+        local dist = (p170.Position - hrp.Position).Magnitude
+        if dist < 1 then return end -- Sudah di tempat tujuan
+
+        local speed = 350
+        local duration = dist / speed
+
+        local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Linear)
+        local tween = game:GetService("TweenService"):Create(hrp, tweenInfo, { CFrame = p170 })
+
+        _G.Clip2 = true
+        _G.ActiveTween2 = tween
+        tween:Play()
+
+        -- Cancel check loop selama tween berjalan
+        local elapsed = 0
+        local step = 0.05
+        while elapsed < duration do
+            task.wait(step)
+            elapsed = elapsed + step
+            if _G.CancelTween2 then
+                tween:Cancel()
+                _G.CancelTween2 = false
+                break
+            end
+        end
+
+        _G.Clip2 = false
+        _G.ActiveTween2 = nil
+    end)
 end
+
 function BTPZ(p175)
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p175
-    task.task.wait()
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p175
+    -- Instant teleport (no tween)
+    pcall(function()
+        local hrp = game.Players.LocalPlayer.Character
+            and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        if hrp then
+            hrp.CFrame = p175
+            task.wait()
+            hrp.CFrame = p175
+        end
+    end)
 end
+
 TweenSpeed = 350
+
 function Tween(p176)
-    local v177 = (p176.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-    local v178 = TweenSpeed
-    if v177 >= 350 then
-        v178 = TweenSpeed
-    end
-    local v179 = TweenInfo.new(v177 / v178, Enum.EasingStyle.Linear)
-    local v180 = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, v179, {
-        ["CFrame"] = p176
-    })
-    v180:Play()
-    if _G.StopTween then
-        v180:Cancel()
-    end
+    -- Tween tanpa await (fire-and-forget), untuk dipakai di dalam loop farming
+    pcall(function()
+        local lp = game:GetService("Players").LocalPlayer
+        local char = lp.Character
+        if not char then return end
+        local hrp = char:FindFirstChild("HumanoidRootPart")
+        if not hrp then return end
+
+        local dist = (p176.Position - hrp.Position).Magnitude
+        if dist < 1 then return end
+
+        local speed = math.max(TweenSpeed, 50) -- floor 50 agar tidak terlalu lambat
+        local duration = dist / speed
+
+        -- Batalkan tween sebelumnya jika ada
+        if _G.ActiveTween then
+            pcall(function() _G.ActiveTween:Cancel() end)
+        end
+
+        local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Linear)
+        local tween = game:GetService("TweenService"):Create(hrp, tweenInfo, { CFrame = p176 })
+        _G.ActiveTween = tween
+        tween:Play()
+
+        if _G.StopTween then
+            tween:Cancel()
+            _G.ActiveTween = nil
+        end
+    end)
 end
-function CancelTween(p181)
-    if not p181 then
-        _G.StopTween = true
-        task.wait()
-        Tween(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
-        task.wait()
-        _G.StopTween = false
+
+function CancelTween()
+    -- Cancel semua tween aktif dan hentikan pergerakan
+    _G.StopTween = true
+    if _G.ActiveTween then
+        pcall(function() _G.ActiveTween:Cancel() end)
+        _G.ActiveTween = nil
     end
+    if _G.ActiveTween2 then
+        pcall(function() _G.ActiveTween2:Cancel() end)
+        _G.CancelTween2 = true
+        _G.ActiveTween2 = nil
+    end
+    task.wait()
+    _G.StopTween = false
 end
+
 function EquipTool(p182)
     if game.Players.LocalPlayer.Backpack:FindFirstChild(p182) then
         local v183 = game.Players.LocalPlayer.Backpack:FindFirstChild(p182)

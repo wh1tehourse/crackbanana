@@ -1,7 +1,7 @@
 --[[
     Banana Crack Hub - Blox Fruits [ Freemium ]
     Author: wh1tehourse
-    Compiled: 2026-08-31T06:33:53.992Z
+    Compiled: 2026-08-31T06:38:43.840Z
     Source: Modular Architecture (src/)
 ]]
 
@@ -2345,51 +2345,108 @@ function UpdateGeaESP()
     end
 end
 function Tween2(p170)
-    local v171 = (p170.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-    local _ = 350 <= v171
-    local v172 = 350
-    local v173 = TweenInfo.new(v171 / v172, Enum.EasingStyle.Linear)
-    local v174 = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, v173, {
-        ["CFrame"] = p170
-    })
-    v174:Play()
-    if _G.CancelTween2 then
-        v174:Cancel()
-    end
-    _G.Clip2 = true
-    task.wait(v171 / v172)
-    _G.Clip2 = false
+    -- Tween2: smooth tween ke titik tujuan, await hingga selesai, safe noclip
+    pcall(function()
+        local lp = game:GetService("Players").LocalPlayer
+        local char = lp.Character
+        if not char then return end
+        local hrp = char:FindFirstChild("HumanoidRootPart")
+        if not hrp then return end
+
+        local dist = (p170.Position - hrp.Position).Magnitude
+        if dist < 1 then return end -- Sudah di tempat tujuan
+
+        local speed = 350
+        local duration = dist / speed
+
+        local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Linear)
+        local tween = game:GetService("TweenService"):Create(hrp, tweenInfo, { CFrame = p170 })
+
+        _G.Clip2 = true
+        _G.ActiveTween2 = tween
+        tween:Play()
+
+        -- Cancel check loop selama tween berjalan
+        local elapsed = 0
+        local step = 0.05
+        while elapsed < duration do
+            task.wait(step)
+            elapsed = elapsed + step
+            if _G.CancelTween2 then
+                tween:Cancel()
+                _G.CancelTween2 = false
+                break
+            end
+        end
+
+        _G.Clip2 = false
+        _G.ActiveTween2 = nil
+    end)
 end
+
 function BTPZ(p175)
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p175
-    task.task.wait()
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p175
+    -- Instant teleport (no tween)
+    pcall(function()
+        local hrp = game.Players.LocalPlayer.Character
+            and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        if hrp then
+            hrp.CFrame = p175
+            task.wait()
+            hrp.CFrame = p175
+        end
+    end)
 end
+
 TweenSpeed = 350
+
 function Tween(p176)
-    local v177 = (p176.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-    local v178 = TweenSpeed
-    if v177 >= 350 then
-        v178 = TweenSpeed
-    end
-    local v179 = TweenInfo.new(v177 / v178, Enum.EasingStyle.Linear)
-    local v180 = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, v179, {
-        ["CFrame"] = p176
-    })
-    v180:Play()
-    if _G.StopTween then
-        v180:Cancel()
-    end
+    -- Tween tanpa await (fire-and-forget), untuk dipakai di dalam loop farming
+    pcall(function()
+        local lp = game:GetService("Players").LocalPlayer
+        local char = lp.Character
+        if not char then return end
+        local hrp = char:FindFirstChild("HumanoidRootPart")
+        if not hrp then return end
+
+        local dist = (p176.Position - hrp.Position).Magnitude
+        if dist < 1 then return end
+
+        local speed = math.max(TweenSpeed, 50) -- floor 50 agar tidak terlalu lambat
+        local duration = dist / speed
+
+        -- Batalkan tween sebelumnya jika ada
+        if _G.ActiveTween then
+            pcall(function() _G.ActiveTween:Cancel() end)
+        end
+
+        local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Linear)
+        local tween = game:GetService("TweenService"):Create(hrp, tweenInfo, { CFrame = p176 })
+        _G.ActiveTween = tween
+        tween:Play()
+
+        if _G.StopTween then
+            tween:Cancel()
+            _G.ActiveTween = nil
+        end
+    end)
 end
-function CancelTween(p181)
-    if not p181 then
-        _G.StopTween = true
-        task.wait()
-        Tween(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
-        task.wait()
-        _G.StopTween = false
+
+function CancelTween()
+    -- Cancel semua tween aktif dan hentikan pergerakan
+    _G.StopTween = true
+    if _G.ActiveTween then
+        pcall(function() _G.ActiveTween:Cancel() end)
+        _G.ActiveTween = nil
     end
+    if _G.ActiveTween2 then
+        pcall(function() _G.ActiveTween2:Cancel() end)
+        _G.CancelTween2 = true
+        _G.ActiveTween2 = nil
+    end
+    task.wait()
+    _G.StopTween = false
 end
+
 function EquipTool(p182)
     if game.Players.LocalPlayer.Backpack:FindFirstChild(p182) then
         local v183 = game.Players.LocalPlayer.Backpack:FindFirstChild(p182)
@@ -2464,9 +2521,9 @@ Type = 1
 ]]
 
 task.spawn(function()
-    while task.task.wait() do
+    while task.wait() do
         pcall(function()
-            if _G.AutoEvoRace or (_G.CastleRaid or (_G.CollectAzure or (_G.TweenToKitsune or (_G.GhostShip or (_G.Ship or (_G.Auto_Holy_Torch or (_G.TeleportPly or (_G.Auto_Sea3 or (_G.Auto_Sea2 or (_G.Tweenfruit or (_G.AutoFishCrew or (_G.Auto_Saber or (_G.AutoShark or (_G.Auto_Warden or (_G.Auto_RainbowHaki or (AutoFarmRace or (_G.AutoQuestRace or (Auto_Law or (AutoTushita or (_G.AutoHolyTorch or (_G.AutoTerrorshark or (_G.farmpiranya or (_G.Auto_MusketeerHat or (_G.Auto_ObservationV2 or (_G.AutoNear or (_G.Auto_PoleV1 or (_G.Auto_Buddy or (_G.Ectoplasm or (AutoEvoRace or (AutoBartilo or (_G.Auto_Canvander or (_G.AutoLevel or (_G.Auto_DualKatana or (Auto_Quest_Yama_3 or (Auto_Quest_Yama_2 or (Auto_Quest_Yama_1 or (Auto_Quest_Tushita_1 or (Auto_Quest_Tushita_2 or (Auto_Quest_Tushita_3 or (_G.Clip2 or (_G.Auto_Regoku or (_G.AutoBone or (_G.AutoBoneNoQuest or (_G.AutoBoss or (AutoFarmMasDevilFruit or (AutoHallowSycthe or (AutoTushita or (_G.CakePrince or (_G.Auto_SkullGuitar or (_G.AutoFarmSwan or (_G.DoughKing or (_G.AutoEliteor or (AutoNextIsland or (Musketeer or (_G.AutoMaterial or (AutoFarmRaceQuest or (_G.Factory or (_G.Auto_Saw or (_G.AutoFrozenDimension or (_G.AutoKillTrial or (_G.AutoUpgrade or _G.TweenToFrozenDimension))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))) then
+            if _G.AutoEvoRace or (_G.CastleRaid or (_G.CollectAzure or (_G.TweenToKitsune or (_G.GhostShip or (_G.Ship or (_G.Auto_Holy_Torch or (_G.TeleportPly or (_G.Auto_Sea3 or (_G.Auto_Sea2 or (_G.Tweenfruit or (_G.AutoFishCrew or (_G.Auto_Saber or (_G.AutoShark or (_G.Auto_Warden or (_G.Auto_RainbowHaki or (AutoFarmRace or (_G.AutoQuestRace or (Auto_Law or (AutoTushita or (_G.AutoHolyTorch or (_G.AutoTerrorshark or (_G.farmpiranya or (_G.Auto_MusketeerHat or (_G.Auto_ObservationV2 or (_G.AutoNear or (_G.Auto_PoleV1 or (_G.Auto_Buddy or (_G.Ectoplasm or (AutoEvoRace or (AutoBartilo or (_G.Auto_Canvander or (_G.AutoLevel or (_G.Auto_DualKatana or (Auto_Quest_Yama_3 or (Auto_Quest_Yama_2 or (Auto_Quest_Yama_1 or (Auto_Quest_Tushita_1 or (Auto_Quest_Tushita_2 or (Auto_Quest_Tushita_3 or (_G.Clip2 or (_G.Auto_Regoku or (_G.AutoBone or (_G.AutoBoneNoQuest or (_G.AutoBoss or (AutoFarmMasDevilFruit or (AutoHallowSycthe or (AutoTushita or (_G.CakePrince or (_G.Auto_SkullGuitar or (_G.AutoFarmSwan or (_G.DoughKing or (_G.AutoEliteor or (AutoNextIsland or (Musketeer or (_G.AutoMaterial or (AutoFarmRaceQuest or (_G.Factory or (_G.Auto_Saw or (_G.AutoFrozenDimension or (_G.AutoKillTrial or (_G.AutoUpgrade or (_G.AutoTyrant or (_G.TweenToFrozenDimension))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))) then
                 if not game:GetService("Players").LocalPlayer.Character.HumanoidRootPart:FindFirstChild("BodyClip") then
                     local v188 = Instance.new("BodyVelocity")
                     v188.Name = "BodyClip"
@@ -2499,7 +2556,7 @@ task.spawn(function()
         end)
     end)
 end)
-task.task.spawn(function()
+task.spawn(function()
     if game.Players.LocalPlayer.Character:FindFirstChild("Stun") then
         game.Players.LocalPlayer.Character.Stun.Changed:connect(function()
             pcall(function()
@@ -2626,9 +2683,13 @@ end
     Bypasses anti-cheat for smooth flying and island navigation.
 ]]
 
+-- Inisialisasi Pos dengan nilai default agar tidak nil di frame pertama
+Pos = CFrame.new(0, 40, 0)
+Type = 1
+
 -- Flying offset loop: rotasi CFrame offset agar anti-cheat tidak detect posisi statis
 task.spawn(function()
-    while task.wait() do
+    while task.wait(0.05) do
         if Type == 1 then
             Pos = CFrame.new(0, 40, 0)
         elseif Type == 2 then
@@ -2643,26 +2704,28 @@ task.spawn(function()
     end
 end)
 
--- Type cycling loop
+-- Type cycling loop (0.2s per step = 1 full cycle per detik)
 task.spawn(function()
-    while task.wait() do
-        Type = 1
-        task.wait(0.2)
-        Type = 2
-        task.wait(0.2)
-        Type = 3
-        task.wait(0.2)
-        Type = 4
-        task.wait(0.2)
-        Type = 5
-        task.wait(0.2)
+    while task.wait(0.2) do
+        if Type >= 5 then
+            Type = 1
+        else
+            Type = Type + 1
+        end
     end
 end)
 
--- Fungsi teleport jarak jauh dengan bypass anti-cheat
+--[[
+    to(targetCFrame):
+    Fungsi teleport universal yang dipakai oleh auto-farm loop.
+    - Jarak dekat (< 2000 studs): pakai Tween2 (smooth, await selesai)
+    - Jarak jauh (>= 2000 studs): pakai force-CFrame + ChangeState(15) bypass
+    - Area khusus (quest tertentu): pakai requestEntrance dulu
+    - Aman: pcall + nil-check setiap iterasi + max iteration safety
+]]
 function to(targetCFrame)
     pcall(function()
-        local lp = game.Players.LocalPlayer
+        local lp = game:GetService("Players").LocalPlayer
         local char = lp.Character
         if not char then return end
 
@@ -2673,50 +2736,66 @@ function to(targetCFrame)
         if Auto_Raid then return end
 
         local dist = (targetCFrame.Position - hrp.Position).Magnitude
-        if dist < 2000 then return end
 
-        -- Cek apakah perlu requestEntrance untuk area khusus
-        if NameMon == "FishmanQuest" then
-            Tween(hrp.CFrame)
-            task.wait()
-            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(61163.8515625, 11.6796875, 1819.7841796875))
-            return
-        elseif Mon == "God's Guard" then
-            Tween(hrp.CFrame)
-            task.wait()
-            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(-4607.82275, 872.54248, -1667.55688))
-            return
-        elseif NameMon == "SkyExp1Quest" then
-            Tween(hrp.CFrame)
-            task.wait()
-            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(-7894.6176757813, 5547.1416015625, -380.29119873047))
-            return
-        elseif NameMon == "ShipQuest1" or NameMon == "ShipQuest2" then
-            Tween(hrp.CFrame)
-            task.wait()
-            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(923.21252441406, 126.9760055542, 32852.83203125))
-            return
-        elseif NameMon == "FrostQuest" then
-            Tween(hrp.CFrame)
-            task.wait()
-            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(-6508.5581054688, 89.034996032715, -132.83953857422))
+        -- Jarak sangat dekat, tidak perlu teleport
+        if dist <= 5 then return end
+
+        -- Jarak pendek / menengah → pakai smooth Tween2 (await blocking)
+        if dist < 2000 then
+            Tween2(targetCFrame)
             return
         end
 
-        -- Teleport terbang biasa untuk jarak jauh (>= 2000 studs)
+        -- Cek apakah perlu requestEntrance untuk area khusus (jarak jauh)
+        if NameMon == "FishmanQuest" then
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                "requestEntrance", Vector3.new(61163.8515625, 11.6796875, 1819.7841796875))
+            return
+        elseif Mon == "God's Guard" then
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                "requestEntrance", Vector3.new(-4607.82275, 872.54248, -1667.55688))
+            return
+        elseif NameMon == "SkyExp1Quest" then
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                "requestEntrance", Vector3.new(-7894.6176757813, 5547.1416015625, -380.29119873047))
+            return
+        elseif NameMon == "ShipQuest1" or NameMon == "ShipQuest2" then
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                "requestEntrance", Vector3.new(923.21252441406, 126.9760055542, 32852.83203125))
+            return
+        elseif NameMon == "FrostQuest" then
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(
+                "requestEntrance", Vector3.new(-6508.5581054688, 89.034996032715, -132.83953857422))
+            return
+        end
+
+        -- Jarak jauh (>= 2000 studs): force-CFrame + ChangeState anti-cheat bypass
+        -- Fast_Delay di-floor 0.05 agar tidak terlalu kecil → CPU spike
+        local delay = math.max(_G.Fast_Delay or 0.05, 0.05)
+        local maxIter = 200 -- safety: maksimal 200 iterasi (~10 detik)
+        local iter = 0
+
         repeat
-            task.wait(_G.Fast_Delay or 0.1)
+            iter = iter + 1
+            task.wait(delay)
+
+            -- Re-fetch referensi setiap iterasi (karakter bisa respawn)
             char = lp.Character
             if not char then break end
             hrp = char:FindFirstChild("HumanoidRootPart")
             hum = char:FindFirstChild("Humanoid")
             if not hrp or not hum then break end
             if hum.Health <= 0 then break end
-            hum:ChangeState(15) -- Physics bypass / jump state
+
+            -- Bypass gravity dan physics
+            hum:ChangeState(11) -- PlatformStanding (lebih stabil dari 15)
             hrp.CFrame = targetCFrame
             task.wait()
             hrp.CFrame = targetCFrame
-        until not hrp or (targetCFrame.Position - hrp.Position).Magnitude <= 5
+
+        until iter >= maxIter
+            or not hrp
+            or (targetCFrame.Position - hrp.Position).Magnitude <= 5
     end)
 end
 
